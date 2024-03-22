@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="intro">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card bg-dark shadow-2-strong">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-borderless mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>User Id</th>
+                                        <th>Product Id</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cart in carts%}
+                                    <tr>
+                                        <th scope="row">{{cart.id}}</th>
+                                        <td>{{cart.user_id}}</td>
+                                        <td>{{cart.product_id}}</td>
+                                        <td>{{cart.qty}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

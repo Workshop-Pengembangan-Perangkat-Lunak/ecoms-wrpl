@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="intro">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card bg-dark shadow-2-strong">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-dark table-borderless mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Transaction Code</th>
+                                        <th>User Id</th>
+                                        <th>Discount</th>
+                                        <th>Total Price</th>
+                                        <th>Payment Money</th>
+                                        <th>Paid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for trans in transactions %}
+                                    <tr>
+                                        <th scope="row">{{trans.id}}</th>
+                                        <td>{{trans.transaction_code}}</td>
+                                        <td>{{trans.user_id}}</td>
+                                        <td>{{trans.discount}}</td>
+                                        <td>{{trans.total_price}}</td>
+                                        <td>{{trans.payment_money}}</td>
+                                        <td>{{trans.paid}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock content %}
