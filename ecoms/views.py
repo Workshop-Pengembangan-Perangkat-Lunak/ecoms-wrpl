@@ -31,6 +31,19 @@ def show_carts(request):
     carts = Cart.objects.all()
     return render(request, 'carts.html', {'carts': carts})
 
+def show_shop(request):
+    products = Product.objects.all()
+    return render(request, 'shop.html', {'products': products})
+
+def show_cart(request):
+    carts = Cart.objects.all()
+    return render(request, 'cart.html', {'carts': carts})
+
+def show_shop_detail(request, id):
+    products = Product.objects.filter(id=id)
+    return render(request, 'shop_detail.html', {'products': products})
+
+
 
 def show_transactions(request):
     transactions = Transaction.objects.all()
@@ -54,11 +67,15 @@ def show_user_trans(request):
     pass
 
 
+# def show_specific_products(request):
+#     products = Product.objects.filter(
+#         string__icontains=f"{request.POST.get("product_filter")}")
+#     return render(request, "products.html", {'products': products})
+
 def show_specific_products(request):
     products = Product.objects.filter(
-        string__icontains=f"{request.POST.get("product_filter")}")
+        string__icontains=f"{request.POST.get('product_filter')}")
     return render(request, "products.html", {'products': products})
-
 
 def add_to_cart(request):
     cart = CartForm(request.POST or None)
