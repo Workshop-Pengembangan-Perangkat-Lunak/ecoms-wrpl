@@ -56,7 +56,7 @@ def show_user_trans(request):
 
 def show_specific_products(request):
     products = Product.objects.filter(
-        string__icontains=f"{request.POST.get("product_filter")}")
+        string__icontains=f"{request.POST.get('product_filter')}")
     return render(request, "products.html", {'products': products})
 
 
@@ -66,3 +66,11 @@ def add_to_cart(request):
         cart.save()
         redirect('ecoms:carts')
     return redirect('ecoms:products')
+
+
+def login(request):
+    
+    return render(request, 'auth/login.html')
+def register(request):
+    
+    return render(request, 'auth/register.html')
