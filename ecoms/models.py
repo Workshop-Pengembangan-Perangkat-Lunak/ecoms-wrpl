@@ -1,5 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, User
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from django.db.models import post_save
 # Create your models here.
 
 
@@ -12,6 +14,15 @@ class Customer(models.Model):
     phone = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @receiver(post_save, sender=User)
+    def create_customer(sender, instance, created, **kwargs):
+        if created:
+            Customer.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_customer(sender, instance, **kwargs):
+        instance.profile.save()
 
     def __str__(self) -> str:
         return self.first_name
