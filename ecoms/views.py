@@ -60,11 +60,6 @@ def show_shop(request):
     return render(request, 'shop.html', {'products': products})
 
 
-def show_cart(request):
-    carts = Cart.objects.all()
-    return render(request, 'cart.html', {'carts': carts})
-
-
 def show_shop_detail(request, id):
     products = Product.objects.filter(id=id)
     return render(request, 'shop_detail.html', {'products': products})
