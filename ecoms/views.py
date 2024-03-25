@@ -37,7 +37,14 @@ def show_shop(request):
 
 def show_cart(request):
     carts = Cart.objects.all()
-    return render(request, 'cart.html', {'carts': carts})
+    subtotal = 0
+    for cart in carts:
+        subtotal += cart.product_id.selling_price * cart.qty
+    context = {
+        'carts' : carts,
+        'subtotal' : subtotal
+    }
+    return render(request, 'cart.html', context)
 
 def show_shop_detail(request, id):
     products = Product.objects.filter(id=id)
