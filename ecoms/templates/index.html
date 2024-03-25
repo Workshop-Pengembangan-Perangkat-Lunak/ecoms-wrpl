@@ -42,9 +42,10 @@
                     <div class="col-lg-12">
                         <div class="row g-4">
                             <div class="col-xl-3">
-                            <form action="{% url 'products' %}" method="post">
+                            <form action="{% url 'home' %}" method="post">
+                                {% csrf_token %}
                                 <div class="input-group w-100 mx-auto d-flex">
-                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" name="filter">
                                     <span id="search-icon-1" class="input-group-text p-3">
                                     <button type="submit" style="border: none; background: none;">
                                         <i class="fa fa-search"></i>

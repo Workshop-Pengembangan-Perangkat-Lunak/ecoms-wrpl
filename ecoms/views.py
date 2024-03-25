@@ -40,7 +40,7 @@ def show_products(request):
     if request.method == "POST":
         filter = request.POST.get('filter')
         products = Product.objects.filter(product_name__icontains=f'{filter}')
-        return render(request, 'products.html', {'products': products})
+        return render(request, 'index.html', {'products': products})
     products = Product.objects.all()
     return render(request, 'index.html', {'products': products})
 
