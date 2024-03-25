@@ -42,7 +42,7 @@ def show_products(request):
         products = Product.objects.filter(product_name__icontains=f'{filter}')
         return render(request, 'products.html', {'products': products})
     products = Product.objects.all()
-    return render(request, 'products.html', {'products': products})
+    return render(request, 'index.html', {'products': products})
 
 
 def show_departments(request):
@@ -52,7 +52,7 @@ def show_departments(request):
 
 def show_carts(request):
     carts = Cart.objects.all()
-    return render(request, 'carts.html', {'carts': carts})
+    return render(request, 'cart.html', {'carts': carts})
 
 
 def show_shop(request):
