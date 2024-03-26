@@ -89,7 +89,7 @@ def show_specific_products(request):
     return render(request, "products.html", {'products': products})
 
 
-@login_required(redirect_field_name='ecoms:login')
+# @login_required(redirect_field_name='ecoms:login')
 def add_to_cart(request):
     cart = CartForm(request.POST or None)
     if cart.is_valid():
@@ -98,7 +98,7 @@ def add_to_cart(request):
     return redirect('ecoms:products')
 
 
-@login_required()
+# @login_required()
 def show_dashboard(request):
     transactions = Transaction.objects.all(pk=request.user.id)
     return render(request, 'dashboard.html', {'transactions': transactions})
