@@ -39,10 +39,13 @@ def create_product(request):
 def show_products(request):
     department = Department.objects.all()
     if request.method == "POST":
-        # name_filter = request.POST.get('name_filter')
-        # price_filter = request.POST.get('price_filter')
-        # dept_filter = request.POST.get('dept_filter')
-        products = Product.objects.filter(product_name__icontains=f'{filter}')
+        name_filter = request.POST.get('name_filter')
+        dept_filter = department.filter(
+            dept_name=request.POST.get('dept_filter')).id
+        min_price = request.POST.get('min_price')
+        max_price = request.POST.get('max_price')
+        products = Product.objects.filter(product_name__icontains=f'{name_filter}').filter(
+            selling_price__range=[min_price, max_price]).filter(dept_id=dept_filter)
         return render(request, 'index.html', {'products': products, 'departments': department})
     products = Product.objects.all()
     return render(request, 'index.html', {'products': products, 'departments': department})
@@ -115,5 +118,5 @@ def add_to_cart(request):
 
 # @login_required()
 def show_dashboard(request):
-    transactions = Transaction.objects.all(pk=request.user.id)
+    transactions = Transaction.objects.all()
     return render(request, 'dashboard.html', {'transactions': transactions})
