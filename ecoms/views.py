@@ -16,7 +16,7 @@ def register_user(request):
     if form.is_valid():
         form.save()
         return redirect('food:login')
-    return render(request, '', {})
+    return render(request, 'register.html', {})
 
 
 def login_user(request):
@@ -29,7 +29,7 @@ def login_user(request):
             return redirect('/ecoms/shop')
     else:
         form = LoginForm()
-    return render(request, '', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
 
 def create_product(request):

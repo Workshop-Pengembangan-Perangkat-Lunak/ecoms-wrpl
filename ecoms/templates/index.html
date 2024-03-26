@@ -103,7 +103,10 @@
                                 <div class="row g-4 justify-content-center">
                                 {% for product in products %}
                                 {% if product.stock != 0 %}
-                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                    <form method="post" action="{% url 'add_to_carts' %}" class="col-md-6 col-lg-6 col-xl-4">
+                                        {% csrf_token %}
+                                        {{form.as_p}}
+                                         <input type="hidden" name="product_id" value="{{ product.id }}">
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
                                                 <img src="{% static 'img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">
@@ -116,10 +119,10 @@
                                                     <p class="text-dark fs-5 fw-bold mb-0">Rp{{product.selling_price}}/kg</p>
                                                     <p class="text-dark fs-5 fw-bold mb-0">Stock: {{product.stock}}</p>
                                                 </div>
-                                                    <a href="#" class="btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                                <button type="submit" style="width: 100%;" class="btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </form>
                                 {% endif %}
                                 {% endfor %}
                                 </div>
