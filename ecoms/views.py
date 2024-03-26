@@ -37,13 +37,13 @@ def create_product(request):
 
 
 def show_products(request):
+    department = Department.objects.all()
     if request.method == "POST":
         filter = request.POST.get('filter')
         products = Product.objects.filter(product_name__icontains=f'{filter}')
-        return render(request, 'index.html', {'products': products})
+        return render(request, 'index.html', {'products': products, 'departments': department})
     products = Product.objects.all()
-    return render(request, 'index.html', {'products': products})
-
+    return render(request, 'index.html', {'products': products, 'departments': department})
 
 def show_departments(request):
     depts = Department.objects.all()
