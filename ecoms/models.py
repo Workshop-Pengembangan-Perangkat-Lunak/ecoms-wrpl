@@ -12,6 +12,7 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=6, choices=genders, default='Male')
     phone = models.CharField(max_length=30)
+    address = models.CharField(max_length=30)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

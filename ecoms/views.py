@@ -16,7 +16,7 @@ def register_user(request):
     if form.is_valid():
         form.save()
         return redirect('food:login')
-    return render(request, '', {})
+    return render(request, 'register.html', {})
 
 
 def login_user(request):
@@ -29,7 +29,7 @@ def login_user(request):
             return redirect('ecoms:shop')
     else:
         form = LoginForm()
-    return render(request, '', {'form': form})
+    return render(request, 'login.html', {'form': form})
 
 
 def create_product(request):
@@ -99,7 +99,7 @@ def show_specific_products(request):
     return render(request, "products.html", {'products': products})
 
 
-@login_required(redirect_field_name='ecoms:login')
+# @login_required(redirect_field_name='ecoms:login')
 def add_to_cart(request):
     cart = CartForm(request.POST or None)
     if cart.is_valid():
@@ -108,7 +108,7 @@ def add_to_cart(request):
     return redirect('ecoms:products')
 
 
-@login_required()
+# @login_required()
 def show_dashboard(request):
     transactions = Transaction.objects.all(pk=request.user.id)
     return render(request, 'dashboard.html', {'transactions': transactions})
