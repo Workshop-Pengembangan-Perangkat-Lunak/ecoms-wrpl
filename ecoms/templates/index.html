@@ -107,6 +107,7 @@
                                         {% csrf_token %}
                                         {{form.as_p}}
                                          <input type="hidden" name="product_id" value="{{ product.id }}">
+                                         <input type="hidden" name="qty" value=1>
                                         <div class="rounded position-relative fruite-item">
                                             <div class="fruite-img">
                                                 <img src="{% static 'img/fruite-item-5.jpg' %}" class="img-fluid w-100 rounded-top" alt="">

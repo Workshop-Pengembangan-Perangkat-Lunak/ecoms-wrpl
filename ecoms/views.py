@@ -106,11 +106,12 @@ def show_specific_products(request):
 
 # @login_required(redirect_field_name='ecoms:login')
 def add_to_cart(request):
-    cart = CartForm(request.POST or None)
+    cart = CartForm(request.POST or None, initial={'qty': 1})
     if cart.is_valid():
+        # cart.add_initial_prefix('qty', 1)
         cart.save()
-        redirect('/ecoms/carts')
-    return redirect('/ecoms/products')
+        redirect('/ecoms/cart')
+    return redirect('/ecoms/')
 
 
 # @login_required()
