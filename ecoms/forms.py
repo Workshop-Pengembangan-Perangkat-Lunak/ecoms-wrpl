@@ -10,7 +10,8 @@ class CustomerForm(ModelForm):
             'first_name',
             'last_name',
             'gender',
-            'phone'
+            'phone',
+            'address'
         ]
 
 

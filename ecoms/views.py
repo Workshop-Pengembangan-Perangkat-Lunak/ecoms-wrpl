@@ -27,8 +27,6 @@ def login_user(request):
         if user is not None:
             login(request, user)
             return redirect('/ecoms/shop')
-    else:
-        form = LoginForm()
     return render(request, 'login.html', {'form': form})
 
 
@@ -38,16 +36,28 @@ def create_product(request):
 
 def show_products(request):
     department = Department.objects.all()
-    if request.method == "POST":
-        name_filter = request.POST.get('name_filter')
-        dept_filter = department.filter(
-            dept_name=request.POST.get('dept_filter')).id
-        min_price = request.POST.get('min_price')
-        max_price = request.POST.get('max_price')
-        products = Product.objects.filter(product_name__icontains=f'{name_filter}').filter(
-            selling_price__range=[min_price, max_price]).filter(dept_id=dept_filter)
-        return render(request, 'index.html', {'products': products, 'departments': department})
     products = Product.objects.all()
+    if request.method == "POST":
+        name_filter = request.POST.get('name_filter') or None
+        dept_filter = request.POST.get('dept_filter') or None
+        min_price = request.POST.get('min_price') or None
+        max_price = request.POST.get('max_price') or None
+        if name_filter:
+            products = products.filter(
+                product_name__icontains=f'{name_filter}')
+        if dept_filter:
+            products = products.filter(
+                dept_id=department.filter(dept_name=dept_filter)).id
+        if min_price and not max_price:
+            products = products.filter(
+                selling_price__range=[min_price, 99999999])
+        elif max_price and not min_price:
+            products = products.filter(selling_price__range=[0, max_price])
+        elif max_price and min_price:
+            products = products.filter(selling_price__range=[
+                                       min_price, max_price])
+        else:
+            pass
     return render(request, 'index.html', {'products': products, 'departments': department})
 
 
