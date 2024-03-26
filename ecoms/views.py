@@ -26,7 +26,7 @@ def login_user(request):
         user = authenticate(request, username, password)
         if user is not None:
             login(request, user)
-            return redirect('ecoms:shop')
+            return redirect('/ecoms/shop')
     else:
         form = LoginForm()
     return render(request, '', {'form': form})
@@ -39,11 +39,14 @@ def create_product(request):
 def show_products(request):
     department = Department.objects.all()
     if request.method == "POST":
-        filter = request.POST.get('filter')
+        # name_filter = request.POST.get('name_filter')
+        # price_filter = request.POST.get('price_filter')
+        # dept_filter = request.POST.get('dept_filter')
         products = Product.objects.filter(product_name__icontains=f'{filter}')
         return render(request, 'index.html', {'products': products, 'departments': department})
     products = Product.objects.all()
     return render(request, 'index.html', {'products': products, 'departments': department})
+
 
 def show_departments(request):
     depts = Department.objects.all()
@@ -59,16 +62,18 @@ def show_shop(request):
     products = Product.objects.all()
     return render(request, 'shop.html', {'products': products})
 
+
 def show_cart(request):
     carts = Cart.objects.all()
     subtotal = 0
     for cart in carts:
         subtotal += cart.product_id.selling_price * cart.qty
     context = {
-        'carts' : carts,
-        'subtotal' : subtotal
+        'carts': carts,
+        'subtotal': subtotal
     }
     return render(request, 'cart.html', context)
+
 
 def show_shop_detail(request, id):
     products = Product.objects.filter(id=id)
@@ -104,8 +109,8 @@ def add_to_cart(request):
     cart = CartForm(request.POST or None)
     if cart.is_valid():
         cart.save()
-        redirect('ecoms:carts')
-    return redirect('ecoms:products')
+        redirect('/ecoms/carts')
+    return redirect('/ecoms/products')
 
 
 # @login_required()
