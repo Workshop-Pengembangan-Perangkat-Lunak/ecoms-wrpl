@@ -86,4 +86,4 @@ class Cart(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.user_id
+        return str(self.user_id)

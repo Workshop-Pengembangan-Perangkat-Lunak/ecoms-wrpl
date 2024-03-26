@@ -37,13 +37,13 @@ def create_product(request):
 
 
 def show_products(request):
+    department = Department.objects.all()
     if request.method == "POST":
         filter = request.POST.get('filter')
         products = Product.objects.filter(product_name__icontains=f'{filter}')
-        return render(request, 'products.html', {'products': products})
+        return render(request, 'index.html', {'products': products, 'departments': department})
     products = Product.objects.all()
-    return render(request, 'products.html', {'products': products})
-
+    return render(request, 'index.html', {'products': products, 'departments': department})
 
 def show_departments(request):
     depts = Department.objects.all()
@@ -52,13 +52,23 @@ def show_departments(request):
 
 def show_carts(request):
     carts = Cart.objects.all()
-    return render(request, 'carts.html', {'carts': carts})
+    return render(request, 'cart.html', {'carts': carts})
 
 
 def show_shop(request):
     products = Product.objects.all()
     return render(request, 'shop.html', {'products': products})
 
+def show_cart(request):
+    carts = Cart.objects.all()
+    subtotal = 0
+    for cart in carts:
+        subtotal += cart.product_id.selling_price * cart.qty
+    context = {
+        'carts' : carts,
+        'subtotal' : subtotal
+    }
+    return render(request, 'cart.html', context)
 
 def show_shop_detail(request, id):
     products = Product.objects.filter(id=id)
