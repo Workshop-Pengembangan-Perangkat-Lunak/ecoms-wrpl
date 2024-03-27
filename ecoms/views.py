@@ -24,7 +24,7 @@ def register_user(request):
         password = request.POST.get('password')
         email = request.POST.get('email')
         try:
-            user = User(username, password, email)
+            user = User.objects.create_user(user, password)
             user.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
