@@ -5,6 +5,7 @@ from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 # Create your views here.
 
 
@@ -24,7 +25,8 @@ def register_user(request):
         password = request.POST.get('password')
         email = request.POST.get('email')
         try:
-            user = User.objects.create_user(user, password)
+            user = User.objects.create_user(
+                username=username, password=password)
             user.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
@@ -33,14 +35,15 @@ def register_user(request):
     return render(request, 'register.html', {})
 
 
+@csrf_exempt
 def login_user(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(request, username, password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Hi {request.username}")
+            messages.success(request, f"Hi {username}")
             return redirect('/ecoms/')
     return render(request, 'login.html')
 
