@@ -5,6 +5,7 @@ from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 
 
@@ -23,24 +24,25 @@ def register_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        print(username)
         try:
-            user = User(username, password, email)
+            user = User(username=username, password=password, email=email)
             user.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:
-            messages.error("Failed to register user.")
+            messages.error(request,"Failed to register user.")
     return render(request, 'register.html', {})
 
-
+@csrf_protect
 def login_user(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(request, username, password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Hi {request.username}")
+            messages.success(request, f"Hi {user.username}")
             return redirect('/ecoms/')
     return render(request, 'login.html')
 
@@ -80,7 +82,7 @@ def show_departments(request):
     depts = Department.objects.all()
     return render(request, 'dept.html', {'depts': depts})
 
-
+@login_required(login_url='login')
 def show_carts(request):
     carts = Cart.objects.all()
     return render(request, 'cart.html', {'carts': carts})
