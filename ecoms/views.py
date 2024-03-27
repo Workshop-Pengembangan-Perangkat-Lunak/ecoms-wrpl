@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.db import connection
 from .forms import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 # Create your views here.
 
 
@@ -12,22 +14,39 @@ def home(request):
 
 
 def register_user(request):
+    '''
     form = UserForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect('food:login')
+        return redirect('/ecoms/login')
+    '''
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        print(username)
+        try:
+            user = User.objects.create_user(
+                username=username, password=password)
+            user.save()
+            messages.success(request, "User registered succesfully")
+            return redirect('/ecoms/login')
+        except:
+            messages.error(request, "Failed to register user.")
     return render(request, 'register.html', {})
 
 
+@csrf_exempt
 def login_user(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(request, username, password)
+        user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('/ecoms/shop')
-    return render(request, 'login.html', {'form': form})
+            messages.success(request, f"Hi {username}")
+            return redirect('/ecoms/')
+    return render(request, 'login.html')
 
 
 def create_product(request):
@@ -66,6 +85,7 @@ def show_departments(request):
     return render(request, 'dept.html', {'depts': depts})
 
 
+@login_required(login_url='login')
 def show_carts(request):
     carts = Cart.objects.all()
     return render(request, 'cart.html', {'carts': carts})
@@ -131,3 +151,24 @@ def add_to_cart(request):
 def show_dashboard(request):
     transactions = Transaction.objects.all()
     return render(request, 'dashboard.html', {'transactions': transactions})
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, f"Have a nice day")
+    return redirect('/ecoms/login')
+
+
+def checkout(request):
+    carts = Cart.objects.filter(user_id=request.id)
+    total_price = sum(
+        [cart.product_id.selling_price * cart.qty for cart in carts])
+    transaction = Transaction(
+        f"{request.id}-{carts.id}", request.id, 0, total_price, total_price, True)
+    transaction.save()
+    for cart in carts:
+        transaction_details = TransactionDetail(
+            transaction_code=transaction.id, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+        transaction_details.save()
+    carts.delete()
+    return redirect('/ecoms/home')
