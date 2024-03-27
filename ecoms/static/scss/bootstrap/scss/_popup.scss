@@ -1,0 +1,43 @@
+@mixin absCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(black, .8);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3s;
+  
+    // The url changes when the anchor is triggered and CSS can watch that
+    &:target {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    &__content {
+      @include absCenter; // Our mixin to center horizontally and vertically
+  
+      width: 75%;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 2rem 4rem rgba(black, .2);
+      border-radius: 10px;
+      overflow: hidden; // This will keep the images sharp corners from protruding past the border-radius
+  
+    }
+  
+    &__text {
+      font-size: 1.4rem;
+      margin-bottom: 4rem;
+    }
+  }
