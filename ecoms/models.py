@@ -12,21 +12,12 @@ class Customer(models.Model):
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=6, choices=genders, default='Male')
     phone = models.CharField(max_length=30)
-    address = models.CharField(max_length=30)
+    address = models.CharField(max_length=30, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @receiver(post_save, sender=User)
-    def create_customer(sender, instance, created, **kwargs):
-        if created:
-            Customer.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_customer(sender, instance, **kwargs):
-        instance.profile.save()
-
     def __str__(self) -> str:
-        return self.first_name
+        return self.user.username
 
 
 class Department(models.Model):
@@ -43,6 +34,8 @@ class Product(models.Model):
     product_name = models.CharField(max_length=100)
     buying_price = models.IntegerField()
     selling_price = models.IntegerField()
+    description = models.CharField(max_length=100, default='')
+    product_image = models.ImageField(max_length=100, default='')
     stock = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -69,7 +62,7 @@ class TransactionDetail(models.Model):
     transaction_code = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     product_id = models.ForeignKey(
         Product, on_delete=models.CASCADE, default="")
-    qty = models.IntegerField()
+    qty = models.IntegerField(default=1)
     total = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
