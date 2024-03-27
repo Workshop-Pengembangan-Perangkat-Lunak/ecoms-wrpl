@@ -61,6 +61,7 @@ def show_products(request):
         dept_filter = request.POST.get('dept_filter') or None
         min_price = request.POST.get('min_price') or None
         max_price = request.POST.get('max_price') or None
+        sort_by = request.POST.get('sort_value') or None
         if name_filter:
             products = products.filter(
                 product_name__icontains=f'{name_filter}')
@@ -77,6 +78,8 @@ def show_products(request):
                                        min_price, max_price])
         else:
             pass
+        if sort_by:
+            products.order_by(sort_by)
     return render(request, 'index.html', {'products': products, 'departments': department})
 
 
@@ -137,7 +140,7 @@ def show_specific_products(request):
     return render(request, "products.html", {'products': products})
 
 
-# @login_required(redirect_field_name='ecoms:login')
+@login_required(redirect_field_name='ecoms:login')
 def add_to_cart(request):
     cart = CartForm(request.POST or None, initial={'qty': 1})
     if cart.is_valid():
@@ -147,7 +150,7 @@ def add_to_cart(request):
     return redirect('/ecoms/')
 
 
-# @login_required()
+@login_required()
 def show_dashboard(request):
     transactions = Transaction.objects.all()
     return render(request, 'dashboard.html', {'transactions': transactions})

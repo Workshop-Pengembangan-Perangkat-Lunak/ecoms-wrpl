@@ -11,7 +11,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form class="modal-body d-flex align-items-center" action="{% url 'home' %}" method="post">
-            {% csrf_token %}
+                {% csrf_token %}
                 <div class="input-group w-75 mx-auto d-flex">
                     <input name="name_filter" type="search" class="form-control p-3" placeholder="keywords"
                         aria-describedby="search-icon-1">
@@ -83,7 +83,8 @@
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
                                                 <a href="#">{{department.dept_name}}</a>
-                                                {% comment %} <span>({{department.product_set.count}})</span> {% endcomment %}
+                                                {% comment %} <span>({{department.product_set.count}})</span> {%
+                                                endcomment %}
                                                 {% comment %}
                                                 <span>({{department.product_set.count}})</span>
                                                 {% endcomment %}
@@ -95,7 +96,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <form>
+                                <form action="{% url 'home' %}" method="post">
+                                    {% csrf_token %}
                                     <div class="mb-3">
                                         <h4 class="mb-2">Price</h4>
                                         <input type="number" name="min_price" class="form-control mb-2"
@@ -138,14 +140,17 @@
                                     <div class="popup" id="popup">
                                         <div class="popup__content">
                                             <h2 class="heading-secondary">Add to cart</h2>
-                                            <h3 class="heading-tertiary">Important &ndash; Please read these terms before booking</h3>
+                                            <h3 class="heading-tertiary">Important &ndash; Please read these terms
+                                                before booking</h3>
                                             <p class="popup__text">
-                                                You can add this item to your cart by clicking the button below. If you have any questions, please don't hesitate to contact us. We are happy to help you with any questions you may have.
+                                                You can add this item to your cart by clicking the button below. If you
+                                                have any questions, please don't hesitate to contact us. We are happy to
+                                                help you with any questions you may have.
                                             </p>
                                             <a href="#" class="btn btn-danger">Close Popup</a>
                                             <button class="btn btn-success" type="submit">Add to cart</button>
-    </div>
-</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                             {% endif %}
