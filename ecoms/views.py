@@ -24,6 +24,7 @@ def register_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        print(username)
         try:
             user = User.objects.create_user(
                 username=username, password=password)
@@ -31,7 +32,7 @@ def register_user(request):
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:
-            messages.error("Failed to register user.")
+            messages.error(request, "Failed to register user.")
     return render(request, 'register.html', {})
 
 
@@ -84,6 +85,7 @@ def show_departments(request):
     return render(request, 'dept.html', {'depts': depts})
 
 
+@login_required(login_url='login')
 def show_carts(request):
     carts = Cart.objects.all()
     return render(request, 'cart.html', {'carts': carts})
