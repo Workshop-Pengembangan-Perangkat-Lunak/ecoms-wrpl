@@ -17,7 +17,7 @@ class Customer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.first_name
+        return self.user.username
 
 
 class Department(models.Model):
@@ -62,7 +62,7 @@ class TransactionDetail(models.Model):
     transaction_code = models.ForeignKey(Transaction, on_delete=models.CASCADE)
     product_id = models.ForeignKey(
         Product, on_delete=models.CASCADE, default="")
-    qty = models.IntegerField()
+    qty = models.IntegerField(default=1)
     total = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from .models import *
 from django.db import connection
 from .forms import *
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # Create your views here.
 
 
@@ -12,10 +13,23 @@ def home(request):
 
 
 def register_user(request):
+    '''
     form = UserForm(request.POST or None)
     if form.is_valid():
         form.save()
-        return redirect('food:login')
+        return redirect('/ecoms/login')
+    '''
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        try:
+            user = User(username, password, email)
+            user.save()
+            messages.success(request, "User registered succesfully")
+            return redirect('/ecoms/login')
+        except:
+            messages.error("Failed to register user.")
     return render(request, 'register.html', {})
 
 
@@ -26,8 +40,9 @@ def login_user(request):
         user = authenticate(request, username, password)
         if user is not None:
             login(request, user)
-            return redirect('/ecoms/shop')
-    return render(request, 'login.html', {'form': form})
+            messages.success(request, f"Hi {request.username}")
+            return redirect('/ecoms/')
+    return render(request, 'login.html')
 
 
 def create_product(request):
@@ -131,3 +146,24 @@ def add_to_cart(request):
 def show_dashboard(request):
     transactions = Transaction.objects.all()
     return render(request, 'dashboard.html', {'transactions': transactions})
+
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, f"Have a nice day")
+    return redirect('/ecoms/login')
+
+
+def checkout(request):
+    carts = Cart.objects.filter(user_id=request.id)
+    total_price = sum(
+        [cart.product_id.selling_price * cart.qty for cart in carts])
+    transaction = Transaction(
+        f"{request.id}-{carts.id}", request.id, 0, total_price, total_price, True)
+    transaction.save()
+    for cart in carts:
+        transaction_details = TransactionDetail(
+            transaction_code=transaction.id, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+        transaction_details.save()
+    carts.delete()
+    return redirect('/ecoms/home')

@@ -1,34 +1,16 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <!-- Modal Search Start -->
-<div
-  class="modal fade"
-  id="searchModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content rounded-0">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex align-items-center">
         <div class="input-group w-75 mx-auto d-flex">
-          <input
-            type="search"
-            class="form-control p-3"
-            placeholder="keywords"
-            aria-describedby="search-icon-1"
-          />
-          <span id="search-icon-1" class="input-group-text p-3"
-            ><i class="fa fa-search"></i
-          ></span>
+          <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
+          <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
         </div>
       </div>
     </div>
@@ -49,9 +31,7 @@
       <div class="col-md-12 col-lg-5">
         <div class="card border">
           <div class="card-header px-4 px-sm-5 border-bottom border-200">
-            <div
-              class="row text-left justify-content-between align-items-center"
-            >
+            <div class="row text-left justify-content-between align-items-center">
               <div class="col-auto">
                 <h5 class="mb-0">Register</h5>
               </div>
@@ -65,37 +45,19 @@
           </div>
           <div class="card-body p-4 px-sm-5 py-sm-4">
             <div class="woocommerce-notices-wrapper"></div>
-            <form
-              action=""
-              class="woocommerce-form woocommerce-form-login login"
-              method="post"
-            >
+            <form action="" class="woocommerce-form woocommerce-form-login login" method="post">
               {% csrf_token %}
               <div class="row">
                 <div class="col mb-3">
-                  <label for="username" class="form-label"
-                    >Username <span class="text-danger">*</span></label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    name="username"
-                  />
+                  <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="username" name="username" />
                 </div>
               </div>
               <div class="row">
                 <div class="col mb-3">
-                  <label for="exampleInputEmail1" class="form-label"
-                    >Email address <span class="text-danger">*</span></label
-                  >
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    name="email"
-                  />
+                  <label for="exampleInputEmail1" class="form-label">Email address <span
+                      class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" />
                   <div id="emailHelp" class="form-text">
                     We'll never share your email with anyone else.
                   </div>
@@ -103,26 +65,14 @@
               </div>
               <div class="row">
                 <div class="col mb-3">
-                  <label for="exampleInputPassword1" class="form-label"
-                    >Password <span class="text-danger">*</span></label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleInputPassword1"
-                    name="password"
-                  />
+                  <label for="exampleInputPassword1" class="form-label">Password <span
+                      class="text-danger">*</span></label>
+                  <input type="password" class="form-control" id="password" name="password" />
                 </div>
               </div>
               <div class="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label class="form-check-label" for="exampleCheck1"
-                  >Check me out</label
-                >
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
               </div>
               <button type="submit" class="btn btn-primary text-light">
                 Register
