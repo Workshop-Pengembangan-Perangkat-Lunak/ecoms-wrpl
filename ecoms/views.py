@@ -110,5 +110,5 @@ def add_to_cart(request):
 
 # @login_required()
 def show_dashboard(request):
-    transactions = Transaction.objects.all(pk=request.user.id)
+    transactions = Transaction.objects.all()
     return render(request, 'dashboard.html', {'transactions': transactions})
