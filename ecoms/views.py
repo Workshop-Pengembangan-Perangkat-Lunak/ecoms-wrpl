@@ -67,7 +67,7 @@ def show_products(request):
                 product_name__icontains=f'{name_filter}')
         if dept_filter:
             products = products.filter(
-                dept_id=department.filter(dept_name=dept_filter)).id
+                department_id= Department.objects.get(dept_name=dept_filter))
         if min_price and not max_price:
             products = products.filter(
                 selling_price__range=[min_price, 99999999])
@@ -79,7 +79,7 @@ def show_products(request):
         else:
             pass
         if sort_by:
-            products.order_by(sort_by)
+            products = products.order_by(sort_by)
     return render(request, 'index.html', {'products': products, 'departments': department})
 
 
