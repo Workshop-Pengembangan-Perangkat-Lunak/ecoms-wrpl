@@ -112,6 +112,7 @@
                                 <h1 class="text-black">Products not Found</h1>
                             </div>
                             {% endif %}
+
                             {% for product in products %}
                             {% if product.stock != 0 %}
                             <form  class="col-md-6 col-lg-6 col-xl-4" method="post" action="{% url 'add_to_cart' %}" >
@@ -119,7 +120,7 @@
                             {{form.as_p}}
                                 <input type="hidden" id="product-id-input" name="qty" value=1>
                                 <input type="hidden" name="product_id" value="{{product.id}}">
-                                <input type="hidden" name="product_id" value="{{request.user.id}}">
+                                <input type="hidden" name="user_id" value="{{request.user.id}}">
                                 <div class="rounded position-relative fruite-item">
                                     <div class="fruite-img">
                                         <img src="{% static 'img/fruite-item-5.jpg' %}"
