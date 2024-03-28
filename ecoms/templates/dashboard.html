@@ -59,22 +59,22 @@
                 <h4 class="text-right">Profile Settings</h4>
             </div>
             <div class="row mt-2">
-                <div class="col-lg-6"><label class="labels">User ID</label><input type="text" class="form-control" value="" placeholder="user ID" readonly></div>
+                <div class="col-lg-6"><label class="labels">Username</label><input type="text" class="form-control" readonly  placeholder="user ID"  value={{request.user.username}}></div>
             </div>
             <div class="row mt-2">
-                <div class="col-lg-6"><label class="labels">First Name</label><input type="text" class="form-control" placeholder="first name" value="" readonly></div>
-                <div class="col-lg-6"><label class="labels">Last Name</label><input type="text" class="form-control" value="" placeholder="last name" readonly></div>
+                <div class="col-lg-6"><label class="labels">First Name</label><input type="text" class="form-control" readonly placeholder="first name" value={{request.user.first_name}} ></div>
+                <div class="col-lg-6"><label class="labels">Last Name</label><input type="text" class="form-control" readonly placeholder="last name"  value={{request.user.last_name}} ></div>
             </div>
             <div class="row mt-3">
-                <div class="col-lg-12"><label class="labels">Email</label><input type="text" class="form-control" placeholder="enter email" value="" readonly></div>
+                <div class="col-lg-12"><label class="labels">Email</label><input type="text" class="form-control" readonly placeholder="enter email" value={{request.user.email}} ></div>
                 <div class="col-lg-12">
-                    <label class="labels">Gender</label><input type="text" class="form-control" placeholder="enter gender" value="" readonly>
+                    <label class="labels">Gender</label><input type="text" class="form-control" placeholder="enter gender" readonly value={{request.user.gender}} >
                 </div>
-                <div class="col-lg-12"><label class="labels">Phone Number</label><input type="text" class="form-control" placeholder="enter phone number" value="" readonly></div>
-                <div class="col-lg-12"><label class="labels">Role ID</label><input type="text" class="form-control" placeholder="role ID from database" value="" readonly></div>
-                <div class="col-lg-12"><label class="labels">Password</label><input type="text" class="form-control" placeholder="your password" value="" readonly></div>
+                <div class="col-lg-12"><label class="labels">Phone Number</label><input type="text" class="form-control" readonly placeholder="enter phone number" value={{request.user.phone}} ></div>
+                {% comment %} <div class="col-lg-12"><label class="labels">Role ID</label><input type="text" class="form-control" readonly placeholder="role ID from database" value={{request.user.role}} ></div> {% endcomment %}
+                {% comment %} <div class="col-lg-12"><label class="labels">Password</label><input type="text" class="form-control" readonly placeholder="your password" value="" ></div> {% endcomment %}
             </div>
-            <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div>
+            {% comment %} <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div> {% endcomment %}
         </div>
     </div>
   </div>
