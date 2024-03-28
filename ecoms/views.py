@@ -192,7 +192,7 @@ def checkout(request):
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
-            transaction_code=transaction.id, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+            transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
         transaction_details.save()
     carts.delete()
     return redirect('/ecoms/home')
