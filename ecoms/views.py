@@ -98,12 +98,6 @@ def show_departments(request):
     return render(request, 'dept.html', {'depts': depts})
 
 
-@login_required(login_url='login')
-def show_carts(request):
-    carts = Cart.objects.all()
-    return render(request, 'cart.html', {'carts': carts})
-
-
 def show_shop(request):
     products = Product.objects.all()
     return render(request, 'shop.html', {'products': products})
@@ -165,7 +159,6 @@ def add_to_cart(request):
     cart = Cart(user_id=user, product_id=product, qty=qty)
     # cart = CartForm(request.POST or None, initial={'qty': 1})
     if cart.is_valid():
-        # cart.add_initial_prefix('qty', 1)
         cart.save()
         redirect('/ecoms/cart')
     return redirect('/ecoms/')
