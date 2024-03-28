@@ -218,7 +218,7 @@ def checkout(request):
         product.stock = product.stock - 1
         product.save()
         cart.delete()  # Delete each cart after processing
-    return redirect('/ecoms/')
+    return redirect('/ecoms/cart')
 
 
 @login_required()
