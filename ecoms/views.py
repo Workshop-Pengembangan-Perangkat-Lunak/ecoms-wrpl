@@ -169,10 +169,8 @@ def show_dashboard(request):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
     transactions = Transaction.objects.filter(user_id=customer).all()
-    transaction_detail = TransactionDetail.objects.filter(
-        transaction_code=transactions).all()
     context = {
-        'transactions': transactions, 'customer': customer, 'transaction_detail': transaction_detail
+        'transactions': transactions, 'customer': customer
     }
     return render(request, 'dashboard.html', context)
 
@@ -204,7 +202,7 @@ def logout_user(request):
 
 @login_required
 def checkout(request):
-    if(request.method == 'POST'):
+    if (request.method == 'POST'):
         qty = request.POST.get('qty')
         cart_id = request.POST.get('cart_id')
         if qty:
@@ -216,7 +214,8 @@ def checkout(request):
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{
+                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
