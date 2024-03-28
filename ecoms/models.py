@@ -72,7 +72,7 @@ class TransactionDetail(models.Model):
 
 
 class Cart(models.Model):
-    user_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=1)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     qty = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
