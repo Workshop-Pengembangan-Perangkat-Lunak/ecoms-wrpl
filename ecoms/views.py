@@ -156,7 +156,7 @@ def add_to_cart(request):
     user = User.objects.get(id=user_id)
     product = Product.objects.get(id=product_id)
     customer = Customer.objects.get(user=user)
-    cart = Cart(user_id=user, product_id=product, qty=qty)
+    cart = Cart(user_id=customer, product_id=product, qty=qty)
     # cart = CartForm(request.POST or None, initial={'qty': 1})
     if cart.is_valid():
         cart.save()
@@ -182,7 +182,11 @@ def logout_user(request):
 
 
 def checkout(request):
-    carts = Cart.objects.filter(user_id=request.id)
+    # quantity = request.POST.get('quantity')
+    # product_id = request.POST.get('product_id')
+    user = User(id=request.user.id)
+    customer = Customer(user=user)
+    carts = Cart.objects.filter(user_id=customer)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
     transaction = Transaction(
