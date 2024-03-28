@@ -24,11 +24,11 @@ def register_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        gender = request.POST.get('gender')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        phone = request.POST.get('phone')
         address = request.POST.get('address')
-        print(username)
+        phone = request.POST.get('phone')
         try:
             user = User.objects.create_user(
                 username=username, password=password, email=email)
@@ -36,6 +36,9 @@ def register_user(request):
                 user=user, first_name=first_name, last_name=last_name, phone=phone, address=address)
             customer.save()
             user.save()
+            customer = Customer(user=user, first_name=first_name,
+                                last_name=last_name, gender=gender, phone=phone, address=address)
+            customer.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:
@@ -106,11 +109,15 @@ def show_shop(request):
     return render(request, 'shop.html', {'products': products})
 
 
+@login_required(login_url='login')
 def show_cart(request):
-    carts = Cart.objects.all()
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    carts = Cart.objects.filter(user_id=customer).all() or None
     subtotal = 0
-    for cart in carts:
-        subtotal += cart.product_id.selling_price * cart.qty
+    if carts:
+        for cart in carts:
+            subtotal += cart.product_id.selling_price * cart.qty
     context = {
         'carts': carts,
         'subtotal': subtotal
@@ -147,7 +154,7 @@ def show_specific_products(request):
     return render(request, "products.html", {'products': products})
 
 
-@login_required(redirect_field_name='ecoms:login')
+@login_required(login_url='login')
 def add_to_cart(request):
     cart = CartForm(request.POST or None, initial={'qty': 1})
     if cart.is_valid():
@@ -157,9 +164,11 @@ def add_to_cart(request):
     return redirect('/ecoms/')
 
 
-@login_required()
+@login_required(login_url='login')
 def show_dashboard(request):
-    transactions = Transaction.objects.all()
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    transactions = Transaction.objects.filter(user_id=customer).all()
     return render(request, 'dashboard.html', {'transactions': transactions})
 
 
@@ -182,3 +191,8 @@ def checkout(request):
         transaction_details.save()
     carts.delete()
     return redirect('/ecoms/home')
+
+
+@login_required()
+def show_user_id(request):
+    return (request, 'test.html')
