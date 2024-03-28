@@ -169,8 +169,10 @@ def show_dashboard(request):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
     transactions = Transaction.objects.filter(user_id=customer).all()
+    transaction_detail = TransactionDetail.objects.filter(
+        transaction_code=transactions).all()
     context = {
-        'transactions': transactions, 'customer': customer
+        'transactions': transactions, 'customer': customer, 'transaction_detail': transaction_detail
     }
     return render(request, 'dashboard.html', context)
 
