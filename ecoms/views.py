@@ -166,7 +166,10 @@ def show_dashboard(request):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
     transactions = Transaction.objects.filter(user_id=customer).all()
-    return render(request, 'dashboard.html', {'transactions': transactions})
+    context = {
+        'transactions': transactions, 'customer': customer
+    }
+    return render(request, 'dashboard.html', context)
 
 
 def logout_user(request):
