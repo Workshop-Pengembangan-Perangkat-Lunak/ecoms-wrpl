@@ -158,9 +158,7 @@ def add_to_cart(request):
     customer = Customer.objects.get(user=user)
     cart = Cart(user_id=customer, product_id=product, qty=qty)
     # cart = CartForm(request.POST or None, initial={'qty': 1})
-    if cart.is_valid():
-        cart.save()
-        redirect('/ecoms/cart')
+    cart.save()
     return redirect('/ecoms/')
 
 
