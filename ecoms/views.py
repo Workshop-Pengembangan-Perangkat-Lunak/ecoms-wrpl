@@ -24,10 +24,17 @@ def register_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
         print(username)
         try:
             user = User.objects.create_user(
-                username=username, password=password)
+                username=username, password=password, email=email)
+            customer = Customer(
+                user=user, first_name=first_name, last_name=last_name, phone=phone, address=address)
+            customer.save()
             user.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
