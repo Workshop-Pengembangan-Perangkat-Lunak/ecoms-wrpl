@@ -15,10 +15,11 @@ def save_customer(sender, instance, **kwargs):
     instance.customer.save()
 '''
 
-
+'''
 @receiver(post_save, sender=TransactionDetail)
 def decrease_stock(sender, instance, created, **kwargs):
     if created:
         product = Product.objects.get(id=instance.product_id.id)
         product.stock = product.stock - instance.qty
         product.save()
+'''
