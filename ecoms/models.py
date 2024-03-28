@@ -68,7 +68,7 @@ class TransactionDetail(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.transaction_code
+        return str(self.transaction_code)
 
 
 class Cart(models.Model):
