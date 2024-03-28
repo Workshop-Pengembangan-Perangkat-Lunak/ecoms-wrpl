@@ -65,7 +65,16 @@
         <tbody>
           {% for cart in carts %}
           <tr class="cart-item">
-            <th scope="row">gambar kalo ada</th>
+            <th scope="row">
+              <div class="d-flex align-items-center">
+                <img
+                  src="{{cart.product_id.product_image}}"
+                  class="img-fluid me-5 rounded-circle"
+                  style="width: 80px; height: 80px"
+                  alt=""
+                />
+              </div>
+            </th>
             <td><p class="mb-0 mt-4">{{cart.product_id}}</p></td>
             <td>
               <p class="mb-0 mt-4">
