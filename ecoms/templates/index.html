@@ -107,13 +107,14 @@
                     </form>
                     <div class="col-lg-9">
                         <div class="row g-4 justify-content-center">
+                            {% if products|length == 0 %}
+                            <div class="d-flex justify-content-center">
+                                <h1 class="text-black">Products not Found</h1>
+                            </div>
+                            {% endif %}
                             {% for product in products %}
                             {% if product.stock != 0 %}
-                            <form method="post" action="{% url 'add_to_carts' %}" class="col-md-6 col-lg-6 col-xl-4">
-                                {% csrf_token %}
-                                {{form.as_p}}
-                                <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <input type="hidden" name="qty" value=1>
+                            <div  class="col-md-6 col-lg-6 col-xl-4">
                                 <div class="rounded position-relative fruite-item">
                                     <div class="fruite-img">
                                         <img src="{% static 'img/fruite-item-5.jpg' %}"
@@ -128,11 +129,15 @@
                                             <p class="text-dark fs-5 fw-bold mb-0">Rp{{product.selling_price}}/kg</p>
                                             <p class="text-dark fs-5 fw-bold mb-0">Stock: {{product.stock}}</p>
                                         </div>
-                                        <a href="#popup" style="width: 100%;"
-                                            class="btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
+                                        <a data-product-id="{{product.id}}" href="#popup" style="width: 100%;"
+                                            class="open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
                                                 class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                                     </div>
-                                    <div class="popup" id="popup">
+                                    <form method="post" action="{% url 'add_to_carts' %}" class="popup" id="popup">
+                                    {% csrf_token %}
+                                    {{form.as_p}}
+                                        <input type="hidden" id="product-id-input" name="product_id">
+                                        <input type="hidden" name="qty" value=1>
                                         <div class="popup__content">
                                             <h2 class="heading-secondary">Add to cart</h2>
                                             <h3 class="heading-tertiary">Important &ndash; Please read these terms
@@ -142,7 +147,7 @@
                                                 have any questions, please don't hesitate to contact us. We are happy to
                                                 help you with any questions you may have.
                                             </p>
-                                            <a href="#" class="btn btn-danger">Close Popup</a>
+                                            <a href="#" class="btn btn-danger">Cancel</a>
                                             <button class="btn btn-success" type="submit">Add to cart</button>
                                         </div>
                                     </div>
@@ -165,5 +170,19 @@ var select = document.getElementById("fruits");
 select.addEventListener("change", function() {
     // Submit the form
     this.form.submit();
-});</script>
+});
+
+var links = document.getElementsByClassName("open-popup-link");
+
+// Add a click event listener to each link
+for (var i = 0; i < links.length; i++) {
+    links[i].addEventListener("click", function() {
+        // Get the product ID from the data attribute
+        var productId = this.getAttribute("data-product-id");
+
+        // Set the value of the hidden input field in the form
+        document.getElementById("product-id-input").value = productId;
+    });
+}
+</script>
 {% endblock content %}
