@@ -36,7 +36,7 @@
       <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5"
           width="150px"
           src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span
-          class="font-weight-bold">Edogaru</span><span class="text-black-50">edogaru@mail.com.my</span><span> </span>
+          class="font-weight-bold">{{customer.user.username}}</span><span class="text-black-50">{{customer.user.email}}</span><span> </span>
       </div>
     </div>
     <div class="col-lg-5 border-right">
@@ -56,40 +56,12 @@
                 <div class="col-lg-12">
                     <label class="labels">Gender</label><input type="text" class="form-control" placeholder="enter gender" readonly value={{customer.gender}} >
                 </div>
-                <div class="col-lg-12"><label class="labels">Phone Number</label><input type="text" class="form-control" readonly placeholder="enter phone number" value={{customer.user.phone}} ></div>
+                <div class="col-lg-12"><label class="labels">Phone Number</label><input type="text" class="form-control" readonly placeholder="enter phone number" value={{customer.phone}} ></div>
                 {% comment %} <div class="col-lg-12"><label class="labels">Role ID</label><input type="text" class="form-control" readonly placeholder="role ID from database" value={{customer.user.role}} ></div> {% endcomment %}
                 {% comment %} <div class="col-lg-12"><label class="labels">Password</label><input type="text" class="form-control" readonly placeholder="your password" value="" ></div> {% endcomment %}
             </div>
             {% comment %} <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save Profile</button></div> {% endcomment %}
         </div>
-        <div class="row mt-2">
-          <div class="col-lg-6"><label class="labels">Username</label><input type="text" class="form-control" readonly
-              placeholder="user ID" value={{request.user.username}}></div>
-        </div>
-        <div class="row mt-2">
-          <div class="col-lg-6"><label class="labels">First Name</label><input type="text" class="form-control" readonly
-              placeholder="first name" value={{request.user.first_name}}></div>
-          <div class="col-lg-6"><label class="labels">Last Name</label><input type="text" class="form-control" readonly
-              placeholder="last name" value={{request.user.last_name}}></div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-lg-12"><label class="labels">Email</label><input type="text" class="form-control" readonly
-              placeholder="enter email" value={{request.user.email}}></div>
-          <div class="col-lg-12">
-            <label class="labels">Gender</label><input type="text" class="form-control" placeholder="enter gender"
-              readonly value={{request.user.gender}}>
-          </div>
-          <div class="col-lg-12"><label class="labels">Phone Number</label><input type="text" class="form-control"
-              readonly placeholder="enter phone number" value={{request.user.phone}}></div>
-          {% comment %} <div class="col-lg-12"><label class="labels">Role ID</label><input type="text"
-              class="form-control" readonly placeholder="role ID from database" value={{request.user.role}}></div> {%
-          endcomment %}
-          {% comment %} <div class="col-lg-12"><label class="labels">Password</label><input type="text"
-              class="form-control" readonly placeholder="your password" value=""></div> {% endcomment %}
-        </div>
-        {% comment %} <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="button">Save
-            Profile</button></div> {% endcomment %}
-      </div>
     </div>
   </div>
 </div>
