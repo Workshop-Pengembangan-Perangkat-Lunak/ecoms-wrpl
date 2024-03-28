@@ -31,7 +31,10 @@ def register_user(request):
         phone = request.POST.get('phone')
         try:
             user = User.objects.create_user(
-                username=username, password=password)
+                username=username, password=password, email=email)
+            customer = Customer(
+                user=user, first_name=first_name, last_name=last_name, phone=phone, address=address)
+            customer.save()
             user.save()
             customer = Customer(user=user, first_name=first_name,
                                 last_name=last_name, gender=gender, phone=phone, address=address)
