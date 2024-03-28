@@ -41,32 +41,32 @@
     <div class="container py-5">
         <h1 class="mb-4">Grocery shop</h1>
         <div class="row g-4">
-            <div class="col-lg-12">
+        <div class="col-lg-12">
+            <form  action="{% url 'home' %}" id="filter_form" method="post" class="col-lg-12">
+                {% csrf_token %}
                 <div class="row g-4">
                     <div class="col-xl-3">
-                        <form action="{% url 'home' %}" method="post">
-                            {% csrf_token %}
+                        <div>
                             <div class="input-group w-100 mx-auto d-flex">
-                                <input type="search" class="form-control p-3" placeholder="keywords"
+                                <input type="search" class="form-control p-3" placeholder="Search by name"
                                     aria-describedby="search-icon-1" name="name_filter">
                                 <span id="search-icon-1" class="input-group-text p-3">
-                                    <button type="submit" style="border: none; background: none;">
+                                    {% comment %} <button type="submit" style="border: none; background: none;">
                                         <i class="fa fa-search"></i>
-                                    </button>
+                                    </button> {% endcomment %}
                                 </span>
                             </div>
-                        </form>
+                        </div>
                     </div>
                     <div class="col-6"></div>
                     <div class="col-xl-3">
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                            <label for="fruits">Default Sorting:</label>
-                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                form="fruitform">
-                                <option value="volvo">Nothing</option>
-                                <option value="saab">Popularity</option>
-                                <option value="opel">Organic</option>
-                                <option value="audi">Fantastic</option>
+                            <label for="fruits">Sort By:</label>
+                            <select id="fruits" name="sort_value" value="product_name" class="border-0 form-select-sm bg-light me-3">
+                                <option value="" name="sort_value">Nothing</option>
+                                <option value="product_name" name="sort_value">Name</option>
+                                <option value="selling_price" name="sort_value">Price</option>
+                                <option value="department_id" name="sort_value">Department</option>
                             </select>
                         </div>
                     </div>
@@ -81,13 +81,8 @@
                                         {% for department in departments %}
                                         {% if department.product_set.count != 0 %}
                                         <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#">{{department.dept_name}}</a>
-                                                {% comment %} <span>({{department.product_set.count}})</span> {%
-                                                endcomment %}
-                                                {% comment %}
-                                                <span>({{department.product_set.count}})</span>
-                                                {% endcomment %}
+                                            <div class="d-flex gap-4 fruite-name">
+                                                <input type="checkbox" value={{department.dept_name}} name="dept_filter">{{department.dept_name}}</a>
                                             </div>
                                         </li>
                                         {% endif %}
@@ -96,20 +91,20 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <form action="{% url 'home' %}" method="post">
-                                    {% csrf_token %}
+                                <div>
                                     <div class="mb-3">
                                         <h4 class="mb-2">Price</h4>
                                         <input type="number" name="min_price" class="form-control mb-2"
                                             placeholder="Min price" min="0" max="10000000">
                                         <input type="number" name="max_price" class="form-control mb-2"
                                             placeholder="Max price" min="0" max="10000000">
-                                        <button type="submit" class="btn btn-primary">Filter</button>
+                                        <button type="submit" form="filter_form" class="btn btn-primary">Filter</button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    </form>
                     <div class="col-lg-9">
                         <div class="row g-4 justify-content-center">
                             {% for product in products %}
@@ -163,5 +158,12 @@
     </div>
 </div>
 <!-- Fruits Shop End-->
+<script>// Get the select element
+var select = document.getElementById("fruits");
 
+// Add an event listener for the change event
+select.addEventListener("change", function() {
+    // Submit the form
+    this.form.submit();
+});</script>
 {% endblock content %}
