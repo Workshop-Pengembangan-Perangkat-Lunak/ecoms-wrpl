@@ -206,17 +206,16 @@ def checkout(request):
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{
-                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
             transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
         transaction_details.save()
-        product = Product.objects.get(
-            id=cart.product_id.id)
-        product.stock = product.stock - 1
-        product.save()
+        # product = Product.objects.get(
+        #     id=cart.product_id.id)
+        # product.stock = product.stock - 1
+        # product.save()
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms/cart')
 
