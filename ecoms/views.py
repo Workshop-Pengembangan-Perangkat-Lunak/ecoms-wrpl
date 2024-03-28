@@ -156,7 +156,14 @@ def show_specific_products(request):
 
 @login_required(login_url='login')
 def add_to_cart(request):
-    cart = CartForm(request.POST or None, initial={'qty': 1})
+    user_id = request.POST.get('user_id')
+    product_id = request.POST.get('product_id')
+    qty = request.POST.get('qty')
+    user = User.objects.get(id=user_id)
+    product = Product.objects.get(id=product_id)
+    customer = Customer.objects.get(user=user)
+    cart = Cart(user_id=user, product_id=product, qty=qty)
+    # cart = CartForm(request.POST or None, initial={'qty': 1})
     if cart.is_valid():
         # cart.add_initial_prefix('qty', 1)
         cart.save()
