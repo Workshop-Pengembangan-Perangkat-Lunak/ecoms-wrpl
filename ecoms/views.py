@@ -64,10 +64,10 @@ def show_products(request):
         sort_by = request.POST.get('sort_value') or None
         if name_filter:
             products = products.filter(
-                product_name__icontains=f'{name_filter}')
+                product_name__icontains=f'{name_filter}').all()
         if dept_filter:
             products = products.filter(
-                dept_id=department.filter(dept_name=dept_filter)).id
+                department_id=department.filter(dept_name=dept_filter))
         if min_price and not max_price:
             products = products.filter(
                 selling_price__range=[min_price, 99999999])

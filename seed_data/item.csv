@@ -1,0 +1,101 @@
+id,department_id,item_name,buying_price,selling_price,stock
+1,4,Bleach,998,1427,283
+2,5,Fish,636,1980,426
+3,7,Pastries,599,1041,180
+4,6,Frozen chicken nuggets,780,1307,147
+5,5,Beef,722,1900,206
+6,7,Bagels,572,1619,444
+7,5,Cod,913,1423,304
+8,7,Strudel,589,1467,386
+9,3,Cereal bars,668,1371,220
+10,4,Tissues,845,1900,490
+11,2,Baby lotion,574,1190,410
+12,7,Pretzels,754,1906,371
+13,6,Frozen chicken nuggets,683,1976,317
+14,2,Children's shampoo,948,1790,106
+15,5,Bacon,712,1288,301
+16,7,Rolls,867,1972,393
+17,3,Sugar,780,1295,385
+18,6,Frozen pizza,591,1663,49
+19,4,Hand soap,594,1947,359
+20,3,Vinegar,709,1102,195
+21,1,Rice,738,1059,459
+22,3,Canned soup,751,1336,252
+23,6,Frozen appetizers,615,1224,355
+24,4,Dish soap,967,1703,343
+25,6,Frozen pies,568,1588,395
+26,2,Bottle,827,1047,161
+27,4,Toilet bowl cleaner,962,1406,433
+28,7,Cupcakes,918,1092,436
+29,5,Crab,840,1384,405
+30,6,Frozen fruits,725,1756,145
+31,5,Ground beef,672,1734,332
+32,3,Coffee,986,1010,17
+33,1,Yogurt,607,1572,210
+34,4,Air freshener,640,1001,143
+35,6,Frozen meatballs,506,1810,244
+36,2,Teething toy,787,1916,34
+37,1,Banana,952,1738,144
+38,5,Shrimp,598,1634,208
+39,3,Pasta sauce,825,1263,137
+40,5,Mussels,585,1199,492
+41,7,Buns,901,1334,144
+42,1,Banana,642,1366,334
+43,2,Children's books,745,1595,29
+44,6,Frozen pies,824,1636,217
+45,4,Bleach,952,1998,163
+46,6,Frozen appetizers,950,1831,323
+47,2,Baby wipes,997,1442,379
+48,3,Canned beans,514,1843,413
+49,1,Spinach,867,1815,365
+50,5,Mussels,519,1648,253
+51,6,Frozen french fries,668,1610,252
+52,6,Frozen yogurt,949,1675,101
+53,3,Soy sauce,567,1016,2
+54,7,Scones,753,1188,473
+55,5,Bacon,910,1514,338
+56,1,Yogurt,868,1629,471
+57,3,Spices,635,1492,349
+58,1,Orange,556,1842,227
+59,6,Frozen pies,511,1528,71
+60,2,Baby bathtub,808,1287,456
+61,1,Pizza,941,1452,264
+62,7,Bagels,808,1727,181
+63,2,Stroller,977,1207,319
+64,4,Broom,786,1146,102
+65,5,Lamb,513,1153,85
+66,2,Pacifier,563,1968,488
+67,7,Biscuits,979,1290,210
+68,6,Frozen french fries,860,1780,266
+69,3,Peanut butter,913,1439,488
+70,5,Scallops,761,1798,404
+71,2,Children's vitamins,711,1416,192
+72,1,Milk,572,1413,447
+73,7,Cookies,537,1027,446
+74,3,Peanut butter,637,1616,42
+75,4,Hand soap,800,1409,350
+76,4,Disinfecting wipes,504,1990,430
+77,2,Baby food,569,1055,131
+78,7,Buns,936,1248,120
+79,6,Frozen dumplings,738,1696,160
+80,4,Toilet paper,887,1466,499
+81,2,Baby food,822,1584,430
+82,6,Frozen meatballs,798,1098,324
+83,3,Soy sauce,621,1045,255
+84,4,Disinfecting wipes,720,1044,420
+85,5,Salmon,564,1182,470
+86,7,Muffins,972,1676,306
+87,6,Frozen yogurt,909,1620,308
+88,4,Trash bags,741,1974,56
+89,6,Frozen pies,583,1558,126
+90,2,Children's sunscreen,590,1929,297
+91,4,Tissues,898,1986,481
+92,1,Cereal,626,1348,75
+93,7,Bagels,941,1773,185
+94,4,Toilet paper,585,1590,317
+95,1,Soup,980,1305,370
+96,7,Scones,919,1640,118
+97,3,Honey,944,1809,130
+98,2,Baby monitor,523,1167,19
+99,6,Frozen pizza,834,1361,260
+100,5,Scallops,604,1938,34
