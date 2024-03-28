@@ -204,23 +204,30 @@ def logout_user(request):
 
 @login_required
 def checkout(request):
+    if(request.method == 'POST'):
+        qty = request.POST.get('qty')
+        cart_id = request.POST.get('cart_id')
+        if qty:
+            cart = Cart.objects.get(id=cart_id)
+            cart.qty = qty
+            cart.save()
+        return redirect('/ecoms/cart')
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{
-                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
             transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
         transaction_details.save()
-        product = Product.objects.get(
-            id=cart.product_id.id)
-        product.stock = product.stock - 1
-        product.save()
+        # product = Product.objects.get(
+        #     id=cart.product_id.id)
+        # product.stock = product.stock - 1
+        # product.save()
         cart.delete()  # Delete each cart after processing
-    return redirect('/ecoms/cart')
+    return redirect('/ecoms')
 
 
 @login_required()

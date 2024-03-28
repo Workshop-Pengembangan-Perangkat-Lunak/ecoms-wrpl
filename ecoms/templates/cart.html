@@ -64,6 +64,8 @@
         </thead>
         <tbody>
           {% for cart in carts %}
+          <form method="POST" action="{% url 'checkout' %}">
+          {% csrf_token %}
           <tr class="cart-item">
             <th scope="row">
               <div class="d-flex align-items-center">
@@ -87,6 +89,7 @@
               <div class="input-group quantity mt-4" style="width: 100px">
                 <div class="input-group-btn">
                   <button
+                  type="submit"
                     class="btn btn-sm btn-minus rounded-circle bg-light border"
                   >
                     <i class="fa fa-minus"></i>
@@ -96,9 +99,11 @@
                   type="text"
                   class="form-control form-control-sm text-center border-0 item-quantity"
                   value="{{cart.qty}}"
+                  name="qty"
                 />
                 <div class="input-group-btn">
                   <button
+                  type="submit"
                     class="btn btn-sm btn-plus rounded-circle bg-light border"
                   >
                     <i class="fa fa-plus"></i>
@@ -117,6 +122,8 @@
               </button>
             </td>
           </tr>
+          <input style="display: none;" value="{{cart.id}}" name="cart_id"/>
+          </form>
           {% endfor %}
         </tbody>
       </table>
