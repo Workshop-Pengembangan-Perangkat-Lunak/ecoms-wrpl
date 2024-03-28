@@ -1,6 +1,6 @@
 {% extends "base.html" %} {%load static%} {% block content %}
 <!-- Modal Search Start -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{% comment %} <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content rounded-0">
       <div class="modal-header">
@@ -15,18 +15,18 @@
       </div>
     </div>
   </div>
-</div>
+</div> {% endcomment %}
 <!-- Modal Search End -->
 
 <!-- Single Page Header start -->
-<div class="container-fluid page-header py-5">
+{% comment %} <div class="container-fluid page-header py-5">
   <h1 class="text-center text-white display-6">Dashboard</h1>
   <ol class="breadcrumb justify-content-center mb-0">
     <li class="breadcrumb-item"><a href="#">Home</a></li>
     <li class="breadcrumb-item"><a href="#">Pages</a></li>
     <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
   </ol>
-</div>
+</div> {% endcomment %}
 <!-- Single Page Header End -->
 
 <!-- Dashboard Start -->
@@ -65,7 +65,7 @@
     </div>
   </div>
 </div>
-<div Class="container-lg 3-p 5-py">
+<div class="container 3-p 5-py">
   <div class="table-responsive">
     <table class="table">
       <thead>

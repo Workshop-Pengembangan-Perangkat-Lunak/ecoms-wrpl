@@ -212,7 +212,7 @@ def checkout(request):
         transaction_details = TransactionDetail(transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
         transaction_details.save()
         cart.delete()  # Delete each cart after processing
-    return redirect('/ecoms/')
+    return redirect('/ecoms/cart')
 
 @login_required()
 def show_user_id(request):
