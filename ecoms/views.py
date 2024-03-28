@@ -202,6 +202,14 @@ def logout_user(request):
 
 @login_required
 def checkout(request):
+    if(request.method == 'POST'):
+        qty = request.POST.get('qty')
+        cart_id = request.POST.get('cart_id')
+        if qty:
+            cart = Cart.objects.get(id=cart_id)
+            cart.qty = qty
+            cart.save()
+        return redirect('/ecoms/cart')
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
@@ -217,7 +225,7 @@ def checkout(request):
         # product.stock = product.stock - 1
         # product.save()
         cart.delete()  # Delete each cart after processing
-    return redirect('/ecoms/cart')
+    return redirect('/ecoms')
 
 
 @login_required()
