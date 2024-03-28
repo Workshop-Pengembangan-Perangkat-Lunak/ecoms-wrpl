@@ -220,10 +220,10 @@ def checkout(request):
         transaction_details = TransactionDetail(
             transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
         transaction_details.save()
-        # product = Product.objects.get(
-        #     id=cart.product_id.id)
-        # product.stock = product.stock - 1
-        # product.save()
+        product = Product.objects.get(
+            id=cart.product_id.id)
+        product.stock = product.stock - cart.qty
+        product.save()
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
 
