@@ -35,7 +35,7 @@ class Product(models.Model):
     buying_price = models.IntegerField()
     selling_price = models.IntegerField()
     description = models.CharField(max_length=100, default='')
-    product_image = models.ImageField(max_length=100, default='')
+    product_image = models.ImageField(upload_to='product_images')
     stock = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

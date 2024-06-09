@@ -38,9 +38,6 @@ def register_user(request):
                 user=user, first_name=first_name, last_name=last_name, phone=phone, address=address)
             customer.save()
             user.save()
-            customer = Customer(user=user, first_name=first_name,
-                                last_name=last_name, gender=gender, phone=phone, address=address)
-            customer.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:
