@@ -11,8 +11,12 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=6, choices=genders, default='Male')
+    picture = models.ImageField(upload_to='profile_pictures', default='default_picture.jpg')
+    city = models.CharField(max_length=30, default='')
+    subdistrict = models.CharField(max_length=30, default='')
+    postal_code = models.CharField(max_length=30, default='')
+    address = models.CharField(max_length=50, default='')
     phone = models.CharField(max_length=30)
-    address = models.CharField(max_length=30, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

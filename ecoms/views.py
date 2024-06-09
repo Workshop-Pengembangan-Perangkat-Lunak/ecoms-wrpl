@@ -91,6 +91,9 @@ def show_products(request):
             products = products.order_by(sort_by)
     return render(request, 'index.html', {'products': products, 'departments': department})
 
+def show_product_detail(request, pk):
+    product = Product.objects.get(id=pk)
+    return render(request, 'product_detail.html', {'product': product})
 
 def show_departments(request):
     depts = Department.objects.all()
@@ -171,6 +174,37 @@ def show_dashboard(request):
     }
     return render(request, 'dashboard.html', context)
 
+def update_profile(request,pk):
+    user = User.objects.get(id=pk)
+    customer = Customer.objects.get(user=user)
+    if request.method == "POST":
+        # print("firstName",request.POST.get('first_name'))
+        #print(request.FILES['picture'])
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        sub_district = request.POST.get('subdistrict')
+        postal_code = request.POST.get('postal_code')
+    
+        try:
+            # customer = Customer( user=user,
+            # first_name=first_name, last_name=last_name, phone=phone, address=address, city=city, sub_district=sub_district, postal_code=postal_code, picture=request.FILES['picture'], )
+            customer.first_name = first_name
+            customer.last_name = last_name
+            customer.phone = phone
+            customer.address = address
+            customer.city = city
+            customer.subdistrict = sub_district
+            customer.postal_code = postal_code
+            if 'picture' in request.FILES:
+                customer.picture = request.FILES['picture']
+            customer.save()
+            return redirect('/ecoms/dashboard')
+        except Exception as e:
+            messages.error(request, "Failed to update.")
+    return render(request, 'update_profile.html', {'customer': customer})
 
 def logout_user(request):
     logout(request)
