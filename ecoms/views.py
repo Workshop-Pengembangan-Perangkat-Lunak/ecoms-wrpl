@@ -154,14 +154,23 @@ def show_specific_products(request):
 def add_to_cart(request):
     user_id = request.POST.get('user_id')
     product_id = request.POST.get('product_id')
-    qty = request.POST.get('qty')
+    # qty = request.POST.get('qty')
     user = User.objects.get(id=user_id)
     product = Product.objects.get(id=product_id)
     customer = Customer.objects.get(user=user)
-    cart = Cart(user_id=customer, product_id=product, qty=qty)
+    if Cart.objects.filter(user_id=customer, product_id=product).exists():
+        cart = Cart.objects.get(user_id=customer, product_id=product)
+        cart.qty += 1
+    else:
+        cart = Cart(user_id=customer, product_id=product)
     # cart = CartForm(request.POST or None, initial={'qty': 1})
     cart.save()
-    return redirect('/ecoms/')
+    return redirect('/ecoms')
+
+def remove_from_cart(request, pk):
+    cart = Cart.objects.get(id=pk)
+    cart.delete()
+    return redirect('/ecoms/cart')
 
 
 @login_required(login_url='login')

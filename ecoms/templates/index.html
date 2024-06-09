@@ -119,7 +119,7 @@
                             <form  class="col-md-6 col-lg-6 col-xl-4" method="post" action="{% url 'add_to_cart' %}" >
                             {% csrf_token %}
                             {{form.as_p}}
-                                <input type="hidden" id="product-id-input" name="qty" value=1>
+                                {% comment %} <input type="hidden" id="product-id-input" name="qty" value=1> {% endcomment %}
                                 <input type="hidden" name="product_id" value="{{product.id}}">
                                 <input type="hidden" name="user_id" value="{{request.user.id}}">
 

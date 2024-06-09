@@ -13,6 +13,7 @@ urlpatterns = [
     path('transactions/', views.show_transactions, name='transactions'),
     path('shop/', views.show_shop, name='shop'),
     path('cart/', views.show_cart, name='cart'),
+    path('remove_from_cart/<int:pk>', views.remove_from_cart, name='remove_from_cart'),
     
     
     # Auth 
