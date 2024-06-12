@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% block title %}Products{% endblock title %}Products
 {% block content %}
 
 <!-- Modal Search Start -->
@@ -118,13 +119,17 @@
                             <form  class="col-md-6 col-lg-6 col-xl-4" method="post" action="{% url 'add_to_cart' %}" >
                             {% csrf_token %}
                             {{form.as_p}}
-                                <input type="hidden" id="product-id-input" name="qty" value=1>
+                                {% comment %} <input type="hidden" id="product-id-input" name="qty" value=1> {% endcomment %}
                                 <input type="hidden" name="product_id" value="{{product.id}}">
                                 <input type="hidden" name="user_id" value="{{request.user.id}}">
+
+                                <a href="{% url 'show_product_detail' product.id %}" class="text-decoration-none text-dark">
                                 <div class="rounded position-relative fruite-item">
                                     <div class="fruite-img">
-                                        <img src="{% static 'img/fruite-item-5.jpg' %}"
-                                            class="img-fluid w-100 rounded-top" alt="">
+                                        {% comment %} <img src="{% static "img/fruite-item-5.jpg" %}" 
+                                            class="img-fluid w-100 rounded-top" alt=""> {% endcomment %}
+                                            <img src="{{ product.product_image.url }}" 
+                                            class="img-fluid w-100 rounded-top" alt="{{ product.product_name }}">
                                     </div>
                                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                         style="top: 10px; left: 10px;">{{product.department_id}}</div>
@@ -134,12 +139,17 @@
                                         <div class="d-flex justify-content-between flex-lg-wrap">
                                             <p class="text-dark fs-5 fw-bold mb-0">Rp{{product.selling_price}}/kg</p>
                                             <p class="text-dark fs-5 fw-bold mb-0">Stock: {{product.stock}}</p>
-                                        </div>
-                                        <button type="submit" style="width: 100%;"
-                                            class="open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
-                                                class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                        </div>  
+                                        <div class="d-flex gap-2 justify-content-center">
+                                            <button type="submit" 
+                                            class=" open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
+                                                class="fa fa-shopping-cart me-2 text-primary"></i>Cart</button>
+                                            <a href="{% url 'show_product_detail' product.id %}" class="w-50 open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
+                                                class="fa fa-shopping-bag me-2 text-primary"></i>Buy</a>
+                                        </div>    
                                     </div>
                                 </div>
+                                </a>
                             </form>
                             {% endif %}
                             {% endfor %}

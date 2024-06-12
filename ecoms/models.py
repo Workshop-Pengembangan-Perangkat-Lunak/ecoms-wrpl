@@ -11,8 +11,12 @@ class Customer(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     gender = models.CharField(max_length=6, choices=genders, default='Male')
+    picture = models.ImageField(upload_to='profile_pictures', default='default_picture.jpg')
+    city = models.CharField(max_length=30, default='')
+    subdistrict = models.CharField(max_length=30, default='')
+    postal_code = models.CharField(max_length=30, default='')
+    address = models.CharField(max_length=50, default='')
     phone = models.CharField(max_length=30)
-    address = models.CharField(max_length=30, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -35,7 +39,7 @@ class Product(models.Model):
     buying_price = models.IntegerField()
     selling_price = models.IntegerField()
     description = models.CharField(max_length=100, default='')
-    product_image = models.ImageField(max_length=100, default='')
+    product_image = models.ImageField(upload_to='product_images')
     stock = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -74,7 +78,7 @@ class TransactionDetail(models.Model):
 class Cart(models.Model):
     user_id = models.ForeignKey(Customer, on_delete=models.CASCADE, default=1)
     product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    qty = models.IntegerField()
+    qty = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
