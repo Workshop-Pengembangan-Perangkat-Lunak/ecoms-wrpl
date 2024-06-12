@@ -60,7 +60,9 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+
 media/
+*.sqlite3
 
 # Flask stuff:
 instance/
@@ -69,15 +71,9 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 .pybuilder/
 target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
 
 # IPython
 profile_default/

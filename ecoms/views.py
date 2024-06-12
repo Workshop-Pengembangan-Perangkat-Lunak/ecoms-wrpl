@@ -1,5 +1,4 @@
 from .models import Customer, Cart, Transaction, TransactionDetail
-from django.shortcuts import redirect
 from django.shortcuts import render, redirect
 from .models import *
 from django.db import connection
@@ -254,7 +253,8 @@ def checkout(request):
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{
+                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
