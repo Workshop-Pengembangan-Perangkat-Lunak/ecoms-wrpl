@@ -86,7 +86,7 @@ DATABASES = {
     }
 }
 
-DATABASES_ROUTERS = [
+DATABASE_ROUTERS = [
     'router.SupplierRouter'
 ]
 # Password validation
@@ -129,7 +129,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 
 LOGGING = {
