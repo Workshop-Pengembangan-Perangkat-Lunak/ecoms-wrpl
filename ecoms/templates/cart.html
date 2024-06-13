@@ -65,76 +65,94 @@
         <tbody>
           {% for cart in carts %}
           <form method="POST" action="{% url 'checkout' %}">
-          {% csrf_token %}
-          <tr class="cart-item">
-            <th scope="row">
-              <div class="d-flex align-items-center">
-                <img
-                  src="{{cart.product_id.product_image}}"
-                  class="img-fluid me-5 rounded-circle"
-                  style="width: 80px; height: 80px"
-                  alt=""
-                />
-              </div>
-            </th>
-            <td><p class="mb-0 mt-4">{{cart.product_id}}</p></td>
-            <td>
-              <p class="mb-0 mt-4">
-                Rp<span class="item-price"
-                  >{{cart.product_id.selling_price}}</span
+            {% csrf_token %}
+            <tr class="cart-item">
+              <th scope="row">
+                <div class="d-flex align-items-center">
+                  <img
+                    src="{{cart.product_id.product_image.url }}"
+                    class="img-fluid me-5 rounded-circle"
+                    style="width: 80px; height: 80px"
+                    alt=""
+                  />
+                </div>
+              </th>
+              <td><p class="mb-0 mt-4">{{cart.product_id}}</p></td>
+              <td>
+                <p class="mb-0 mt-4">
+                  Rp<span class="item-price"
+                    >{{cart.product_id.selling_price}}</span
+                  >
+                </p>
+              </td>
+              <td>
+                <div class="input-group quantity mt-4" style="width: 100px">
+                  <div class="input-group-btn">
+                    <button
+                      type="submit"
+                      class="btn btn-sm btn-minus rounded-circle bg-light border"
+                    >
+                      <i class="fa fa-minus"></i>
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm text-center border-0 item-quantity"
+                    value="{{cart.qty}}"
+                    name="qty"
+                  />
+                  <div class="input-group-btn">
+                    <button
+                      type="submit"
+                      class="btn btn-sm btn-plus rounded-circle bg-light border"
+                    >
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <p class="mb-0 mt-4">Rp<span class="item-total"></span></p>
+              </td>
+              <td>
+                <a
+                  href="{% url 'remove_from_cart' cart.id %}"
+                  class="btn btn-md rounded-circle bg-light border mt-3"
                 >
-              </p>
-            </td>
-            <td>
-              <div class="input-group quantity mt-4" style="width: 100px">
-                <div class="input-group-btn">
-                  <button
-                  type="submit"
-                    class="btn btn-sm btn-minus rounded-circle bg-light border"
-                  >
-                    <i class="fa fa-minus"></i>
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  class="form-control form-control-sm text-center border-0 item-quantity"
-                  value="{{cart.qty}}"
-                  name="qty"
-                />
-                <div class="input-group-btn">
-                  <button
-                  type="submit"
-                    class="btn btn-sm btn-plus rounded-circle bg-light border"
-                  >
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div>
-              </div>
-            </td>
-            <td>
-              <p class="mb-0 mt-4">Rp<span class="item-total"></span></p>
-            </td>
-            <td>
-              <button
-                class="btn btn-md rounded-circle bg-light border mt-3 remove-cart"
-              >
-                <i class="fa fa-times text-danger"></i>
-              </button>
-            </td>
-          </tr>
-          <input style="display: none;" value="{{cart.id}}" name="cart_id"/>
+                  <i class="fa fa-times text-danger"></i>
+                </a>
+              </td>
+            </tr>
+            <input style="display: none" value="{{cart.id}}" name="cart_id" />
           </form>
           {% endfor %}
         </tbody>
       </table>
     </div>
-    <div class="row g-4 justify-content-end">
-      <div class="col-8"></div>
+    <div class="row w-100 justify-content-end">
+      <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+        <div class="bg-light rounded">
+          <div class="p-4">
+            <h1 class="display-6 mb-4">Address</h1>
+            <div class="d-flex justify-content-between mb-4">
+              <h5 class="mb-0 me-4">
+                <span>{{ "City " }}{{customer.city }}</span
+                ><span>{{ " Subdistrict " }}{{customer.subdistrict}}</span
+                ><span>{{ ", " }} {{customer.postal_code }}</span>
+              </h5>
+            </div>
+            <p>{{customer.address}}</p>
+            <a href="{% url 'update_profile' customer.user.id %}"
+              >Update address</a
+            >
+          </div>
+        </div>
+      </div>
       <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
         <div class="bg-light rounded">
           <div class="p-4">
             <h1 class="display-6 mb-4">
-              Cart <span class="fw-normal">Total</span>
+              Cart<span class="fw-normal">Total</span>
             </h1>
             <div class="d-flex justify-content-between mb-4">
               <h5 class="mb-0 me-4">Subtotal:</h5>

@@ -39,9 +39,6 @@ def register_user(request):
                 user=user, first_name=first_name, last_name=last_name, phone=phone, address=address)
             customer.save()
             user.save()
-            customer = Customer(user=user, first_name=first_name,
-                                last_name=last_name, gender=gender, phone=phone, address=address)
-            customer.save()
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:
@@ -95,6 +92,9 @@ def show_products(request):
             products = products.order_by(sort_by)
     return render(request, 'index.html', {'products': products, 'departments': department})
 
+def show_product_detail(request, pk):
+    product = Product.objects.get(id=pk)
+    return render(request, 'product_detail.html', {'product': product})
 
 def show_departments(request):
     depts = Department.objects.all()
@@ -117,7 +117,8 @@ def show_cart(request):
             subtotal += cart.product_id.selling_price * cart.qty
     context = {
         'carts': carts,
-        'subtotal': subtotal
+        'subtotal': subtotal,
+        'customer': customer
     }
     return render(request, 'cart.html', context)
 
@@ -156,14 +157,36 @@ def show_specific_products(request):
 def add_to_cart(request):
     user_id = request.POST.get('user_id')
     product_id = request.POST.get('product_id')
-    qty = request.POST.get('qty')
+    # qty = request.POST.get('qty')
     user = User.objects.get(id=user_id)
     product = Product.objects.get(id=product_id)
     customer = Customer.objects.get(user=user)
-    cart = Cart(user_id=customer, product_id=product, qty=qty)
+    if Cart.objects.filter(user_id=customer, product_id=product).exists():
+        cart = Cart.objects.get(user_id=customer, product_id=product)
+        cart.qty += 1
+    else:
+        cart = Cart(user_id=customer, product_id=product)
     # cart = CartForm(request.POST or None, initial={'qty': 1})
     cart.save()
-    return redirect('/ecoms/')
+    return redirect('/ecoms')
+
+def add_to_cart2(request, pk):
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    product = Product.objects.get(id=pk)
+    if Cart.objects.filter(user_id=customer, product_id=product).exists():
+        cart = Cart.objects.get(user_id=customer, product_id=product)
+        cart.qty += 1
+    else:
+        cart = Cart(user_id=customer, product_id=product)
+        
+    cart.save()
+    return redirect('/ecoms/product_detail/'+str(pk))
+
+def remove_from_cart(request, pk):
+    cart = Cart.objects.get(id=pk)
+    cart.delete()
+    return redirect('/ecoms/cart')
 
 
 @login_required(login_url='login')
@@ -176,6 +199,37 @@ def show_dashboard(request):
     }
     return render(request, 'dashboard.html', context)
 
+def update_profile(request,pk):
+    user = User.objects.get(id=pk)
+    customer = Customer.objects.get(user=user)
+    if request.method == "POST":
+        # print("firstName",request.POST.get('first_name'))
+        #print(request.FILES['picture'])
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        sub_district = request.POST.get('subdistrict')
+        postal_code = request.POST.get('postal_code')
+    
+        try:
+            # customer = Customer( user=user,
+            # first_name=first_name, last_name=last_name, phone=phone, address=address, city=city, sub_district=sub_district, postal_code=postal_code, picture=request.FILES['picture'], )
+            customer.first_name = first_name
+            customer.last_name = last_name
+            customer.phone = phone
+            customer.address = address
+            customer.city = city
+            customer.subdistrict = sub_district
+            customer.postal_code = postal_code
+            if 'picture' in request.FILES:
+                customer.picture = request.FILES['picture']
+            customer.save()
+            return redirect('/ecoms/dashboard')
+        except Exception as e:
+            messages.error(request, "Failed to update.")
+    return render(request, 'update_profile.html', {'customer': customer})
 
 def logout_user(request):
     logout(request)
@@ -216,8 +270,7 @@ def checkout(request):
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{
-                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
@@ -230,6 +283,32 @@ def checkout(request):
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
 
+def checkout2(request,pk):
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    product = Product.objects.get(id=pk)
+    if request.method == "POST":
+        qty = request.POST.get('qty')
+        if qty:
+            cart = Cart.objects.get(user_id=customer, product_id=product)
+            cart.qty = qty
+            cart.save()
+        return redirect('/ecoms/cart')
+    carts = Cart.objects.filter(user_id=customer.id)
+    total_price = sum(
+        [cart.product_id.selling_price * cart.qty for cart in carts])
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction.save()
+    for cart in carts:
+        transaction_details = TransactionDetail(
+            transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+        transaction_details.save()
+        product = Product.objects.get(
+            id=cart.product_id.id)
+        product.stock = product.stock - cart.qty
+        product.save()
+        cart.delete()  # Delete each cart after processing
+    return redirect('/ecoms')
 
 @login_required()
 def show_user_id(request):

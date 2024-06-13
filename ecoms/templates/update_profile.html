@@ -1,0 +1,187 @@
+{% extends "base.html" %} {%load static%} {% block content %}
+<!-- Modal Search Start -->
+<div
+  class="modal fade"
+  id="searchModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content rounded-0">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body d-flex align-items-center">
+        <div class="input-group w-75 mx-auto d-flex">
+          <input
+            type="search"
+            class="form-control p-3"
+            placeholder="keywords"
+            aria-describedby="search-icon-1"
+          />
+          <span id="search-icon-1" class="input-group-text p-3"
+            ><i class="fa fa-search"></i
+          ></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Search End -->
+
+<!-- Dashboard Start -->
+<form action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="fluid-container" style="margin-top: 6rem">
+    <div class="row">
+      <div class="col-lg-5 border-right">
+        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+          <img
+            class="rounded-circle mt-5"
+            width="150px"
+            src="{{ customer.picture.url }}"
+          /><span class="font-weight-bold">{{customer.user.username}}</span
+          ><span class="text-black-50">{{customer.user.email}}</span
+          ><span> </span>
+          <div class="mt-2 d-flex flex-column">
+            <label for="picture">Change Picture</label>
+            <input
+              type="file"
+              name="picture"
+              id="picture"
+              value="{{customer.picture}}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 border-right">
+        <div class="p-3 py-5">
+          <div class="row mt-2">
+            <div class="col-lg-6">
+              <label class="labels">Username</label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder="user ID"
+                readonly
+                value="{{customer.user.username}}"
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-6">
+              <label class="labels">Email</label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder="enter email"
+                readonly
+                value="{{customer.user.email}}"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label class="labels">Gender</label
+              ><input
+                type="text"
+                class="form-control"
+                readonly
+                value="{{customer.gender}}"
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-6">
+              <label class="labels">First Name</label
+              ><input
+                type="text"
+                class="form-control"
+                value="{{customer.first_name}}"
+                name="first_name"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label class="labels">Last Name</label
+              ><input
+                type="text"
+                class="form-control"
+                value="{{customer.last_name}}"
+                name="last_name"
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-6">
+              <label class="labels">Sub District</label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder="-"
+                value="{{customer.subdistrict}}"
+                name="subdistrict"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label class="labels">City</label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder="-"
+                value="{{customer.city}}"
+                name="city"
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-6">
+              <label class="labels">Phone Number</label
+              ><input
+                type="text"
+                class="form-control"
+                value="{{customer.phone}}"
+                name="phone"
+              />
+            </div>
+            <div class="col-lg-6">
+              <label class="labels">Postal Code</label
+              ><input
+                type="text"
+                class="form-control"
+                placeholder="-"
+                value="{{customer.postal_code}}"
+                name="postal_code"
+              />
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-12">
+              <label class="labels">Addres Detail</label
+              ><input
+                type="text"
+                class="form-control"
+                value="{{customer.address}}"
+                name="address"
+              />
+            </div>
+          </div>
+          <div class="row mt-3">
+            <button
+              type="submit"
+              class="btn open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-dark mt-4"
+            >
+              Update
+            </button>
+          </div>
+          {% include "messages.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock content %}
