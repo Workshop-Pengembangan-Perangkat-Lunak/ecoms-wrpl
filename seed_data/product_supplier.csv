@@ -1,0 +1,86 @@
+id,product_name,product_description,product_category,product_price,stock_gudang
+1,Pork - European Side Bacon,platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante,BlackBerry,999,8
+2,Beef - Texas Style Burger,ipsum dolor sit amet consectetuer adipiscing elit proin risus praesent,Yezz,637,9
+3,Ice Cream Bar - Hageen Daz To,tellus semper interdum mauris ullamcorper purus sit amet nulla quisque arcu libero rutrum ac lobortis,Samsung,6013,10
+4,Wine - Placido Pinot Grigo,at feugiat non pretium quis lectus suspendisse potenti in eleifend,alcatel,6414,9
+5,Beans - Soya Bean,vestibulum vestibulum ante ipsum primis in faucibus orci luctus et,Nokia,1990,14
+6,Cookies - Amaretto,aliquet maecenas leo odio condimentum id luctus nec molestie sed justo pellentesque viverra pede ac diam,Samsung,8886,11
+7,"Cheese - Romano, Grated",quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie,Ericsson,1372,1
+8,Sauce - Hp,hac habitasse platea dictumst maecenas ut massa quis augue luctus tincidunt nulla mollis molestie lorem quisque ut erat,Maxon,1517,14
+9,Puree - Pear,in lectus pellentesque at nulla suspendisse potenti cras in purus,Amoi,7630,1
+10,Cleaner - Bleach,libero quis orci nullam molestie nibh in lectus pellentesque at nulla suspendisse,Allview,542,10
+11,Onions - Green,in libero ut massa volutpat convallis morbi odio odio elementum eu interdum,Bird,6875,10
+12,Appetiser - Bought,et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse potenti nullam porttitor lacus at turpis donec posuere metus,Motorola,5146,8
+13,Aspic - Amber,vestibulum proin eu mi nulla ac enim in tempor turpis,Samsung,6469,12
+14,Asparagus - Frozen,eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse ornare consequat lectus in,Nokia,1785,13
+15,Barramundi,rhoncus dui vel sem sed sagittis nam congue risus semper porta volutpat quam pede lobortis ligula sit amet eleifend,alcatel,3545,6
+16,Blouse / Shirt / Sweater,integer non velit donec diam neque vestibulum eget vulputate ut ultrices,Allview,4077,14
+17,Chicken - White Meat With Tender,in hac habitasse platea dictumst morbi vestibulum velit id pretium iaculis diam erat fermentum justo nec,Eten,8475,7
+18,Langers - Mango Nectar,sapien ut nunc vestibulum ante ipsum primis in faucibus orci,Motorola,5519,4
+19,"Lemonade - Black Cherry, 591 Ml",tortor sollicitudin mi sit amet lobortis sapien sapien non mi integer ac,Celkon,7397,11
+20,Danishes - Mini Raspberry,sed accumsan felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae,Philips,7386,13
+21,Pear - Prickly,nam dui proin leo odio porttitor id consequat in consequat ut nulla sed accumsan felis ut,Eten,4187,14
+22,Flower - Daisies,elit sodales scelerisque mauris sit amet eros suspendisse accumsan tortor quis turpis sed ante vivamus tortor duis mattis egestas metus,Samsung,7407,15
+23,"Pasta - Fusili, Dry",nulla pede ullamcorper augue a suscipit nulla elit ac nulla sed vel enim sit amet nunc,Apple,7269,3
+24,Pie Pecan,cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec,Archos,8256,13
+25,Rice - Aborio,sit amet sapien dignissim vestibulum vestibulum ante ipsum primis in faucibus,Allview,6677,15
+26,Flower - Carnations,sollicitudin mi sit amet lobortis sapien sapien non mi integer ac,Lava,2133,13
+27,Ham - Procutinni,iaculis congue vivamus metus arcu adipiscing molestie hendrerit at vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis,Asus,3981,8
+28,Yeast Dry - Fermipan,convallis morbi odio odio elementum eu interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla,Micromax,896,7
+29,"Wine - Sherry Dry Sack, William",integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo placerat praesent,Samsung,3428,13
+30,Pineapple - Golden,quis tortor id nulla ultrices aliquet maecenas leo odio condimentum id luctus nec molestie sed,Tecno,2702,1
+31,Onions - Red Pearl,pede venenatis non sodales sed tincidunt eu felis fusce posuere felis sed lacus morbi sem mauris,HP,8337,13
+32,Nestea - Iced Tea,aliquam sit amet diam in magna bibendum imperdiet nullam orci pede venenatis non sodales sed,Celkon,5019,10
+33,Buffalo - Tenderloin,molestie nibh in lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis,Toshiba,3215,3
+34,"Sauce - Apple, Unsweetened",quam suspendisse potenti nullam porttitor lacus at turpis donec posuere metus vitae ipsum aliquam non mauris morbi non lectus aliquam,Plum,8031,10
+35,"Wine - White, Chardonnay",vel enim sit amet nunc viverra dapibus nulla suscipit ligula in,Wiko,5933,14
+36,Wine - Lamancha Do Crianza,viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est quam,Nokia,3297,4
+37,"Soup - French Onion, Dry",cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus vivamus vestibulum sagittis sapien cum sociis,Lenovo,8899,6
+38,Tomatoes Tear Drop,in porttitor pede justo eu massa donec dapibus duis at velit eu est congue elementum in,Samsung,2802,5
+39,Pail With Metal Handle 16l White,etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna ut tellus nulla ut,alcatel,7010,8
+40,Longos - Chicken Wings,et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec,HP,1913,12
+41,Wine - Magnotta - Pinot Gris Sr,lectus pellentesque at nulla suspendisse potenti cras in purus eu magna vulputate luctus cum sociis natoque penatibus et,Wiko,4206,14
+42,Red Pepper Paste,sed magna at nunc commodo placerat praesent blandit nam nulla integer pede justo lacinia eget tincidunt eget,Meizu,2398,14
+43,Oil - Peanut,viverra eget congue eget semper rutrum nulla nunc purus phasellus in felis donec semper sapien,LG,5581,12
+44,Beets,ligula pellentesque ultrices phasellus id sapien in sapien iaculis congue vivamus metus arcu adipiscing molestie,LG,395,1
+45,"Quail - Whole, Boneless",sapien arcu sed augue aliquam erat volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea,Energizer,9640,9
+46,Wine - Gato Negro Cabernet,id nulla ultrices aliquet maecenas leo odio condimentum id luctus,Oppo,6900,1
+47,Rice - Long Grain,faucibus orci luctus et ultrices posuere cubilia curae duis faucibus accumsan odio curabitur convallis duis consequat dui nec nisi volutpat,Allview,1774,13
+48,Wine - Jaboulet Cotes Du Rhone,nec nisi volutpat eleifend donec ut dolor morbi vel lectus,Acer,7539,14
+49,Juice - Mango,quam nec dui luctus rutrum nulla tellus in sagittis dui vel nisl duis ac nibh fusce lacus,NEC,3045,3
+50,Aromat Spice / Seasoning,dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at lorem integer tincidunt ante vel ipsum praesent blandit,ZTE,5071,3
+51,Squid - U 5,duis at velit eu est congue elementum in hac habitasse platea dictumst morbi vestibulum velit id pretium iaculis,O2,595,5
+52,Ice Cream Bar - Oreo Cone,dui maecenas tristique est et tempus semper est quam pharetra magna ac,Honor,8237,12
+53,Ecolab - Power Fusion,in faucibus orci luctus et ultrices posuere cubilia curae mauris viverra diam vitae quam suspendisse,Coolpad,4625,6
+54,"Split Peas - Green, Dry",id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas tristique est et,Vodafone,7070,15
+55,Goat - Leg,vitae ipsum aliquam non mauris morbi non lectus aliquam sit amet diam in magna,Motorola,5409,3
+56,Soup - Cream Of Broccoli,orci eget orci vehicula condimentum curabitur in libero ut massa volutpat convallis morbi odio odio elementum eu interdum,Philips,4023,11
+57,Lid Coffeecup 12oz D9542b,nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum at,Huawei,1171,6
+58,Soup - Campbells Beef Strogonoff,mi nulla ac enim in tempor turpis nec euismod scelerisque quam turpis adipiscing lorem vitae mattis nibh,Sony,1630,12
+59,Bagel - Everything Presliced,nisi at nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae,LG,1050,1
+60,Sobe - Tropical Energy,nibh in hac habitasse platea dictumst aliquam augue quam sollicitudin vitae consectetuer eget rutrum,Samsung,6453,11
+61,Island Oasis - Wildberry,amet cursus id turpis integer aliquet massa id lobortis convallis tortor risus dapibus augue vel,LG,9858,6
+62,"Split Peas - Yellow, Dry",ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio justo,Oppo,5333,1
+63,"Pork - Back, Short Cut, Boneless",suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit,Lava,2415,13
+64,Butter - Unsalted,id ornare imperdiet sapien urna pretium nisl ut volutpat sapien arcu sed,Blackview,983,5
+65,Wine - Zinfandel California 2002,sapien varius ut blandit non interdum in ante vestibulum ante ipsum primis in faucibus orci luctus et,Plum,3531,9
+66,Gooseberry,primis in faucibus orci luctus et ultrices posuere cubilia curae nulla dapibus dolor vel est donec odio,Microsoft,1783,8
+67,"Soup - Beef, Base Mix",vitae mattis nibh ligula nec sem duis aliquam convallis nunc proin at turpis a pede posuere nonummy integer non,Sony,1369,8
+68,Roe - Flying Fish,elit ac nulla sed vel enim sit amet nunc viverra dapibus nulla suscipit ligula in lacus curabitur at,Karbonn,8037,5
+69,Flower - Commercial Spider,nisl duis ac nibh fusce lacus purus aliquet at feugiat,Celkon,6764,6
+70,Coffee Cup 8oz 5338cd,lacinia nisi venenatis tristique fusce congue diam id ornare imperdiet sapien urna pretium nisl ut,Motorola,9061,6
+71,Tuna - Salad Premix,odio elementum eu interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla tempus vivamus in,verykool,8311,14
+72,Wine - Port Late Bottled Vintage,viverra dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus sit,Wiko,1772,10
+73,"Bread - Rolls, Rye",dignissim vestibulum vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae nulla,Sony,5412,13
+74,Truffle Cups - Brown,quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum sit amet cursus id turpis,Honor,7515,3
+75,Pork - Belly Fresh,at vulputate vitae nisl aenean lectus pellentesque eget nunc donec quis orci eget,Asus,1445,12
+76,Muffin - Carrot Individual Wrap,viverra eget congue eget semper rutrum nulla nunc purus phasellus,vivo,5883,6
+77,Sunflower Seed Raw,velit nec nisi vulputate nonummy maecenas tincidunt lacus at velit vivamus vel nulla eget eros elementum pellentesque,Meizu,4819,4
+78,Shark - Loin,sapien cum sociis natoque penatibus et magnis dis parturient montes nascetur,Asus,5329,5
+79,"Wine - Red, Wolf Blass, Yellow",id luctus nec molestie sed justo pellentesque viverra pede ac diam cras pellentesque volutpat dui maecenas,Samsung,9285,8
+80,Pastry - Key Limepoppy Seed Tea,volutpat erat quisque erat eros viverra eget congue eget semper rutrum nulla nunc purus phasellus in felis donec semper,Emporia,5884,1
+81,Cheese - Blue,lectus in quam fringilla rhoncus mauris enim leo rhoncus sed vestibulum,Spice,9535,6
+82,Bread - 10 Grain Parisian,in consequat ut nulla sed accumsan felis ut at dolor quis odio consequat varius integer ac,alcatel,7496,11
+83,Phyllo Dough,enim lorem ipsum dolor sit amet consectetuer adipiscing elit proin interdum mauris non ligula pellentesque ultrices phasellus,ZTE,8170,7
+84,Beef - Short Ribs,massa id lobortis convallis tortor risus dapibus augue vel accumsan tellus,Coolpad,5980,3
+85,Crush - Cream Soda,pretium iaculis diam erat fermentum justo nec condimentum neque sapien placerat ante nulla justo aliquam quis turpis eget elit sodales,Samsung,5352,4
