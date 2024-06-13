@@ -115,7 +115,8 @@ def show_cart(request):
             subtotal += cart.product_id.selling_price * cart.qty
     context = {
         'carts': carts,
-        'subtotal': subtotal
+        'subtotal': subtotal,
+        'customer': customer
     }
     return render(request, 'cart.html', context)
 
@@ -165,6 +166,19 @@ def add_to_cart(request):
     # cart = CartForm(request.POST or None, initial={'qty': 1})
     cart.save()
     return redirect('/ecoms')
+
+def add_to_cart2(request, pk):
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    product = Product.objects.get(id=pk)
+    if Cart.objects.filter(user_id=customer, product_id=product).exists():
+        cart = Cart.objects.get(user_id=customer, product_id=product)
+        cart.qty += 1
+    else:
+        cart = Cart(user_id=customer, product_id=product)
+        
+    cart.save()
+    return redirect('/ecoms/product_detail/'+str(pk))
 
 def remove_from_cart(request, pk):
     cart = Cart.objects.get(id=pk)
@@ -253,8 +267,7 @@ def checkout(request):
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
         [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{
-                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
@@ -267,6 +280,32 @@ def checkout(request):
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
 
+def checkout2(request,pk):
+    user = User.objects.get(id=request.user.id)
+    customer = Customer.objects.get(user=user)
+    product = Product.objects.get(id=pk)
+    if request.method == "POST":
+        qty = request.POST.get('qty')
+        if qty:
+            cart = Cart.objects.get(user_id=customer, product_id=product)
+            cart.qty = qty
+            cart.save()
+        return redirect('/ecoms/cart')
+    carts = Cart.objects.filter(user_id=customer.id)
+    total_price = sum(
+        [cart.product_id.selling_price * cart.qty for cart in carts])
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction.save()
+    for cart in carts:
+        transaction_details = TransactionDetail(
+            transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+        transaction_details.save()
+        product = Product.objects.get(
+            id=cart.product_id.id)
+        product.stock = product.stock - cart.qty
+        product.save()
+        cart.delete()  # Delete each cart after processing
+    return redirect('/ecoms')
 
 @login_required()
 def show_user_id(request):
