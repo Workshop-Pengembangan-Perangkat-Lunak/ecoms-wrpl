@@ -122,6 +122,9 @@ def handle_callback(request):
 from django.views.decorators.http import require_POST
 from .models import TransactionHistory
 
+def index_views(request):
+    return render(request, 'bankdashboard.html')
+
 @require_POST
 def handle_transaction(request):
     # Get the source and destination account IDs from the POST data
