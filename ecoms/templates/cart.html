@@ -70,7 +70,7 @@
               <th scope="row">
                 <div class="d-flex align-items-center">
                   <img
-                    src="{{cart.product_id.product_image}}"
+                    src="{{cart.product_id.product_image.url }}"
                     class="img-fluid me-5 rounded-circle"
                     style="width: 80px; height: 80px"
                     alt=""
@@ -129,13 +129,30 @@
         </tbody>
       </table>
     </div>
-    <div class="row g-4 justify-content-end">
-      <div class="col-8"></div>
+    <div class="row w-100 justify-content-end">
+      <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+        <div class="bg-light rounded">
+          <div class="p-4">
+            <h1 class="display-6 mb-4">Address</h1>
+            <div class="d-flex justify-content-between mb-4">
+              <h5 class="mb-0 me-4">
+                <span>{{ "City " }}{{customer.city }}</span
+                ><span>{{ " Subdistrict " }}{{customer.subdistrict}}</span
+                ><span>{{ ", " }} {{customer.postal_code }}</span>
+              </h5>
+            </div>
+            <p>{{customer.address}}</p>
+            <a href="{% url 'update_profile' customer.user.id %}"
+              >Update address</a
+            >
+          </div>
+        </div>
+      </div>
       <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
         <div class="bg-light rounded">
           <div class="p-4">
             <h1 class="display-6 mb-4">
-              Cart <span class="fw-normal">Total</span>
+              Cart<span class="fw-normal">Total</span>
             </h1>
             <div class="d-flex justify-content-between mb-4">
               <h5 class="mb-0 me-4">Subtotal:</h5>
