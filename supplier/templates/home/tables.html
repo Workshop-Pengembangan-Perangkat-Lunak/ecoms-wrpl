@@ -90,7 +90,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                       <a class="dropdown-item" href="#">Update</a>
-                      <a class="dropdown-item" href="{% url 'supplier:delete_product' %}">Delete action</a>
+                      <a class="dropdown-item" href="{% url 'supplier:delete_product' product_id=product.id %}">Delete
+                        action</a>
                       <a class="dropdown-item" href="#">Send Product to Ecommerce Warehouse</a>
                     </div>
                   </div>

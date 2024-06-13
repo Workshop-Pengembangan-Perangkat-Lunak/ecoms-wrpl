@@ -112,11 +112,10 @@ def update_product(request):
 
 
 @login_required(login_url="/supplier/login")
-def delete_product(request):
-    product_id = request.POST.get('product_id')
-    user = User.objects.using('supplier_db').filter(id=request.user.id)
+def delete_product(request, product_id):
+    # product_id = request.POST.get('product_id')
     product = Product.objects.using(
-        'supplier_db').filter(id=product_id, user=user)
+        'supplier_db').filter(id=product_id)
     product.delete()
     return redirect("/supplier/dashboard")
 
