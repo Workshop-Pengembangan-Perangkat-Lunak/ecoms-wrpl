@@ -15,9 +15,20 @@ from django.views.decorators.csrf import (
     csrf_protect,
     csrf_exempt
 )
+from django.core.paginator import Paginator
 
 import logging
 logger = logging.getLogger(__name__)
+from django.contrib.auth import get_user_model
+
+def authenticateSupplier(self, request, username=None, password=None, **kwargs):
+        UserModel = get_user_model()
+        try:
+            user = UserModel.objects.using('supplier_db').get(username=username)
+            if user.check_password(password):
+                return user
+        except UserModel.DoesNotExist:
+            return None
 
 
 def registersupplier(request):
@@ -66,7 +77,7 @@ def show_product(request):
     return
 
 
-@login_required
+@login_required(login_url="/supplier/login")
 def create_product(request):
     product_name = request.POST.get("nama-produk")
     product_description = request.POST.get("deskripsi-produk")
@@ -83,7 +94,7 @@ def update_product(request):
     return
 
 
-@login_required
+@login_required(login_url="/supplier/login")
 def delete_product(request):
     product_id = request.POST.get('product_id')
     user = User.objects.using('supplier_db').filter(id=request.user.id)
@@ -93,17 +104,38 @@ def delete_product(request):
     return redirect("/supplier/dashboard")
 
 
-@login_required
+@login_required(login_url="/supplier/login")
 def show_dashboard(request):
     user = User.objects.get(id=request.user.id)
     print(user.id)
 
     supplier= Supplier.objects.using(
         'supplier_db').get(user_id=user.id)
-  
 
-    products = Product.objects.using(
-        'supplier_db').filter(supplier=supplier)
-    return render(request, 'home/tables.html', {'products': products})
+    if request.method == "POST":
+
+        search  = request.POST["search"]
+        products = Product.objects.using('supplier_db').filter(supplier=supplier, product_name__icontains=search)
+        
+        paginator = Paginator(products, 10)  # 10 products per page
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'home/tables.html', {'page_obj': page_obj, 'search': search})
+
+    else:
+
+        products = Product.objects.using('supplier_db').filter(supplier=supplier,)
+    
+        paginator = Paginator(products, 10)  # 10 products per page
+
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'home/tables.html', {'page_obj': page_obj})
 
 
+#  supplier = Supplier.objects.using('supplier_db').get(user_id=user.id)
+#     products = Product.objects.using('supplier_db').filter(supplier=supplier)
+#     paginator = Paginator(products, 10)  # 10 products per page
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)

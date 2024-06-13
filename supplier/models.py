@@ -13,5 +13,7 @@ class Supplier(models.Model):
 class Product(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=100)
-    product_description = models.IntegerField()
+    product_description = models.CharField( max_length=100)
+    product_category = models.CharField( max_length=100)
+    product_price = models.IntegerField()
     stock_gudang = models.IntegerField()
