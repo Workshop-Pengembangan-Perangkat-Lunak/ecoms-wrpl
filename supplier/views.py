@@ -97,18 +97,29 @@ def create_product(request):
     return render(request, 'home/create_product.html')
 
 
-@login_required
-def update_product(request):
-    user = User.objects.using('supplier_db').filter(id=request.user.id)
-    supplier = Supplier.objects.using('supplier_db').filter(user=user)
-    product = Product.objects.using('supplier_db').filter(supplier=supplier)
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')
-        user = User.objects.using('supplier_db').filter(id=request.user.id)
-        product = Product.objects.using(
-            'supplier_db').filter(id=product_id, user=user)
-        return redirect('supplier/dashboard')
-    return render(request, 'home/update_product.html')
+@login_required(login_url="/supplier/login")
+def update_product(request, product_id):
+    # try:
+    user = User.objects.get(id=request.user.id)
+    product = Product.objects.using('supplier_db').get(id=product_id)
+    supplier = Supplier.objects.using(
+        'supplier_db').get(user_id=user.id)
+    if request.method == "POST":
+
+        product.product_name = request.POST.get('product_name')
+        product.product_description = request.POST.get('product_description')
+        product.product_category = request.POST.get('product_category')
+        product.stock_gudang = request.POST.get('stock_gudang')
+        product.product_price = request.POST.get('product_price')
+        product.save(using="supplier_db")  # update product
+        products = Product.objects.using(
+            'supplier_db').filter(supplier=supplier,)
+
+        paginator = Paginator(products, 10)  # 10 products per page
+        page_number = request.POST.get("page")
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'home/tables.html', {'page_obj': page_obj})
+    return render(request, 'home/update_product.html', {"product": product})
 
 
 @login_required(login_url="/supplier/login")
