@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,13 +40,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "ecoms",
     "bank",
+    "supplier"
 ]
 
 MIDDLEWARE = [
+    "django.middleware.csrf.CsrfViewMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -83,11 +85,17 @@ DATABASES = {
     "bank":{
         'ENGINE':'django.db.backends.sqlite3',
         'NAME':BASE_DIR / 'bank.sqlite3',
+    },
+    "supplier_db": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "supplier_db.sqlite3"
     }
 }
 
-DATABASE_ROUTERS = ['wrpl.routers.BankRouter']
-
+DATABASES_ROUTERS = [
+    'router.SupplierRouter',
+    'wrpl.routers.BankRouter'
+]
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -123,8 +131,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+MESSAGE_TAGS={
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+    
+}
