@@ -46,9 +46,7 @@ def registersupplier(request):
                 username=username, password=password, email=email)
             supplier = Supplier(
                 user=user, no_telp=no_telp, location=location, no_rek=no_rek)
-
             user.save(using='supplier_db')
-
             supplier.save(using='supplier_db')
             messages.success(request, "User registered succesfully")
             return redirect('/supplier/dashboard')
@@ -97,10 +95,15 @@ def create_product(request):
 
 @login_required
 def update_product(request):
-    product_id = request.POST.get('product_id')
     user = User.objects.using('supplier_db').filter(id=request.user.id)
-    product = Product.objects.using(
-        'supplier_db').filter(id=product_id, user=user)
+    supplier = Supplier.objects.using('supplier_db').filter(user=user)
+    product = Product.objects.using('supplier_db').filter(supplier=supplier)
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        user = User.objects.using('supplier_db').filter(id=request.user.id)
+        product = Product.objects.using(
+            'supplier_db').filter(id=product_id, user=user)
+        return redirect('supplier/dashboard')
     return render(request, 'home/update_product.html')
 
 
