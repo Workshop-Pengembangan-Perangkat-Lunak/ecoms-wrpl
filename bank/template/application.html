@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Application Page</title>
+</head>
+<body>
+    <h1>Application Form</h1>
+    <form method="POST" action="{% url 'application_view' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="ktp">KTP Photo:</label><br>
+        <input type="file" id="ktp" name="ktp"><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

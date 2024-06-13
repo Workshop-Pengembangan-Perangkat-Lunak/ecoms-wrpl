@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "ecoms"
+    "ecoms",
+    "bank",
 ]
 
 MIDDLEWARE = [
@@ -78,9 +79,14 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+    },
+    "bank":{
+        'ENGINE':'django.db.backends.sqlite3',
+        'NAME':BASE_DIR / 'bank.sqlite3',
     }
 }
 
+DATABASE_ROUTERS = ['wrpl.routers.BankRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
