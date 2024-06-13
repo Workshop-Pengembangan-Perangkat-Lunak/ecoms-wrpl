@@ -83,13 +83,17 @@ def create_product(request):
     if request.method == "POST":
         product_name = request.POST.get("nama-produk")
         product_description = request.POST.get("deskripsi-produk")
-        harga = request.POST.get("harga")
+        product_category = request.POST.get("product_category")
+        product_price = request.POST.get("product_price")
         stock_gudang = request.POST.get("stock-gudang")
-        user = User.objects.using('supplier_db').filter(id=request.user.id)
-        supplier = Supplier.objects.filter(user=user)
+        user = User.objects.using('supplier_db').filter(
+            id=request.user.id).first()
+        supplier = Supplier.objects.using(
+            'supplier_db').filter(user=user).first()
         product = Product(supplier=supplier, product_name=product_name,
-                          product_description=product_description, stock_gudang=stock_gudang, harga=harga)
+                          product_description=product_description, product_category=product_category, stock_gudang=stock_gudang, product_price=product_price)
         product.save(using='supplier_db')
+        return redirect('supplier:dashboard')
     return render(request, 'home/create_product.html')
 
 

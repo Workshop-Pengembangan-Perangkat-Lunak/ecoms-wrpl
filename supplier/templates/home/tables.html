@@ -4,149 +4,152 @@
 
 {% block content %}
 
-  <div class="header bg-primary pb-6">
-    <div class="container-fluid">
-      <div class="header-body">
-        <div class="row align-items-center py-4">
-          <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
-            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tables</li>
-              </ol>
-            </nav>
-          </div>
-          <div class="col-lg-6 col-5 text-right">
-            <a href="#" class="btn btn-sm btn-neutral">New</a>
-            <a href="#" class="btn btn-sm btn-neutral">Filters</a>
-          </div>
+<div class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+              <li class="breadcrumb-item"><a href="#">Tables</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Tables</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+          <a href="{% url 'supplier:create_product' %}" class="btn btn-sm btn-neutral">New</a>
+          <a href="#" class="btn btn-sm btn-neutral">Filters</a>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- Page content -->
-  <div class="container-fluid mt--6">
-    <div class="row">
-      <div class="col">
-        <div class="card">
-          <!-- Card header -->
-          <div class="card-header border-0">
-            <h3 class="mb-0">Light table</h3>
-          </div>
-          <!-- Light table -->
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col" class="sort" data-sort="name">Name</th>
-                  <th scope="col" class="sort" data-sort="budget">Description</th>
-                  <th scope="col" class="sort" data-sort="status">Stok</th>
-                  <th scope="col" class="sort" data-sort="status">Category</th>
-                  <th scope="col" class="sort" data-sort="status">Price</th>
-                  <th scope="col">Supplier</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody class="list">
-                 {% for product in page_obj %}
-                        <tr>
-                          <th scope="row">
-                            <div class="media align-items-center">
-                              <a href="#" class="avatar rounded-circle mr-3">
-                                <img alt="Image placeholder" id="product-image-{{ forloop.counter }}" src="{% random_image %}">
-                              </a>
-                              <div class="media-body">
-                                <span class="name mb-0 text-sm">{{product.product_name}}</span>
-                              </div>
-                            </div>
-                          </th>
-                          <td class="budget">
-                            {{product.product_description}}
-                          </td>
-                          <td>
-                            <span class="badge badge-dot mr-4">
-                              <i class="bg-warning"></i>
-                              <span class="status">{{product.stock_gudang}}</span>
-                            </span>
-                          </td>
-                      
-                        
-                           <td class="budget">
-                            {{product.product_category}}
-                          </td>
+</div>
 
-                          <td class="budget">
-                            {{product.product_price}}
-                          </td>
-                      
-                          <td class="text-right">
-                            <div class="dropdown">
-                              <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                              </a>
-                              <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                <a class="dropdown-item" href="#">Update</a>
-                                <a class="dropdown-item" href="#">Delete action</a>
-                                <a class="dropdown-item" href="#">Send Product to Ecommerce Warehouse</a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                       {% endfor %}
-                {% comment %} end row table {% endcomment %}
-              
-              </tbody>
-            </table>
-          </div>
-          <!-- Card footer -->
-          <div class="card-footer py-4">
-            <nav aria-label="...">
-              <ul class="pagination justify-content-end mb-0">
-                <li class="page-item {% if page_obj.has_previous %} {% else %} disabled {% endif %}">
-                  <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1">
-                    <i class="fas fa-angle-left"></i>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                </li>
-                {% for num in page_obj.paginator.page_range %}
-                  {% if page_obj.number == num %}
-                    <li class="page-item active">
-                      <a class="page-link" href="#">{{ num }}</a>
-                    </li>
-                  {% else %}
-                    <li class="page-item">
-                      <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-                <li class="page-item {% if page_obj.has_next %} {% else %} disabled {% endif %}">
-                  <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">
-                    <i class="fas fa-angle-right"></i>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <!-- Card header -->
+        <div class="card-header border-0">
+          <h3 class="mb-0">Light table</h3>
+        </div>
+        <!-- Light table -->
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="sort" data-sort="name">Name</th>
+                <th scope="col" class="sort" data-sort="budget">Description</th>
+                <th scope="col" class="sort" data-sort="status">Stok</th>
+                <th scope="col" class="sort" data-sort="status">Category</th>
+                <th scope="col" class="sort" data-sort="status">Price</th>
+                <th scope="col">Supplier</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              {% for product in page_obj %}
+              <tr>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <a href="#" class="avatar rounded-circle mr-3">
+                      <img alt="Image placeholder" id="product-image-{{ forloop.counter }}" src="{% random_image %}">
+                    </a>
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{product.product_name}}</span>
+                    </div>
+                  </div>
+                </th>
+                <td class="budget">
+                  {{product.product_description}}
+                </td>
+                <td>
+                  <span class="badge badge-dot mr-4">
+                    <i class="bg-warning"></i>
+                    <span class="status">{{product.stock_gudang}}</span>
+                  </span>
+                </td>
+
+
+                <td class="budget">
+                  {{product.product_category}}
+                </td>
+
+                <td class="budget">
+                  {{product.product_price}}
+                </td>
+
+                <td class="text-right">
+                  <div class="dropdown">
+                    <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown"
+                      aria-haspopup="true" aria-expanded="false">
+                      <i class="fas fa-ellipsis-v"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                      <a class="dropdown-item" href="#">Update</a>
+                      <a class="dropdown-item" href="{% url 'supplier:delete_product' %}">Delete action</a>
+                      <a class="dropdown-item" href="#">Send Product to Ecommerce Warehouse</a>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+              {% comment %} end row table {% endcomment %}
+
+            </tbody>
+          </table>
+        </div>
+        <!-- Card footer -->
+        <div class="card-footer py-4">
+          <nav aria-label="...">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item {% if page_obj.has_previous %} {% else %} disabled {% endif %}">
+                <a class="page-link"
+                  href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}"
+                  tabindex="-1">
+                  <i class="fas fa-angle-left"></i>
+                  <span class="sr-only">Previous</span>
+                </a>
+              </li>
+              {% for num in page_obj.paginator.page_range %}
+              {% if page_obj.number == num %}
+              <li class="page-item active">
+                <a class="page-link" href="#">{{ num }}</a>
+              </li>
+              {% else %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+              </li>
+              {% endif %}
+              {% endfor %}
+              <li class="page-item {% if page_obj.has_next %} {% else %} disabled {% endif %}">
+                <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">
+                  <i class="fas fa-angle-right"></i>
+                  <span class="sr-only">Next</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
- 
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {% include "includes/footer.html" %}
-
   </div>
+
+  </tbody>
+  </table>
+</div>
+</div>
+</div>
+</div>
+
+{% include "includes/footer.html" %}
+
+</div>
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}{% endblock javascripts %}
