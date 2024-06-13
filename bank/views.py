@@ -123,7 +123,7 @@ from django.views.decorators.http import require_POST
 from .models import TransactionHistory
 
 def index_views(request):
-    return render(request, 'bankdashboard.html')
+    return render(request, 'home/tables.html')
 
 @require_POST
 def handle_transaction(request):
