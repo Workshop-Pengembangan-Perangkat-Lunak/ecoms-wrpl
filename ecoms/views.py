@@ -30,7 +30,9 @@ def register_user(request):
         last_name = request.POST.get('last_name')
         address = request.POST.get('address')
         phone = request.POST.get('phone')
+        print("tes sebelum try", username, password )
         try:
+            print(username," ", password, " ", email)
             user = User.objects.create_user(
                 username=username, password=password, email=email)
             customer = Customer(
@@ -118,6 +120,7 @@ def show_cart(request):
         'subtotal': subtotal
     }
     return render(request, 'cart.html', context)
+
 
 
 def show_shop_detail(request, id):

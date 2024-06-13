@@ -16,41 +16,50 @@ from django.views.decorators.csrf import (
     csrf_exempt
 )
 
+import logging
+logger = logging.getLogger(__name__)
 
-def register_supllier(request):
+
+def registersupplier(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
+        
         location = request.POST.get('address')
         no_telp = request.POST.get('phone')
-        no_rek = request.POST.get('no-rek')
+        no_rek = request.POST.get('no_rek')
         try:
             user = User.objects.create_user(
-                username=username, first_name=first_name, last_name=last_name, password=password, email=email)
+                username=username, password=password, email=email)
             supplier = Supplier(
-                user=user, no_telp=no_telp, address=location, no_rek=no_rek)
+                user=user, no_telp=no_telp, location=location, no_rek=no_rek)
+           
             user.save(using='supplier_db')
+           
+        
             supplier.save(using='supplier_db')
             messages.success(request, "User registered succesfully")
-            return redirect('/ecoms/login')
-        except:
+            return redirect('/supplier/dashboard')
+        except Exception as e:
+            logger.error(f"Failed to register user: {e}")
             messages.error(request, "Failed to register user.")
-    return render(request, 'register.html', {})
+    return render(request, 'home/register.html', {})
 
-
+@csrf_exempt
 def login_supplier(request):
     if request.method == "POST":
+        print(request.POST)
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
+        print("user", user)
         if user is not None:
             login(request, user)
             messages.success(request, f"Hi {username}")
             return redirect('/supplier/dashboard')
-    return ""
+    return render(request, 'home/login.html')
+
 
 
 def show_product(request):
@@ -86,4 +95,15 @@ def delete_product(request):
 
 @login_required
 def show_dashboard(request):
-    return
+    user = User.objects.get(id=request.user.id)
+    print(user.id)
+
+    supplier= Supplier.objects.using(
+        'supplier_db').get(user_id=user.id)
+  
+
+    products = Product.objects.using(
+        'supplier_db').filter(supplier=supplier)
+    return render(request, 'home/tables.html', {'products': products})
+
+
