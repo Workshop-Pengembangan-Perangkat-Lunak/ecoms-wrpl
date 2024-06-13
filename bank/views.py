@@ -42,20 +42,17 @@ from django.shortcuts import render, redirect
 from .models import Application
 
 # Handle user application
-@login_required
-def show_applications(request):
+def show_applications(request, user_id):
     if request.method == 'POST':
         name = request.POST.get('name')
         ktp = request.FILES.get('ktp')
         if name:  
-                application = Application(name=name, ktp_photo=ktp)
+                application = Application(name=name, ktp_photo=ktp, user_id=user_id)
                 application.save()
-                return redirect('success_url')
+                return redirect('bank:apply', user_id=user_id)
     application = Application.objects.all()
-      
-    return render(request, 'template_name.html', {'application':application})
+    return render(request, 'application.html', {'application':application})
 
-@login_required
 def accept_application(request):
     if request.method == 'POST':
         application_id = request.POST.get('application_id')
