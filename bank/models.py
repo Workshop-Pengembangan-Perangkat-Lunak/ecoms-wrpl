@@ -7,7 +7,7 @@ def upload_to(instance, filename):
     return 'ktp_photos/%s/%s' % (instance.name, filename)
 
 class BankAccount(models.Model):
-    user_id = models.IntegerField(max_length=20)
+    user_id = models.IntegerField(default=0)
     name = models.CharField(max_length=200)
     bank_number = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
     ktp_photo = models.ImageField(upload_to=upload_to, blank=True, null=True)
@@ -29,7 +29,7 @@ class Application(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     applied_at = models.DateTimeField(default=timezone.now)
     bank_account = models.OneToOneField(BankAccount, on_delete=models.CASCADE, null=True, blank=True)
-    user_id = models.IntegerField(max_length=20)
+    user_id = models.IntegerField(default=0)
 
     def __str__(self):
         return f'{self.name} - {self.get_status_display()}'
@@ -52,7 +52,7 @@ class TopUpHistory(models.Model):
     transaction_type = models.CharField(max_length=1, choices=TRANSACTION_TYPES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_date = models.DateTimeField(default=timezone.now)
-    user_id = models.IntegerField(max_length=20) 
+    user_id = models.IntegerField(default=0) 
 
     def __str__(self):
         return f'{self.bank_account.name} - {self.get_transaction_type_display()}'
@@ -74,8 +74,8 @@ class TransactionHistory(models.Model):
         ('T', 'Transfer')
     )
 
-    source_account = models.ForeignKey('BankAccount', on_delete=models.CASCADE, related_name='outgoing_transactions')
-    destination_account = models.ForeignKey('BankAccount', on_delete=models.CASCADE, related_name='incoming_transactions')
+    source_account = models.ForeignKey('BankAccount', on_delete=models.CASCADE, related_name='outgoing_transactions', default=0)
+    destination_account = models.ForeignKey('BankAccount', on_delete=models.CASCADE, related_name='incoming_transactions', default=0)
     transaction_type = models.CharField(max_length=1, choices=TRANSACTION_TYPES)
     amount = models.DecimalField(max_digits=10, decimal_places=2) 
     transaction_date = models.DateTimeField(auto_now_add=True) 

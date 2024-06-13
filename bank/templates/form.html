@@ -5,7 +5,7 @@
 </head>
 <body>
     <h1>Application Form</h1>
-    <form method="POST" action="{% url 'application_view' %}" enctype="multipart/form-data">
+    <form method="POST" action="{% url 'bank:apply' user_id=12345 %}" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name"><br>
