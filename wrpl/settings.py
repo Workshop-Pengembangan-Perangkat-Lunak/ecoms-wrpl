@@ -91,6 +91,10 @@ DATABASES = {
     "supplier_db": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "supplier_db.sqlite3"
+    },
+    "seller_db": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "seller_db.sqlite3"
     }
 }
 
