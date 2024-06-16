@@ -9,8 +9,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 
 def index(request):
-    products = Product.objects.all()
-    return render(request, 'deliveryindex.html', {'products': products})
+    return render(request, 'deliveryindex.html')
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -62,5 +61,5 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, f"Hi {username}")
-            return redirect('/delivery/')
-    return render(request, 'login.html')
+            return redirect('/delivery')
+    return render(request, 'deliverylogin.html')
