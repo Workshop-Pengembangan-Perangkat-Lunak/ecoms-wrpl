@@ -1,3 +1,4 @@
+from decimal import Decimal
 from pyexpat.errors import messages
 import uuid
 from django.http import HttpResponse
@@ -48,32 +49,36 @@ def show_applications(request, user_id):
         ktp = request.FILES.get('ktp')
         if name:  
                 application = Application(name=name, ktp_photo=ktp, user_id=user_id)
+                bank_account = BankAccount(name=name, ktp_photo=ktp, user_id=user_id)
+                bank_account.save()
+                application.bank_account = bank_account
                 application.save()
-                return redirect('bank:apply', user_id=user_id)
+                return redirect('apply', user_id=user_id)
     application = Application.objects.all()
-    return render(request, 'application.html', {'application':application})
-
-def accept_application(request):
-    if request.method == 'POST':
-        application_id = request.POST.get('application_id')
-        application_status = request.POST.get(application_status)
-        application = Application.objects.get(id=application_id)
-        application.status = application_status
-        if application_status == 'S':
-            bank_account = Application.bank_account
-            bank_account.is_active = True
-            bank_account.save()
-        application.save()
-        return redirect('bank')
+    return render(request, 'application.html', {'application':application, 'user_id':user_id})
 import json
 
 from midtransclient import Snap
 
+def topup(request, user_id):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        amount = request.POST.get('amount')
+        bank_account = BankAccount.objects.get(user_id=user_id)
+        TopUpHistory.objects.create(
+            bank_account=bank_account,
+            transaction_type='D',
+            amount=amount,
+            user_id=user_id
+        )
+        bank_account.balance += amount
+        bank_account.save()
+        return redirect('home')
+    return render(request, 'topup.html', {'user_id':user_id})
 #Handle user transaction with bank
 # @require_POST
-def create_transaction(request):
-    # gross_amount = request.POST.get('gross_amount')
-    user_id = request.POST.get('user_id')
+def create_transaction(request, user_id):
+    gross_amount = request.POST.get('gross_amount')
     snap = Snap(
         is_production=False,
         server_key='SB-Mid-server-OUOnIHlPonXlJ3zt7M8mQkGX',  
@@ -84,7 +89,7 @@ def create_transaction(request):
     param = {
         "transaction_details": {
             "order_id": order_id,
-            "gross_amount": 1000000,
+            "gross_amount": gross_amount,
         },
         "credit_card":{
             "secure" : True
@@ -93,13 +98,22 @@ def create_transaction(request):
 
     transaction = snap.create_transaction(param)
     print(transaction)
-    TopUpHistory.objects.create(
-        bank_account=BankAccount,
-        transaction_type='P',
-        amount=100000,
-        order_id = order_id, 
-        user_id = user_id
+    bank_account = BankAccount.objects.get(user_id=user_id) 
+    bank_account.balance += Decimal(gross_amount)
+    bank_account.save()
+    TransactionHistory.objects.create(
+        source_account=BankAccount.objects.get(user_id=user_id),
+        destination_account=BankAccount.objects.get(user_id=user_id),
+        transaction_type='D',
+        amount=gross_amount
     )
+    # TopUpHistory.objects.create(
+    #     bank_account=BankAccount,
+    #     transaction_type='P',
+    #     amount=100000,
+    #     order_id = order_id, 
+    #     user_id = user_id
+    # )
     return redirect(transaction['redirect_url'])
 
 
@@ -123,7 +137,20 @@ from django.views.decorators.http import require_POST
 from .models import TransactionHistory
 
 def index_views(request):
-    return render(request, 'home/tables.html')
+    if request.method == 'POST':
+        application_id = request.POST.get('application_id')
+        application_status = request.POST.get('status')
+        application = Application.objects.get(id=application_id)
+        application.status = application_status
+        if application_status == 'A':
+            bank_account = application.bank_account
+            bank_account.is_active = True
+            bank_account.save()
+        application.save()
+        return redirect('home')    
+    applications = Application.objects.all().order_by('-status')
+    transactions = TransactionHistory.objects.all().order_by('-transaction_date')
+    return render(request, 'home/tables.html', {'applications': applications, 'transactions': transactions})
 
 @require_POST
 def handle_transaction(request):

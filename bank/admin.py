@@ -4,3 +4,6 @@ from .models import *
 admin.site.register(BankAccount)
 admin.site.register(TopUpHistory)
 admin.site.register(Application)
+admin.site.register(TransactionHistory)
+admin.site.register(BankAdmin)
+
