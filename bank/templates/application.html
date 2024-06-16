@@ -7,7 +7,7 @@
 <body>
       <div class="h-screen bg-gray-100 flex justify-center">
     <div class="py-6 px-8 h-80 mt-20 bg-white rounded shadow-xl">
-      <form method="POST" action="{% url 'bank:apply' user_id=12345 %}" enctype="multipart/form-data">
+      <form method="POST" action="{% url 'apply' user_id=user_id %}" enctype="multipart/form-data">
         <h1 class="font-bold text-center">Application Form</h1>
         {% csrf_token %}
         <div class="mb-6">

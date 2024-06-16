@@ -21,7 +21,7 @@ class Application(models.Model):
     STATUS_CHOICES = (
         ('P', 'Pending'),
         ('A', 'Accepted'),
-        ('R', 'Rejected'),
+        ('D', 'Declined'),
     )
 
     name = models.CharField(max_length=200, default='')
@@ -33,23 +33,11 @@ class Application(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.get_status_display()}'
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if not hasattr(self, 'bank_account'):
-            BankAccount.objects.create(name=self.name, ktp_photo=self.ktp_photo)
-
+    
+    
 class TopUpHistory(models.Model):
-    TRANSACTION_TYPES = (
-        ('D', 'Deposit'),
-        ('W', 'Withdrawal'),
-        ('P', 'Pending'),
-        ('T', 'Transfer')
-    )
-
     bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE)
     oder_id = models.CharField(max_length=30, default='')
-    transaction_type = models.CharField(max_length=1, choices=TRANSACTION_TYPES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     transaction_date = models.DateTimeField(default=timezone.now)
     user_id = models.IntegerField(default=0) 
@@ -71,7 +59,6 @@ class TransactionHistory(models.Model):
         ('D', 'Deposit'),
         ('W', 'Withdrawal'),
         ('P', 'Purchase'),
-        ('T', 'Transfer')
     )
 
     source_account = models.ForeignKey('BankAccount', on_delete=models.CASCADE, related_name='outgoing_transactions', default=0)
@@ -81,5 +68,5 @@ class TransactionHistory(models.Model):
     transaction_date = models.DateTimeField(auto_now_add=True) 
 
     def __str__(self):
-        return f'Transaction from account {self.source_account_id} to account {self.destination_account_id} - {self.get_transaction_type_display()}'
+        return f'Transaction from account {self.source_account_id}'
     
