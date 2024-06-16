@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "supplier",
     "delivery",
     "bank",
+    "seller",
 ]
 
 MIDDLEWARE = [
