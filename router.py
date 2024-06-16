@@ -37,3 +37,7 @@ class SupplierRouter:
         if app_label in self.route_app_labels:
             return db == "supplier_db"
         return None
+
+
+
+
