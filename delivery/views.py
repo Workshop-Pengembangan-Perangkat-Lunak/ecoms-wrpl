@@ -15,10 +15,10 @@ def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'product_detail.html', {'product': product})
 
-@login_required
+@login_required(login_url='delivery_login')
 def user_deliveries(request):
     deliveries = Delivery.objects.filter(user=request.user)
-    return render(request, 'user_deliveries.html', {'deliveries': deliveries})
+    return render(request, 'deliverydashboard.html', {'deliveries': deliveries})
 
 def add_delivery(request):
     if request.method == 'POST':
@@ -61,5 +61,10 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, f"Hi {username}")
-            return redirect('/delivery')
+            return redirect('/delivery/user_deliveries')
     return render(request, 'deliverylogin.html')
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, f"Have a nice day")
+    return redirect('/delivery')

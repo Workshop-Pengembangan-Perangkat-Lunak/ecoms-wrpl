@@ -1,5 +1,6 @@
-{% extends "base.html" %} {% load static %} {% block title %}Registration
-{%endblock title %} {% block content %}
+{% extends "basedelivery.html" %} {% load static %} {% block title %}
+<!--prettier-ignore-->
+Registration {%endblock title %} {% block content %}
 <!-- Modal Search Start -->
 <div
   class="modal fade"
@@ -42,9 +43,9 @@
   <div class="container py-5">
     <div class="row g-5 align-items-center">
       <div class="col-md-12 col-lg-7">
-        <h4 class="mb-3 text-secondary">Shop Anytime, Anywhere</h4>
+        <h4 class="mb-3 text-secondary">Deliver Anything, Anywhere</h4>
         <h1 class="mb-5 display-3 text-primary">
-          Quality Goods at Affordable Prices
+          Quality Delivery at Affordable Prices
         </h1>
       </div>
       <div class="col-md-12 col-lg-5">
@@ -59,7 +60,7 @@
               <div class="col-auto">
                 <p class="fs--1 text-600 mb-0">
                   Or
-                  <a href="{% url 'deliver_register' %}">Have an Account</a>
+                  <a href="{% url 'delivery_login' %}">Have an Account</a>
                 </p>
               </div>
             </div>
@@ -73,6 +74,7 @@
             >
               {% csrf_token %}
               <!--FirstName + LastName-->
+              {% comment %}
               <div class="row">
                 <div class="col mb-3">
                   <label for="first_name" class="form-label"
@@ -97,7 +99,9 @@
                   />
                 </div>
               </div>
+              {% endcomment %}
               <!--gender-->
+              {% comment %}
               <div class="row">
                 <div class="col mb-3">
                   <label for="gender" class="form-label"
@@ -109,6 +113,7 @@
                   </select>
                 </div>
               </div>
+              {% endcomment %}
               <!--username-->
               <div class="row">
                 <div class="col mb-3">
@@ -144,6 +149,7 @@
                 </div>
               </div>
               <!--phone-->
+              {% comment %}
               <div class="row">
                 <div class="col mb-3">
                   <label for="phone" class="form-label"
@@ -157,7 +163,9 @@
                   />
                 </div>
               </div>
+              {% endcomment %}
               <!--address-->
+              {% comment %}
               <div class="row">
                 <div class="col mb-3">
                   <label for="address" class="form-label"
@@ -171,6 +179,7 @@
                   />
                 </div>
               </div>
+              {% endcomment %}
               <!--Password-->
               <div class="row">
                 <div class="col mb-3">
@@ -186,6 +195,7 @@
                   />
                 </div>
               </div>
+              {% comment %}
               <div class="mb-3 form-check">
                 <input
                   type="checkbox"
@@ -196,6 +206,7 @@
                   >Check me out</label
                 >
               </div>
+              {% endcomment %}
               <button type="submit" class="btn btn-primary text-light">
                 Register
               </button>

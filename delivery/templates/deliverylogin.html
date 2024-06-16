@@ -41,9 +41,9 @@
   <div class="container py-5">
     <div class="row g-5 align-items-center">
       <div class="col-md-12 col-lg-7">
-        <h4 class="mb-3 text-secondary">Shop Anytime, Anywhere</h4>
+        <h4 class="mb-3 text-secondary">Deliver Anything, Anywhere</h4>
         <h1 class="mb-5 display-3 text-primary">
-          Quality Goods at Affordable Prices
+          Quality Delivery at Affordable Prices
         </h1>
       </div>
       <div class="col-md-12 col-lg-5">
@@ -58,7 +58,7 @@
               <div class="col-auto">
                 <p class="fs--1 text-600 mb-0">
                   Or
-                  <a href="{% url 'register' %}">Create an Account</a>
+                  <a href="{% url 'delivery_register' %}">Create an Account</a>
                 </p>
               </div>
             </div>
@@ -97,16 +97,6 @@
                   name="password"
                 />
                 <!--                          {{ form.password }}-->
-              </div>
-              <div class="mb-3 form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="exampleCheck1"
-                />
-                <label class="form-check-label" for="exampleCheck1"
-                  >Check me out</label
-                >
               </div>
               <button type="submit" class="btn btn-primary text-light">
                 Login
