@@ -1,0 +1,121 @@
+{% extends 'layouts/base.html' %}
+{% load custom_tags %}
+{% block title %}
+Tables {% endblock title %}
+{% block content %}
+
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item">
+                                <a href="#"><i class="fas fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#">Tables</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Tables</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a href="#" class="btn btn-sm btn-neutral">New</a>
+                    <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Light table</h3>
+                </div>
+
+                <div class="py-5">
+                    <div class="row mb-4">
+                        <div class="col-lg-20 mx-auto text-center">
+                            <h1 class="display-6">Update Products</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mx-auto w-50">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="bg-white shadow-sm pt-4 pl-2 pr-2 pb-2"></div>
+                                    <div class="tab-content">
+                                        <div id="credit-card" class="tab-pane fade show active pt-3">
+                                            <form role="form" method="post"
+                                                action="{% url 'supplier:update_product' product.id %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label for="productname">
+                                                        <h6>Product Name</h6>
+                                                    </label>
+                                                    <input type="text" name="product_name"
+                                                        value="{{ product.product_name }}" placeholder="Product Name"
+                                                        required class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productdescription">
+                                                        <h6>Product Description</h6>
+                                                    </label>
+                                                    <input type="text" name="product_description"
+                                                        value="{{ product.product_description }}"
+                                                        placeholder="Product Description" required
+                                                        class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productcategory">
+                                                        <h6>Product Category</h6>
+                                                    </label>
+                                                    <input type="text" name="product_category"
+                                                        value="{{ product.product_category }}"
+                                                        placeholder="Product Category" required class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="stockgudang">
+                                                        <h6>Stock Gudang</h6>
+                                                    </label>
+                                                    <input type="number" name="stock_gudang"
+                                                        value="{{ product.stock_gudang }}" placeholder="Stock Gudang"
+                                                        required class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="productprice">
+                                                        <h6>Product Price</h6>
+                                                    </label>
+                                                    <input type="number" name="product_price"
+                                                        value="{{ product.product_price }}" placeholder="Product Price"
+                                                        required class="form-control" />
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="submit"
+                                                        class="subscribe btn btn-primary btn-block shadow-sm">
+                                                        Update Product
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "includes/footer.html" %} {% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %} {% endblock javascripts %}

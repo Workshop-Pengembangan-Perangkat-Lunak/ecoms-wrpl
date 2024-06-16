@@ -9,18 +9,14 @@
       <div class="header-body">
         <div class="row align-items-center py-4">
           <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Tables</h6>
+            <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
               <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                 <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Tables</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Tables</li>
+                <li class="breadcrumb-item"><a href="#">Bank</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
               </ol>
             </nav>
-          </div>
-          <div class="col-lg-6 col-5 text-right">
-            <a href="#" class="btn btn-sm btn-neutral">New</a>
-            <a href="#" class="btn btn-sm btn-neutral">Filters</a>
           </div>
         </div>
       </div>
@@ -34,7 +30,7 @@
         <div class="card">
           <!-- Card header -->
           <div class="card-header border-0">
-            <h3 class="mb-0">Admin Data</h3>
+            <h3 class="mb-0">Applications Data</h3>
           </div>
           <!-- Light table -->
           <div class="table-responsive">
@@ -45,171 +41,69 @@
                   <th scope="col" class="sort" data-sort="photo">Foto KTP</th>
                   <th scope="col" class="sort" data-sort="status">Status</th>
                   <th scope="col" class="sort" data-sort="completion">Action Status</th>
+                  <th scope="col" class="sort" data-sort="completion">Applied At</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody class="list">
+              {% for application in applications %}
                 <tr>
                   <th scope="row">
                     <div class="media align-items-center">
-                      <!--a href="#" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" src="/static/assets/img/theme/bootstrap.jpg">
-                      </a-->
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">Argon Design System</span>
+                        <span class="name mb-0 text-sm">{{application.name}}</span>
                       </div>
                     </div>
                   </th>
                   <td class="photo">
-                    <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
+                    <a class="" href="{{application.ktp_photo.url}}">{{application.ktp_photo|truncatechars:20}}</a>
                   </td>
                   <td>
                     <span class="badge badge-dot mr-4">
+                    {% if application.status == 'P' %}
                       <i class="bg-warning"></i>
-                      <span class="status">pending</span>
-                    </span>
-                  </td>
-                  <td> 
-                    <div class="col-lg-6 col-5 text-right">
-                      <a href="#" class="btn btn-sm btn-neutral">Reject</a>
-                      <a href="#" class="btn btn-sm btn-neutral">Accept</a>
-                  </td>
-                  <td class="text-right">
-                    <!--div class="dropdown">
-                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </div-->
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Angular Now UI Kit PRO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
+                      <span class="status">Pending</span>
+                    {% elif application.status == 'A' %}
                       <i class="bg-success"></i>
-                      <span class="status">completed</span>
-                    </span>
-                  </td>
-                  <td> 
-                    <div class="col-lg-6 col-5 text-right">
-                      <a href="#" class="btn btn-sm btn-neutral">Reject</a>
-                      <a href="#" class="btn btn-sm btn-neutral">Accept</a>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Black Dashboard</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
+                      <span class="status">Accepted</span>
+                    {% elif application.status == 'D' %}
                       <i class="bg-danger"></i>
-                      <span class="status">delayed</span>
+                      <span class="status">Declined</span>
+                    {% endif %}
                     </span>
                   </td>
-                  <td>
-                    <div class="col-lg-6 col-5 text-right">
-                      <a href="#" class="btn btn-sm btn-neutral">Reject</a>
-                      <a href="#" class="btn btn-sm btn-neutral">Accept</a>
-                    </div>
+                  <td> 
+                    <div class=" d-flex">
+                      <form method="POST" action="{% url 'home' %}" class="mr-2">
+                        {% csrf_token %}
+                        <input type="hidden" name="application_id" value="{{application.id}}">
+                        <input type="hidden" name="status" value="D">
+                        <input type="submit" class="btn btn-sm btn-neutral" value="Decline">
+                      </form>
+                      <form method="POST" action="{% url 'home' %}" class="">
+                        {% csrf_token %}
+                        <input type="hidden" name="application_id" value="{{application.id}}">
+                        <input type="hidden" name="status" value="A">
+                        <input type="submit" class="btn btn-sm btn-neutral" value="Accept">
+                      </form>
+                      {% comment %} <a href="#" class="btn btn-sm btn-neutral">Reject</a>
+                      <a href="#" class="btn btn-sm btn-neutral">Accept</a> {% endcomment %}
                   </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
+                  <td class="">
+                  <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">React Material Dashboard</span>
+                        <span class="name mb-0 text-sm">{{application.applied_at}}</span>
                       </div>
                     </div>
-                  </th>
-                  <td class="photo">
-                    <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-info"></i>
-                      <span class="status">on schedule</span>
-                    </span>
-                  </td>
-                  <td>
-                    <div class="col-lg-6 col-5 text-right">
-                      <a href="#" class="btn btn-sm btn-neutral">Reject</a>
-                      <a href="#" class="btn btn-sm btn-neutral">Accept</a>
-                    </div>
                   </td>
                 </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Vue Paper UI Kit PRO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    <a href="https://www.w3schools.com/">Visit W3Schools.com!</a>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-success"></i>
-                      <span class="status">completed</span>
-                    </span>
-                  </td>
-                  <td>
-                    <div class="col-lg-6 col-5 text-right">
-                      <a href="#" class="btn btn-sm btn-neutral">Reject</a>
-                      <a href="#" class="btn btn-sm btn-neutral">Accept</a>
-                    </div>
-                  </td>
-                </tr>
+              {% endfor %}
               </tbody>
             </table>
           </div>
           <!-- Card footer -->
           <div class="card-footer py-4">
             <nav aria-label="...">
-              <ul class="pagination justify-content-end mb-0">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">
-                    <i class="fas fa-angle-left"></i>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">
-                    <i class="fas fa-angle-right"></i>
-                    <span class="sr-only">Next</span>
-                  </a>
-                </li>
-              </ul>
             </nav>
           </div>
         </div>
@@ -229,168 +123,56 @@
                   <th scope="col" class="sort" data-sort="name">Pengirim</th>
                   <th scope="col" class="sort" data-sort="photo">Penerima</th>
                   <th scope="col" class="sort" data-sort="jumlah">Jumlah</th>
-                  <th scope="col" class="sort" data-sort="status">Status</th>
+                  <th scope="col" class="sort" data-sort="status">Tipe</th>
+                  <th scope="col" class="sort" data-sort="status">Tanggal</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody class="list">
-                <tr>
+              {% for transaction in transactions %}
+              <tr>
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">Argon Design System</span>
+                        <span class="name mb-0 text-sm">{{transaction.source_account|truncatechars:20}}</span>
                       </div>
                     </div>
                   </th>
                   <th scope="row">
                     <div class="media align-items-center">
                       <div class="media-body">
-                        <span class="name mb-0 text-sm">Argon Design System</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    $2500 USD
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-warning"></i>
-                      <span class="status">pending</span>
-                    </span>
-                  </td>
-
-                  <!--td>
-                    <div class="d-flex align-items-center">
-                      <span class="completion mr-2">60%</span>
-                      <div>
-                        <div class="progress">
-                          <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </td-->
-                  <!--td class="text-right">
-                    <div class="dropdown">
-                      <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                      </div>
-                    </div>
-                  </td-->
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Angular Now UI Kit PRO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Angular Now UI Kit PRO</span>
+                        <span class="name mb-0 text-sm">{{transaction.destination_account|truncatechars:20}}</span>
                       </div>
                     </div>
                   </th>
                   <td class="photo">
-                    $1800 USD
+                    {{transaction.amount}}
                   </td>
                   <td>
                     <span class="badge badge-dot mr-4">
-                      <i class="bg-success"></i>
-                      <span class="status">completed</span>
+                    {% if transaction.transaction_type == 'D' %}
+                      <span class="status">Deposit</span>
+                    {% elif transaction.transaction_type == 'W' %}
+                      <span class="status">Withdraw</span>
+                    {% elif transaction.transaction_type == 'T'%}
+                      <span class="status">Transfer</span>
+                    {% endif %}
                     </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Black Dashboard</span>
-                      </div>
-                    </div>
-                  </th>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Black Dashboard</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    $3150 USD
                   </td>
                   <td>
                     <span class="badge badge-dot mr-4">
-                      <i class="bg-danger"></i>
-                      <span class="status">delayed</span>
+                      <span class="status">{{transaction.transaction_date}}</span>
                     </span>
                   </td>
                 </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">React Material Dashboard</span>
-                      </div>
-                    </div>
-                  </th>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">React Material Dashboard</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    $4400 USD
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-info"></i>
-                      <span class="status">on schedule</span>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Vue Paper UI Kit PRO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <th scope="row">
-                    <div class="media align-items-center">
-
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">Vue Paper UI Kit PRO</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    $2200 USD
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <i class="bg-success"></i>
-                      <span class="status">completed</span>
-                    </span>
-                  </td>
-                  </td>
-                </tr>
+              {% endfor %}
+                
               </tbody>
             </table>
          <!-- Card footer -->
          <div class="card-footer py-4">
           <nav aria-label="...">
-            <ul class="pagination justify-content-end mb-0">
+            {% comment %} <ul class="pagination justify-content-end mb-0">
               <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1">
                   <i class="fas fa-angle-left"></i>
@@ -408,7 +190,7 @@
                 <a class="page-link" href="#">
                   <i class="fas fa-angle-right"></i>
                   <span class="sr-only">Next</span>
-                </a>
+                </a> {% endcomment %}
               </li>
             </ul>
           </nav>
