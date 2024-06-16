@@ -34,17 +34,6 @@ class Application(models.Model):
     def __str__(self):
         return f'{self.name} - {self.get_status_display()}'
     
-    
-class TopUpHistory(models.Model):
-    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE)
-    oder_id = models.CharField(max_length=30, default='')
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    transaction_date = models.DateTimeField(default=timezone.now)
-    user_id = models.IntegerField(default=0) 
-
-    def __str__(self):
-        return f'{self.bank_account.name} - {self.get_transaction_type_display()}'
-    
 
 class BankAdmin(models.Model):
     username = models.CharField(max_length=200)

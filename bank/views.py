@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.csrf import csrf_exempt  # Add this line
-from .models import Application, BankAccount, TopUpHistory, TransactionHistory
+from .models import Application, BankAccount, TransactionHistory
 
 # handle login register for bank admin
 def register_user(request):
@@ -61,19 +61,6 @@ import json
 from midtransclient import Snap
 
 def topup(request, user_id):
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        amount = request.POST.get('amount')
-        bank_account = BankAccount.objects.get(user_id=user_id)
-        TopUpHistory.objects.create(
-            bank_account=bank_account,
-            transaction_type='D',
-            amount=amount,
-            user_id=user_id
-        )
-        bank_account.balance += amount
-        bank_account.save()
-        return redirect('home')
     return render(request, 'topup.html', {'user_id':user_id})
 #Handle user transaction with bank
 # @require_POST
@@ -107,30 +94,7 @@ def create_transaction(request, user_id):
         transaction_type='D',
         amount=gross_amount
     )
-    # TopUpHistory.objects.create(
-    #     bank_account=BankAccount,
-    #     transaction_type='P',
-    #     amount=100000,
-    #     order_id = order_id, 
-    #     user_id = user_id
-    # )
     return redirect(transaction['redirect_url'])
-
-
-def handle_callback(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        order_id = data['order_id']
-        status_code = data['status_code']
-        if status_code == '200':
-            top_up = TopUpHistory.objects.get(order_id= order_id)
-            user_id = top_up.user_id
-            # Assuming 'other_database' is the alias for your other database
-            user = User.objects.using('ecoms').get(id=user_id)
-            user.balance += top_up.amount
-            user.save(using='ecoms')
-            
-    return HttpResponse(status=200)
 
 # handle transaction between users
 from django.views.decorators.http import require_POST
