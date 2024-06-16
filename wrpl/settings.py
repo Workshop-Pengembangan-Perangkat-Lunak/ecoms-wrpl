@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "supplier",
     "delivery"
     "bank",
+    "seller",
 ]
 
 MIDDLEWARE = [
@@ -160,6 +161,7 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
 MESSAGE_TAGS={
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
