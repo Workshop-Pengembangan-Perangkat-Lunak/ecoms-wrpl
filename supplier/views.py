@@ -1,4 +1,4 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, login
 from django.shortcuts import (
     render,
     redirect
@@ -49,6 +49,7 @@ def registersupplier(request):
             user.save(using='supplier_db')
             supplier.save(using='supplier_db')
             messages.success(request, "User registered succesfully")
+            login(request, user)
             return redirect('/supplier/dashboard')
         except Exception as e:
             logger.error(f"Failed to register user: {e}")
@@ -168,3 +169,9 @@ def show_dashboard(request):
 #     paginator = Paginator(products, 10)  # 10 products per page
 #     page_number = request.GET.get('page')
 #     page_obj = paginator.get_page(page_number)
+
+
+
+def logout_supplier(request):
+    logout(request)
+    return redirect('/supplier/login')
