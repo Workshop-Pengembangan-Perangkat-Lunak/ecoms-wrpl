@@ -10,16 +10,19 @@ class Seller(models.Model):
     location = models.CharField(max_length=200)
     no_rek = models.CharField(max_length=100)
     
-    def __str__(self):
-        return f'{self.user.email} - {self.user.username}'
+    # def __str__(self):
+    #     return f'{self.user.email} - {self.user.username}'
 
 
 class Product(models.Model):
     seller = models.ForeignKey(Seller, on_delete=models.CASCADE)
     product_name = models.CharField(max_length=100)
-    product_description = models.IntegerField()
-    stock_gudang = models.IntegerField()
+    product_description = models.CharField(max_length=100)
+    product_category = models.CharField(max_length=100, default='lainnya')
     product_price = models.IntegerField()
+    stock_gudang = models.IntegerField()
+    product_image = models.ImageField(upload_to='product_images', default='default_product.jpg')
+    supplier = models.CharField(max_length=100 , default='none')
     
     def __str__(self):
         return f'{self.product_name} - {self.product_price}'
