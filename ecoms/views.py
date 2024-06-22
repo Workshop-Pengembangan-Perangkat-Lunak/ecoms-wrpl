@@ -1,6 +1,7 @@
 from .models import Customer, Cart, Transaction, TransactionDetail
 from django.shortcuts import render, redirect
 from .models import *
+from seller.models import Product as SellerProduct
 from django.db import connection
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
@@ -65,7 +66,12 @@ def create_product(request):
 
 def show_products(request):
     department = Department.objects.all()
-    products = Product.objects.all()
+    products = SellerProduct.objects.using('seller_db').all()
+    print(products[0].product_category)
+    for product in products:
+        if not Department.objects.filter(dept_name=product.product_category).exists():
+            dept = Department(dept_name=product.product_category)
+            dept.save(using='default')
     if request.method == "POST":
         name_filter = request.POST.get('name_filter') or None
         dept_filter = request.POST.get('dept_filter') or None
@@ -77,7 +83,7 @@ def show_products(request):
                 product_name__icontains=f'{name_filter}').all()
         if dept_filter:
             products = products.filter(
-                department_id=Department.objects.get(dept_name=dept_filter))
+                product_category=Department.objects.get(dept_name=dept_filter))
         if min_price and not max_price:
             products = products.filter(
                 selling_price__range=[min_price, 99999999])
@@ -93,7 +99,7 @@ def show_products(request):
     return render(request, 'index.html', {'products': products, 'departments': department})
 
 def show_product_detail(request, pk):
-    product = Product.objects.get(id=pk)
+    product = SellerProduct.objects.using('seller_db').get(id=pk)
     return render(request, 'product_detail.html', {'product': product})
 
 def show_departments(request):
@@ -112,14 +118,25 @@ def show_cart(request):
     customer = Customer.objects.get(user=user)
     carts = Cart.objects.filter(user_id=customer).all() or None
     subtotal = 0
+    prod=[]
     if carts:
         for cart in carts:
-            subtotal += cart.product_id.selling_price * cart.qty
+            product = SellerProduct.objects.using('seller_db').get(id=cart.product_id)
+            prod.append(product)
+            subtotal += product.product_price * cart.qty
+    
+        cart_products = [{'cart': cart, 'product': product} for cart, product in zip(carts, prod)]
+        context = {
+            'carts': carts,
+            'subtotal': subtotal,
+            'customer': customer,
+            'cart_products' : cart_products
+        }
+        return render(request, 'cart.html', context)
     context = {
-        'carts': carts,
-        'subtotal': subtotal,
-        'customer': customer
-    }
+            'subtotal': subtotal,
+            'customer': customer,
+        }
     return render(request, 'cart.html', context)
 
 
@@ -156,31 +173,32 @@ def show_specific_products(request):
 @login_required(login_url='login')
 def add_to_cart(request):
     user_id = request.POST.get('user_id')
-    product_id = request.POST.get('product_id')
+    prod_id = request.POST.get('product_id')
     # qty = request.POST.get('qty')
     user = User.objects.get(id=user_id)
-    product = Product.objects.get(id=product_id)
+    product = SellerProduct.objects.using('seller_db').get(id=prod_id)
+    print("produknya",product.id)
     customer = Customer.objects.get(user=user)
-    if Cart.objects.filter(user_id=customer, product_id=product).exists():
-        cart = Cart.objects.get(user_id=customer, product_id=product)
+    if Cart.objects.filter(user_id=customer, product_id=product.id).exists():
+        cart = Cart.objects.get(user_id=customer, product_id=product.id)
         cart.qty += 1
     else:
-        cart = Cart(user_id=customer, product_id=product)
+        cart = Cart(user_id=customer, product_id=product.id)
     # cart = CartForm(request.POST or None, initial={'qty': 1})
-    cart.save()
+    cart.save(using='default')
     return redirect('/ecoms')
 
 def add_to_cart2(request, pk):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
-    product = Product.objects.get(id=pk)
-    if Cart.objects.filter(user_id=customer, product_id=product).exists():
-        cart = Cart.objects.get(user_id=customer, product_id=product)
+    product = SellerProduct.objects.using('seller_db').get(id=pk)
+    if Cart.objects.filter(user_id=customer, product_id=product.id).exists():
+        cart = Cart.objects.get(user_id=customer, product_id=product.id)
         cart.qty += 1
     else:
-        cart = Cart(user_id=customer, product_id=product)
+        cart = Cart(user_id=customer, product_id=product.id)
         
-    cart.save()
+    cart.save(using='default')
     return redirect('/ecoms/product_detail/'+str(pk))
 
 def remove_from_cart(request, pk):
