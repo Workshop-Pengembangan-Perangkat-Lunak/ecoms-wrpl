@@ -1,0 +1,159 @@
+{% extends 'base/base-fullscreen.html' %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<!-- Page content -->
+<div class="container mt--8 pb-5">
+  <!-- Table -->
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card bg-secondary border-0">
+        <div class="card-body px-lg-5 py-lg-5">
+          <div class="text-center text-muted mb-4">
+            <small>sign up with credentials</small>
+          </div>
+          <form role="form" action="" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <div
+                class="input-group input-group-merge input-group-alternative mb-3"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="ni ni-hat-3"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Username"
+                  type="text"
+                  id="username"
+                  name="username"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div
+                class="input-group input-group-merge input-group-alternative mb-3"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="ni ni-email-83"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Email"
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div
+                class="input-group input-group-merge input-group-alternative"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="ni ni-lock-circle-open"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Password"
+                  type="password"
+                  id="password"
+                  name="password"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div
+                class="input-group input-group-merge input-group-alternative"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="ni bi-phone"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="No telepon"
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div
+                class="input-group input-group-merge input-group-alternative"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="ni bi-geo-alt"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="Address"
+                  type="text"
+                  id="address"
+                  name="address"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <div
+                class="input-group input-group-merge input-group-alternative"
+              >
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i class="ni bi-bank"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control"
+                  placeholder="No Rekening"
+                  type="text"
+                  id="no_rek"
+                  name="no_rek"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="row my-4">
+              <div class="col-12">
+                <div
+                  class="custom-control custom-control-alternative custom-checkbox"
+                >
+                  <span class="text-muted"
+                    >Not have an account? <a href="{% url "seller:login_seller" %}">Login</a></span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary mt-4">
+                Create account
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

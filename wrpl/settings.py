@@ -100,7 +100,8 @@ DATABASES = {
 
 DATABASES_ROUTERS = [
     'router.SupplierRouter',
-    'wrpl.routers.BankRouter'
+    'wrpl.routers.BankRouter',
+    'seller.router.SellerRouter',
 ]
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

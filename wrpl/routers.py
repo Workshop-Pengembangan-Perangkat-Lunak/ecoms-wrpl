@@ -19,3 +19,6 @@ class BankRouter:
         if app_label == 'ecoms' and model_name == 'bank_customer':
             return db == 'bank'
         return None
+    
+    
+    
