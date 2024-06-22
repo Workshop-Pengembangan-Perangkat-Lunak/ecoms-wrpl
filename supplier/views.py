@@ -19,6 +19,7 @@ from django.views.decorators.csrf import (
 from django.core.paginator import Paginator
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -134,8 +135,6 @@ def delete_product(request, product_id):
 @login_required(login_url="/supplier/login")
 def show_dashboard(request):
     user = User.objects.get(id=request.user.id)
-    print(user.id)
-
     supplier = Supplier.objects.using(
         'supplier_db').get(user_id=user.id)
 
@@ -150,9 +149,7 @@ def show_dashboard(request):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'home/tables.html', {'page_obj': page_obj, 'search': search})
-
     else:
-
         products = Product.objects.using(
             'supplier_db').filter(supplier=supplier,)
 
@@ -162,9 +159,19 @@ def show_dashboard(request):
         page_obj = paginator.get_page(page_number)
         return render(request, 'home/tables.html', {'page_obj': page_obj})
 
+def make_seller_request(request):
+    product_id = request.POST.get('product_id')
+    request_stock = request.POST.get('request_stock')
+    product = Product.objects.get(id=product_id)
+    seller_request = SellerBuyRequest(request_stock=request_stock, product=product)
+    seller_request.save(using='supplier_db')
+    return  
 
-#  supplier = Supplier.objects.using('supplier_db').get(user_id=user.id)
-#     products = Product.objects.using('supplier_db').filter(supplier=supplier)
-#     paginator = Paginator(products, 10)  # 10 products per page
-#     page_number = request.GET.get('page')
-#     page_obj = paginator.get_page(page_number)
+def accept_seller_request(request):
+    product_id = request.POST.get('product_id')
+    request_stock = request.POST.get('request_stock')
+    product = Product.objects.using('supplier_db').filter(id=product_id)
+    if int(request_stock) > int(product.stock_gudang):
+        return JsonResponse(data={'message':'kebanyakan barangnya'})
+    product.stock_gudang = product.stock_gudang - request_stock
+    return redirect('seller:dashboard') 

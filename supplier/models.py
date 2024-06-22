@@ -17,3 +17,7 @@ class Product(models.Model):
     product_category = models.CharField(max_length=100)
     product_price = models.IntegerField()
     stock_gudang = models.IntegerField()
+
+class SellerBuyRequest(models.Model):
+    request_stock = models.IntegerField()
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
