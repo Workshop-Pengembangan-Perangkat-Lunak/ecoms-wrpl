@@ -21,7 +21,7 @@
       </div>
       <form
         class="modal-body d-flex align-items-center"
-        action="{% url 'home' %}"
+        action="{% url 'buyer:home' %}"
         method="post"
       >
         {% csrf_token %}
@@ -51,17 +51,21 @@
       <div class="preview col-md-6">
         
         <div class="preview-pic tab-content ">
-          <img src="{{ product.product_image.url }}" class="rounded-3 " />
+          <img src="{{ product.product_image.url }}" class="rounded-3 " width="300rem" />
         </div>
         
       </div>
       <div class="details col-md-6">
         <h3 class="product-title">{{product.product_name}}</h3>
-        <h5>Stock : <span>{{product.stock}}</span></h5>
-        <p class="product-description">{{ product.description }}</p>
-        <h4 class="price">current price: <span>${{product.selling_price}}</span></h4>
+        <div class="d-flex gap-2 my-3">
+          <img src="{% static 'img/avatar.jpg' %}" alt="" width="50px">
+          <h5 class="pt-3 text-black-50">{{product.seller.user}}</h5>
+        </div>
+        <h5>Stock : <span>{{product.stock_gudang}}</span></h5>
+        <p class="product-description">{{ product.product_description }}</p>
+        <h4 class="price">current price: <span>${{product.product_price}}</span></h4>
         <div class="d-flex gap-2">
-          <a href="{% url 'add_to_cart2' product.id %}" class="w-50 open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
+          <a href="{% url 'buyer:add_to_cart2' product.id %}" class="w-50 open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-primary"><i
             class="fa fa-shopping-cart me-2 text-primary"></i>Cart</a>
         </div>
       </div>
