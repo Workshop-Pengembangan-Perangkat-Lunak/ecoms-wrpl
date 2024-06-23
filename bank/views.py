@@ -35,7 +35,7 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, f"Hi {username}")
-            return redirect('/bank/')
+            return redirect('bank:home')
     return render(request, 'login.html')
 
 
@@ -53,7 +53,7 @@ def show_applications(request, user_id):
                 bank_account.save()
                 application.bank_account = bank_account
                 application.save()
-                return redirect('apply', user_id=user_id)
+                return redirect('bank:apply', user_id=user_id)
     application = Application.objects.all()
     return render(request, 'application.html', {'application':application, 'user_id':user_id})
 import json
@@ -111,10 +111,10 @@ def index_views(request):
             bank_account.is_active = True
             bank_account.save()
         application.save()
-        return redirect('home')    
+        return redirect('bank:home')    
     applications = Application.objects.all().order_by('-status')
     transactions = TransactionHistory.objects.all().order_by('-transaction_date')
-    return render(request, 'home/tables.html', {'applications': applications, 'transactions': transactions})
+    return render(request, 'tables.html', {'applications': applications, 'transactions': transactions})
 
 @require_POST
 def handle_transaction(request):

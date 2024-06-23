@@ -321,8 +321,7 @@ def checkout(request):
     if total_price > wallet.balance:
         return JsonResponse(data={'message': 'saldo anda tidak cukup, silahkan topup terlebih dahulu'})
 
-    transaction = Transaction(transaction_code=f"{request.user.id}{str(uuid.uuid4(
-    ))}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}{str(uuid.uuid4())}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     wallet.balance = wallet.balance - total_price
     wallet.save(using='bank')
@@ -338,8 +337,7 @@ def checkout(request):
             name=product.product_name, description=product.product_description)
         delivery_product.save(using='delivery_db')
 
-        address = f"{customer.city} {customer.subdistrict} {
-            customer.postal_code} {customer.address}"
+        address = f"{customer.city} {customer.subdistrict} {customer.postal_code} {customer.address}"
         delivery = Delivery(user_id=customer.id, transaction_id=transaction.id, product=delivery_product,
                             delivery_address=address, delivery_date=datetime.now(), status='P')
         delivery.save(using='delivery_db')
@@ -368,8 +366,7 @@ def checkout2(request, pk):
         [products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
     if total_price > wallet.balance:
         return JsonResponse(data={'message': 'saldo anda tidak cukup, silahkan topup terlebih dahulu'})
-    transaction = Transaction(transaction_code=f"{request.user.id}-{
-                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     wallet.balance = wallet.balance - total_price
     wallet.save(using='bank')
