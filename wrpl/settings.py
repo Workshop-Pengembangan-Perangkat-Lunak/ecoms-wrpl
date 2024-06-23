@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "ecoms",
     "supplier",
-    "delivery"
+    "delivery",
     "bank",
 ]
 
@@ -160,6 +160,7 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
 MESSAGE_TAGS={
     messages.DEBUG: 'alert-info',
     messages.INFO: 'alert-info',
