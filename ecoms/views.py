@@ -2,13 +2,16 @@ from .models import Customer, Cart, Transaction, TransactionDetail
 from django.shortcuts import render, redirect
 from .models import *
 from seller.models import Product as SellerProduct
+from delivery.models import Product as DeliveryProduct, Delivery
 from django.db import connection
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
-# Create your views here.
+from datetime import datetime
+import uuid
+# Create yoimpour views here.
 
 
 def home(request):
@@ -67,7 +70,6 @@ def create_product(request):
 def show_products(request):
     department = Department.objects.all()
     products = SellerProduct.objects.using('seller_db').all()
-    print(products[0].product_category)
     for product in products:
         if not Department.objects.filter(dept_name=product.product_category).exists():
             dept = Department(dept_name=product.product_category)
@@ -212,9 +214,24 @@ def show_dashboard(request):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
     transactions = Transaction.objects.filter(user_id=customer).all()
+    # transaction_details = TransactionDetail.objects.filter(transaction_code__in=transactions)
+    
+    # product_ids = transaction_details.values_list('product_id', flat=True)
+    # print('product_ids', product_ids)
+    # products = SellerProduct.objects.using('seller_db').filter(id__in=product_ids)
+    # print('products', products)
+    
+    if not transactions.exists():
+        context = {
+        'transactions': transactions, 'customer': customer,
+        }
+        return render(request, 'dashboard.html', context)
+    
+    delivery = Delivery.objects.using('delivery_db').filter(user_id=customer.id)
     context = {
-        'transactions': transactions, 'customer': customer
+        'transactions': transactions, 'customer': customer, 'deliveries': delivery
     }
+  
     return render(request, 'dashboard.html', context)
 
 def update_profile(request,pk):
@@ -286,45 +303,55 @@ def checkout(request):
         return redirect('/ecoms/cart')
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
+    products = SellerProduct.objects.using('seller_db').all()
     total_price = sum(
-        [cart.product_id.selling_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+        [products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
+    transaction = Transaction(transaction_code=f"{request.user.id}{str(uuid.uuid4())}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
-            transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+            transaction_code=transaction, product_id=cart.product_id, total=products.get(id=cart.product_id).product_price*cart.qty)
         transaction_details.save()
-        product = Product.objects.get(
-            id=cart.product_id.id)
-        product.stock = product.stock - cart.qty
-        product.save()
+        product = SellerProduct.objects.using('seller_db').get(
+            id=cart.product_id)
+        
+        print("customer",customer.id)
+        delivery_product = DeliveryProduct( name = product.product_name, description = product.product_description)
+        delivery_product.save(using='delivery_db')
+        
+        address = f"{customer.city} {customer.subdistrict} {customer.postal_code} {customer.address}"
+        delivery = Delivery(user_id=customer.id,transaction_id=transaction.id, product=delivery_product, delivery_address=address, delivery_date=datetime.now(), status='P')
+        delivery.save(using='delivery_db')
+        
+        product.stock_gudang = product.stock_gudang - cart.qty
+        product.save(using='seller_db')
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
 
 def checkout2(request,pk):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
-    product = Product.objects.get(id=pk)
+    products = SellerProduct.objects.using('seller_db').all()
     if request.method == "POST":
         qty = request.POST.get('qty')
         if qty:
-            cart = Cart.objects.get(user_id=customer, product_id=product)
+            cart = Cart.objects.get(user_id=customer, product_id=products.get(id=pk).id)
             cart.qty = qty
             cart.save()
         return redirect('/ecoms/cart')
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
-        [cart.product_id.selling_price * cart.qty for cart in carts])
+        [ products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
     transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
     for cart in carts:
         transaction_details = TransactionDetail(
-            transaction_code=transaction, product_id=cart.product_id, total=cart.product_id.selling_price*cart.qty)
+            transaction_code=transaction, product_id=cart.product_id, total=products.get(id=cart.product_id).product_price*cart.qty)
         transaction_details.save()
-        product = Product.objects.get(
-            id=cart.product_id.id)
-        product.stock = product.stock - cart.qty
-        product.save()
+        product = SellerProduct.objects.using('seller_db').get(
+            id=cart.product_id)
+        product.stock_gudang = product.stock_gudang - cart.qty
+        product.save(using='seller_db')
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
 

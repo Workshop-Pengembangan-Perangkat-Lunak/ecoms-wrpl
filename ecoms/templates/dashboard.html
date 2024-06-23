@@ -52,7 +52,7 @@
         <div class="row mt-2">
           <a
             class="btn open-popup-link btn border border-secondary mt-2 d-flex justify-content-center align-items-center rounded-pill px-3 text-dark mt-4"
-            href="{% url 'update_profile' customer.user.id %}"
+            href="{% url 'buyer:update_profile' customer.user.id %}"
             >Update Profile</a
           >
         </div>
@@ -182,9 +182,11 @@
           <th scope="col">Total Price</th>
           <th scope="col">Payment Money</th>
           <th scope="col">Date</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
+        {% if transactions %}
         {% for transaction in transactions %}
         <tr class="cart-item">
           <td>
@@ -202,8 +204,17 @@
           <td>
             <p class="mb-0 mt-4">{{transaction.created_at}}</p>
           </td>
+          <td>
+            {% for delivery in deliveries %}
+            {% if delivery.transaction_id == transaction.id %}
+                <p class="mb-0 mt-4">{{ delivery.get_status_display }}</p>
+            {% endif %}
+        {% endfor %}
+          </td>
         </tr>
         {% endfor %}
+        {% endif %}
+        
       </tbody>
     </table>
   </div>
