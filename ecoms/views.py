@@ -11,6 +11,8 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from datetime import datetime
 import uuid
+from bank.models import BankAccount
+from django.http.response import JsonResponse
 # Create yoimpour views here.
 
 
@@ -34,9 +36,9 @@ def register_user(request):
         last_name = request.POST.get('last_name')
         address = request.POST.get('address')
         phone = request.POST.get('phone')
-        print("tes sebelum try", username, password )
+        print("tes sebelum try", username, password)
         try:
-            print(username," ", password, " ", email)
+            print(username, " ", password, " ", email)
             user = User.objects.create_user(
                 username=username, password=password, email=email)
             customer = Customer(
@@ -100,9 +102,11 @@ def show_products(request):
             products = products.order_by(sort_by)
     return render(request, 'index.html', {'products': products, 'departments': department})
 
+
 def show_product_detail(request, pk):
     product = SellerProduct.objects.using('seller_db').get(id=pk)
     return render(request, 'product_detail.html', {'product': product})
+
 
 def show_departments(request):
     depts = Department.objects.all()
@@ -120,27 +124,28 @@ def show_cart(request):
     customer = Customer.objects.get(user=user)
     carts = Cart.objects.filter(user_id=customer).all() or None
     subtotal = 0
-    prod=[]
+    prod = []
     if carts:
         for cart in carts:
-            product = SellerProduct.objects.using('seller_db').get(id=cart.product_id)
+            product = SellerProduct.objects.using(
+                'seller_db').get(id=cart.product_id)
             prod.append(product)
             subtotal += product.product_price * cart.qty
-    
-        cart_products = [{'cart': cart, 'product': product} for cart, product in zip(carts, prod)]
+
+        cart_products = [{'cart': cart, 'product': product}
+                         for cart, product in zip(carts, prod)]
         context = {
             'carts': carts,
             'subtotal': subtotal,
             'customer': customer,
-            'cart_products' : cart_products
+            'cart_products': cart_products
         }
         return render(request, 'cart.html', context)
     context = {
-            'subtotal': subtotal,
-            'customer': customer,
-        }
+        'subtotal': subtotal,
+        'customer': customer,
+    }
     return render(request, 'cart.html', context)
-
 
 
 def show_shop_detail(request, id):
@@ -179,7 +184,7 @@ def add_to_cart(request):
     # qty = request.POST.get('qty')
     user = User.objects.get(id=user_id)
     product = SellerProduct.objects.using('seller_db').get(id=prod_id)
-    print("produknya",product.id)
+    print("produknya", product.id)
     customer = Customer.objects.get(user=user)
     if Cart.objects.filter(user_id=customer, product_id=product.id).exists():
         cart = Cart.objects.get(user_id=customer, product_id=product.id)
@@ -190,6 +195,7 @@ def add_to_cart(request):
     cart.save(using='default')
     return redirect('/ecoms')
 
+
 def add_to_cart2(request, pk):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
@@ -199,9 +205,10 @@ def add_to_cart2(request, pk):
         cart.qty += 1
     else:
         cart = Cart(user_id=customer, product_id=product.id)
-        
+
     cart.save(using='default')
     return redirect('/ecoms/product_detail/'+str(pk))
+
 
 def remove_from_cart(request, pk):
     cart = Cart.objects.get(id=pk)
@@ -215,31 +222,33 @@ def show_dashboard(request):
     customer = Customer.objects.get(user=user)
     transactions = Transaction.objects.filter(user_id=customer).all()
     # transaction_details = TransactionDetail.objects.filter(transaction_code__in=transactions)
-    
+
     # product_ids = transaction_details.values_list('product_id', flat=True)
     # print('product_ids', product_ids)
     # products = SellerProduct.objects.using('seller_db').filter(id__in=product_ids)
     # print('products', products)
-    
+
     if not transactions.exists():
         context = {
-        'transactions': transactions, 'customer': customer,
+            'transactions': transactions, 'customer': customer,
         }
         return render(request, 'dashboard.html', context)
-    
-    delivery = Delivery.objects.using('delivery_db').filter(user_id=customer.id)
+
+    delivery = Delivery.objects.using(
+        'delivery_db').filter(user_id=customer.id)
     context = {
         'transactions': transactions, 'customer': customer, 'deliveries': delivery
     }
-  
+
     return render(request, 'dashboard.html', context)
 
-def update_profile(request,pk):
+
+def update_profile(request, pk):
     user = User.objects.get(id=pk)
     customer = Customer.objects.get(user=user)
     if request.method == "POST":
         # print("firstName",request.POST.get('first_name'))
-        #print(request.FILES['picture'])
+        # print(request.FILES['picture'])
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         phone = request.POST.get('phone')
@@ -247,7 +256,7 @@ def update_profile(request,pk):
         city = request.POST.get('city')
         sub_district = request.POST.get('subdistrict')
         postal_code = request.POST.get('postal_code')
-    
+
         try:
             # customer = Customer( user=user,
             # first_name=first_name, last_name=last_name, phone=phone, address=address, city=city, sub_district=sub_district, postal_code=postal_code, picture=request.FILES['picture'], )
@@ -265,6 +274,7 @@ def update_profile(request,pk):
         except Exception as e:
             messages.error(request, "Failed to update.")
     return render(request, 'update_profile.html', {'customer': customer})
+
 
 def logout_user(request):
     logout(request)
@@ -304,46 +314,65 @@ def checkout(request):
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
     products = SellerProduct.objects.using('seller_db').all()
+    wallet = BankAccount.objects.using('bank').filter(id=request.user.id)
     total_price = sum(
         [products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}{str(uuid.uuid4())}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+
+    if total_price > wallet.balance:
+        return JsonResponse(data={'message': 'saldo anda tidak cukup, silahkan topup terlebih dahulu'})
+
+    transaction = Transaction(transaction_code=f"{request.user.id}{str(uuid.uuid4(
+    ))}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
+    wallet.balance = wallet.balance - total_price
+    wallet.save(using='bank')
     for cart in carts:
         transaction_details = TransactionDetail(
             transaction_code=transaction, product_id=cart.product_id, total=products.get(id=cart.product_id).product_price*cart.qty)
         transaction_details.save()
         product = SellerProduct.objects.using('seller_db').get(
             id=cart.product_id)
-        
-        print("customer",customer.id)
-        delivery_product = DeliveryProduct( name = product.product_name, description = product.product_description)
+
+        print("customer", customer.id)
+        delivery_product = DeliveryProduct(
+            name=product.product_name, description=product.product_description)
         delivery_product.save(using='delivery_db')
-        
-        address = f"{customer.city} {customer.subdistrict} {customer.postal_code} {customer.address}"
-        delivery = Delivery(user_id=customer.id,transaction_id=transaction.id, product=delivery_product, delivery_address=address, delivery_date=datetime.now(), status='P')
+
+        address = f"{customer.city} {customer.subdistrict} {
+            customer.postal_code} {customer.address}"
+        delivery = Delivery(user_id=customer.id, transaction_id=transaction.id, product=delivery_product,
+                            delivery_address=address, delivery_date=datetime.now(), status='P')
         delivery.save(using='delivery_db')
-        
+
         product.stock_gudang = product.stock_gudang - cart.qty
         product.save(using='seller_db')
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
 
-def checkout2(request,pk):
+
+def checkout2(request, pk):
     user = User.objects.get(id=request.user.id)
     customer = Customer.objects.get(user=user)
     products = SellerProduct.objects.using('seller_db').all()
+    wallet = BankAccount.objects.using('bank').filter(user_id=request.user.id)
     if request.method == "POST":
         qty = request.POST.get('qty')
         if qty:
-            cart = Cart.objects.get(user_id=customer, product_id=products.get(id=pk).id)
+            cart = Cart.objects.get(
+                user_id=customer, product_id=products.get(id=pk).id)
             cart.qty = qty
             cart.save()
         return redirect('/ecoms/cart')
     carts = Cart.objects.filter(user_id=customer.id)
     total_price = sum(
-        [ products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
-    transaction = Transaction(transaction_code=f"{request.user.id}-{total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
+        [products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
+    if total_price > wallet.balance:
+        return JsonResponse(data={'message': 'saldo anda tidak cukup, silahkan topup terlebih dahulu'})
+    transaction = Transaction(transaction_code=f"{request.user.id}-{
+                              total_price}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
+    wallet.balance = wallet.balance - total_price
+    wallet.save(using='bank')
     for cart in carts:
         transaction_details = TransactionDetail(
             transaction_code=transaction, product_id=cart.product_id, total=products.get(id=cart.product_id).product_price*cart.qty)
@@ -354,6 +383,7 @@ def checkout2(request,pk):
         product.save(using='seller_db')
         cart.delete()  # Delete each cart after processing
     return redirect('/ecoms')
+
 
 @login_required()
 def show_user_id(request):
