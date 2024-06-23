@@ -20,23 +20,22 @@ def register_user(request):
                 username=username, password=password, email=email)
             user.save()
             messages.success(request, "User registered succesfully")
-            return redirect('/ecoms/login')
+            return redirect('home:login_admin_bank')
         except:
             messages.error(request, "Failed to register user.")
     return render(request, 'register.html', {})
 
 
 @csrf_exempt
-def login_user(request):
+def login_bank_admin(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Hi {username}")
             return redirect('bank:home')
-    return render(request, 'login.html')
+    return render(request, 'homes/login.html')
 
 
 from django.shortcuts import render, redirect
@@ -114,6 +113,7 @@ def index_views(request):
         return redirect('bank:home')    
     applications = Application.objects.all().order_by('-status')
     transactions = TransactionHistory.objects.all().order_by('-transaction_date')
+    
     return render(request, 'tables.html', {'applications': applications, 'transactions': transactions})
 
 @require_POST

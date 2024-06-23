@@ -2,6 +2,7 @@ from django import forms
 from django.utils import timezone
 from django.db import models
 import uuid
+from django.contrib.auth.models import User
 
 def upload_to(instance, filename):
     return 'ktp_photos/%s/%s' % (instance.name, filename)
@@ -36,9 +37,7 @@ class Application(models.Model):
     
 
 class BankAdmin(models.Model):
-    username = models.CharField(max_length=200)
-    password = models.CharField(max_length=200)
-
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     def __str__(self):
         return f'{self.username}'
     
