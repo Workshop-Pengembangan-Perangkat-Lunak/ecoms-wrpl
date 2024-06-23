@@ -37,9 +37,9 @@ class Application(models.Model):
     
 
 class BankAdmin(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     def __str__(self):
-        return f'{self.username}'
+        return f'{self.user.username}'
     
 
 class TransactionHistory(models.Model):

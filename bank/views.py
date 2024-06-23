@@ -1,29 +1,38 @@
 from decimal import Decimal
 from pyexpat.errors import messages
 import uuid
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.csrf import csrf_exempt  # Add this line
-from .models import Application, BankAccount, TransactionHistory
+from .models import Application, BankAccount, BankAdmin, TransactionHistory
 
 # handle login register for bank admin
+@csrf_exempt
 def register_user(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        email = request.POST.get('email')
         try:
             user = User.objects.create_user(
-                username=username, password=password, email=email)
+                username=username, password=password)
             user.save()
-            messages.success(request, "User registered succesfully")
-            return redirect('home:login_admin_bank')
-        except:
-            messages.error(request, "Failed to register user.")
-    return render(request, 'register.html', {})
+            bank_admin = BankAdmin.objects.create(user=user)
+            bank_admin.save()
+            return redirect('bank:login')
+        except IntegrityError:
+            messages.error(request, 'Username already exists. Please choose a different username.')
+            return redirect('bank:register')
+        except Exception as e:
+            # Log the error for debugging purposes
+            print(f"Error creating user: {e}")
+            messages.error(request, 'An unexpected error occurred. Please try again.')
+            return redirect('bank:register')
+    return render(request, 'homes/register.html', {})
 
 
 @csrf_exempt

@@ -6,5 +6,6 @@ urlpatterns = [
     path('applications/<int:user_id>/', views.show_applications, name='apply'),
     path('topup/<int:user_id>', views.topup, name='topup'),
     path('create/<int:user_id>', views.create_transaction, name='create'),
-    path('login_bank/', views.login_bank_admin, name="login_bank"),
+    path('login/', views.login_bank_admin, name="login"),
+    path('register', views.register_user, name="register")
 ]
