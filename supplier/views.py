@@ -1,3 +1,5 @@
+from datetime import timezone
+from datetime import datetime
 from django.contrib.auth import get_user_model, login
 from django.shortcuts import (
     render,
@@ -11,6 +13,8 @@ from django.contrib.auth import (
     login,
     logout
 )
+from django.db.models import Prefetch
+
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import (
     csrf_protect,
@@ -43,12 +47,18 @@ def registersupplier(request):
         no_telp = request.POST.get('phone')
         no_rek = request.POST.get('no_rek')
         try:
+            logger.debug("tess user create")
+
             user = User.objects.create_user(
                 username=username, password=password, email=email)
             supplier = Supplier(
                 user=user, no_telp=no_telp, location=location, no_rek=no_rek)
+            logger.debug("tess user will saved")
+            user.last_login = datetime.now()
             user.save(using='supplier_db')
+            logger.debug("tess user saved")
             supplier.save(using='supplier_db')
+            logger.debug("tess supplier saved")
             messages.success(request, "User registered succesfully")
             login(request, user)
             return redirect('/supplier/dashboard')
@@ -92,9 +102,16 @@ def create_product(request):
             id=request.user.id).first()
         supplier = Supplier.objects.using(
             'supplier_db').filter(user=user).first()
+        product_images = request.FILES.getlist('product_images')
         product = Product(supplier=supplier, product_name=product_name,
-                          product_description=product_description, product_category=product_category, stock_gudang=stock_gudang, product_price=product_price)
+                          product_description=product_description, product_category=product_category, stock_gudang=stock_gudang, product_price=product_price,
+                           product_thumbnail=product_images[0] )
         product.save(using='supplier_db')
+            
+        for product_image in product_images:
+            product_image = ProductImage(product=product, image=product_image)
+            product_image.save(using='supplier_db')
+        
         return redirect('supplier:dashboard')
     return render(request, 'home/create_product.html')
 
@@ -107,15 +124,25 @@ def update_product(request, product_id):
     supplier = Supplier.objects.using(
         'supplier_db').get(user_id=user.id)
     if request.method == "POST":
+        product_images = request.FILES.getlist('product_images')
 
         product.product_name = request.POST.get('product_name')
         product.product_description = request.POST.get('product_description')
         product.product_category = request.POST.get('product_category')
         product.stock_gudang = request.POST.get('stock_gudang')
         product.product_price = request.POST.get('product_price')
+        product.product_thumbnail = product_images[0]
+
         product.save(using="supplier_db")  # update product
+
+        for product_image in product_images:
+            product_image = ProductImage(product=product, image=product_image)
+            product_image.save(using='supplier_db')
+        
+    
         products = Product.objects.using(
             'supplier_db').filter(supplier=supplier,)
+            
 
         paginator = Paginator(products, 10)  # 10 products per page
         page_number = request.POST.get("page")
@@ -150,14 +177,18 @@ def show_dashboard(request):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'home/tables.html', {'page_obj': page_obj, 'search': search})
+ 
     else:
         products = Product.objects.using(
             'supplier_db').filter(supplier=supplier,)
-
+        
         paginator = Paginator(products, 10)  # 10 products per page
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
+
+       
+          
         return render(request, 'home/tables.html', {'page_obj': page_obj})
 
 def make_seller_request(request):
@@ -168,7 +199,7 @@ def make_seller_request(request):
     seller_request.save(using='supplier_db')
     return  
 
-<<<<<<< HEAD
+
 def accept_seller_request(request):
     product_id = request.POST.get('product_id')
     request_stock = request.POST.get('request_stock')
@@ -177,7 +208,6 @@ def accept_seller_request(request):
         return JsonResponse(data={'message':'kebanyakan barangnya'})
     product.stock_gudang = product.stock_gudang - request_stock
     return redirect('seller:dashboard') 
-=======
 #  supplier = Supplier.objects.using('supplier_db').get(user_id=user.id)
 #     products = Product.objects.using('supplier_db').filter(supplier=supplier)
 #     paginator = Paginator(products, 10)  # 10 products per page
@@ -189,4 +219,3 @@ def accept_seller_request(request):
 def logout_supplier(request):
     logout(request)
     return redirect('/supplier/login')
->>>>>>> 3dcde21 (feature : get_prod,edit,update)
