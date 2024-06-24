@@ -1,42 +1,50 @@
 from decimal import Decimal
 from pyexpat.errors import messages
 import uuid
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.views.decorators.csrf import csrf_exempt  # Add this line
-from .models import Application, BankAccount, TransactionHistory
+from .models import Application, BankAccount, BankAdmin, TransactionHistory
 
 # handle login register for bank admin
+@csrf_exempt
 def register_user(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        email = request.POST.get('email')
         try:
             user = User.objects.create_user(
-                username=username, password=password, email=email)
+                username=username, password=password)
             user.save()
-            messages.success(request, "User registered succesfully")
-            return redirect('/ecoms/login')
-        except:
-            messages.error(request, "Failed to register user.")
-    return render(request, 'register.html', {})
+            bank_admin = BankAdmin.objects.create(user=user)
+            bank_admin.save()
+            return redirect('bank:login')
+        except IntegrityError:
+            messages.error(request, 'Username already exists. Please choose a different username.')
+            return redirect('bank:register')
+        except Exception as e:
+            # Log the error for debugging purposes
+            print(f"Error creating user: {e}")
+            messages.error(request, 'An unexpected error occurred. Please try again.')
+            return redirect('bank:register')
+    return render(request, 'homes/register.html', {})
 
 
 @csrf_exempt
-def login_user(request):
+def login_bank_admin(request):
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Hi {username}")
-            return redirect('/bank/')
-    return render(request, 'login.html')
+            return redirect('bank:home')
+    return render(request, 'homes/login.html')
 
 
 from django.shortcuts import render, redirect
@@ -53,7 +61,7 @@ def show_applications(request, user_id):
                 bank_account.save()
                 application.bank_account = bank_account
                 application.save()
-                return redirect('apply', user_id=user_id)
+                return redirect('bank:apply', user_id=user_id)
     application = Application.objects.all()
     return render(request, 'application.html', {'application':application, 'user_id':user_id})
 import json
@@ -111,10 +119,11 @@ def index_views(request):
             bank_account.is_active = True
             bank_account.save()
         application.save()
-        return redirect('home')    
+        return redirect('bank:home')    
     applications = Application.objects.all().order_by('-status')
     transactions = TransactionHistory.objects.all().order_by('-transaction_date')
-    return render(request, 'home/tables.html', {'applications': applications, 'transactions': transactions})
+    
+    return render(request, 'tables.html', {'applications': applications, 'transactions': transactions})
 
 @require_POST
 def handle_transaction(request):
