@@ -1,4 +1,4 @@
-{% extends 'layouts/base.html' %}
+{% extends 'layout/base.html' %}
 
 {% block title %} Tables {% endblock title %}
 
@@ -74,13 +74,13 @@
                   </td>
                   <td> 
                     <div class=" d-flex">
-                      <form method="POST" action="{% url 'home' %}" class="mr-2">
+                      <form method="POST" action="{% url 'bank:home' %}" class="mr-2">
                         {% csrf_token %}
                         <input type="hidden" name="application_id" value="{{application.id}}">
                         <input type="hidden" name="status" value="D">
                         <input type="submit" class="btn btn-sm btn-neutral" value="Decline">
                       </form>
-                      <form method="POST" action="{% url 'home' %}" class="">
+                      <form method="POST" action="{% url 'bank:home' %}" class="">
                         {% csrf_token %}
                         <input type="hidden" name="application_id" value="{{application.id}}">
                         <input type="hidden" name="status" value="A">
@@ -200,7 +200,7 @@
       </div>
     </div>
 
-    {% include "includes/footer.html" %}
+    {% include "include/footer.html" %}
 
   </div>
 

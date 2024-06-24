@@ -11,6 +11,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from datetime import datetime
 import uuid
+from bank.models import BankAccount
 from bank.models import Application
 from django.http.response import JsonResponse
 # Create yoimpour views here.
@@ -337,7 +338,6 @@ def checkout(request):
         delivery_product = DeliveryProduct(
             name=product.product_name, description=product.product_description)
         delivery_product.save(using='delivery_db')
-
         address = f"{customer.city} {customer.subdistrict} {
             customer.postal_code} {customer.address}"
         delivery = Delivery(user_id=customer.id, transaction_id=transaction.id, product=delivery_product,
