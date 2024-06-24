@@ -53,7 +53,7 @@ Tables {% endblock title %}
                                     <div class="tab-content">
                                         <div id="credit-card" class="tab-pane fade show active pt-3">
                                             <form role="form" method="post"
-                                                action="{% url 'supplier:update_product' product.id %}">
+                                                action="{% url 'supplier:update_product' product.id %}" enctype="multipart/form-data">
                                                 {% csrf_token %}
                                                 <div class="form-group">
                                                     <label for="productname">
@@ -95,6 +95,12 @@ Tables {% endblock title %}
                                                     <input type="number" name="product_price"
                                                         value="{{ product.product_price }}" placeholder="Product Price"
                                                         required class="form-control" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                                                        <input class="form-control" type="file" id="formFileMultiple" multiple
+                                                        id="product_images" name="product_images">
+                                                    </div>
                                                 </div>
                                                 <div class="card-footer">
                                                     <button type="submit"

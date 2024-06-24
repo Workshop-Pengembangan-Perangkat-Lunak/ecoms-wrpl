@@ -14,7 +14,7 @@
             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
               <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
               <li class="breadcrumb-item"><a href="#">Tables</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Tables</li>
+              <li class="breadcrumb-item active" aria-current="page">Seller Request</li>
             </ol>
           </nav>
         </div>
@@ -34,63 +34,51 @@
       <div class="card">
         <!-- Card header -->
         <div class="card-header border-0">
-          <h3 class="mb-0">Light table</h3>
+          <h3 class="mb-0">Seller Request</h3>
         </div>
         <!-- Light table -->
         <div class="table-responsive">
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th scope="col" class="sort" data-sort="name">Name</th>
-                <th scope="col" class="sort" data-sort="budget">Description</th>
-                <th scope="col" class="sort" data-sort="status">Stok</th>
-                <th scope="col" class="sort" data-sort="status">Category</th>
-                <th scope="col" class="sort" data-sort="status">Price</th>
-                <th scope="col">Supplier</th>
+                <th scope="col" class="sort" data-sort="product">Product</th>
+                <th scope="col" class="sort" data-sort="stock">Stock</th>
+                <th scope="col" class="sort" data-sort="status">Status</th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody class="list">
-              {% for product in page_obj %}
+              {% for seller_request in seller_requests %}
               <tr>
                 <th scope="row">
                   <div class="media align-items-center">
                     <a href="#" class="avatar rounded-circle mr-3">
-                     
-                      {% if product.product_thumbnail %}
-                          <img alt="Image placeholder" id="product-image-{{ forloop.counter }}" src="{{  product.product_thumbnail.url }}">
+
+                      {% if seller_request.product.product_thumbnail %}
+                      <img alt="Image placeholder" id="product-image-{{ forloop.counter }}"
+                        src="{{  product.product_thumbnail.url }}">
 
                       {% else %}
-                          <img alt="Image placeholder" id="product-image-{{ forloop.counter }}" src="{% random_image %}">
+                      <img alt="Image placeholder" id="product-image-{{ forloop.counter }}" src="{% random_image %}">
 
                       {% endif %}
-                   
+
                     </a>
                     <div class="media-body">
-                      <span class="name mb-0 text-sm">{{product.product_name}}</span>
+                      <span class="name mb-0 text-sm">{{seller_request.product.product_name}}</span>
+                    </div>
+
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{product.request_stock}}</span>
                     </div>
                   </div>
                 </th>
 
-
-                <td class="budget">
-
-                  {{product.product_description}}
-                </td>
                 <td>
                   <span class="badge badge-dot mr-4">
                     <i class="bg-warning"></i>
-                    <span class="status">{{product.stock_gudang}}</span>
+                    <span class="status">{{seller_request.status}}</span>
                   </span>
-                </td>
-
-
-                <td class="budget">
-                  {{product.product_category}}
-                </td>
-
-                <td class="budget">
-                  {{product.product_price}}
                 </td>
 
                 <td class="text-right">
@@ -101,7 +89,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                       <a class="dropdown-item"
-                        href="{% url 'supplier:update_product' product_id=product.id %}">Update</a>
+                        href="{% url 'supplier:seller_request' product_id=seller_request.product.id %}">Accept</a>
                       <a class="dropdown-item" href="{% url 'supplier:delete_product' product_id=product.id %}">Delete
                         action</a>
                       <a class="dropdown-item" href="#">Send Product to Ecommerce Warehouse</a>
