@@ -1,5 +1,7 @@
+
 from datetime import timezone
 from datetime import datetime
+
 from django.contrib.auth import get_user_model, login
 from django.shortcuts import (
     render,
@@ -231,3 +233,4 @@ def accept_seller_request(request):
 def logout_supplier(request):
     logout(request)
     return redirect('/supplier/login')
+

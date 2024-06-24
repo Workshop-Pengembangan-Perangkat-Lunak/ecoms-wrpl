@@ -8,6 +8,10 @@ class Supplier(models.Model):
     no_telp = models.CharField(max_length=32)
     location = models.CharField(max_length=200)
     no_rek = models.CharField(max_length=100)
+    
+    
+    def __str__(self):
+        return self.user.username
 
     def __str__(self):
         return self.user.username
