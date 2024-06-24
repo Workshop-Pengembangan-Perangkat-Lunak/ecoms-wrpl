@@ -170,7 +170,36 @@
                   <th>{{ delivery.product.name }}</th>
                   <th>{{ delivery.delivery_address }}</th>
                   <th>{{ delivery.delivery_date|date:"l d M Y" }}</th>
-                  <th>{{ delivery.get_status_display }}</th>
+                  <th>
+                    <form action="{% url "user_deliveries" %}" method="post">
+                      <input type="hidden" name="delivery_id" value={{ delivery.id }}>
+                      {% csrf_token %}
+                      <select
+                      name="status"
+                      id="status"
+                      class="status"
+                      data-id="{{ delivery.id }}"
+                      onchange="this.form.submit()"
+                    >
+                      <option
+                        value="P"
+                        {% if delivery.status == "P" %} selected {% endif %}
+                        >Pending</option
+                      >
+                      <option
+                        value="I"
+                        {% if delivery.status == "I" %} selected {% endif %}
+                        >In Progress</option
+                      >
+                      <option
+                        value="D"
+                        {% if delivery.status == "D" %} selected {% endif %}
+                        >Delivered</option
+                      >
+                    </select>
+                    </form>
+                    
+                  </th>
                 </tr>
                 {% endfor %}
               </tbody>
