@@ -41,10 +41,9 @@
           <table class="table align-items-center table-flush">
             <thead class="thead-light">
               <tr>
-                <th scope="col" class="sort" data-sort="name">Seller Name</th>
                 <th scope="col" class="sort" data-sort="product">Product</th>
                 <th scope="col" class="sort" data-sort="stock">Stock</th>
-                <th scope="col" class="sort" data-sort="status">status</th>
+                <th scope="col" class="sort" data-sort="status">Status</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -55,7 +54,7 @@
                   <div class="media align-items-center">
                     <a href="#" class="avatar rounded-circle mr-3">
 
-                      {% if product.product_thumbnail %}
+                      {% if seller_request.product.product_thumbnail %}
                       <img alt="Image placeholder" id="product-image-{{ forloop.counter }}"
                         src="{{  product.product_thumbnail.url }}">
 
@@ -66,11 +65,11 @@
 
                     </a>
                     <div class="media-body">
-                      <span class="name mb-0 text-sm">{{seller_request.product_name}}</span>
+                      <span class="name mb-0 text-sm">{{seller_request.product.product_name}}</span>
                     </div>
 
                     <div class="media-body">
-                      <span class="name mb-0 text-sm">{{product.product_name}}</span>
+                      <span class="name mb-0 text-sm">{{product.request_stock}}</span>
                     </div>
                   </div>
                 </th>
@@ -78,12 +77,8 @@
                 <td>
                   <span class="badge badge-dot mr-4">
                     <i class="bg-warning"></i>
-                    <span class="status">{{product.stock_gudang}}</span>
+                    <span class="status">{{seller_request.status}}</span>
                   </span>
-                </td>
-
-                <td class="budget">
-                  {{product.product_price}}
                 </td>
 
                 <td class="text-right">
@@ -94,7 +89,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                       <a class="dropdown-item"
-                        href="{% url 'supplier:update_product' product_id=product.id %}">Update</a>
+                        href="{% url 'supplier:seller_request' product_id=seller_request.product.id %}">Accept</a>
                       <a class="dropdown-item" href="{% url 'supplier:delete_product' product_id=product.id %}">Delete
                         action</a>
                       <a class="dropdown-item" href="#">Send Product to Ecommerce Warehouse</a>
