@@ -105,13 +105,13 @@ def create_product(request):
         product_images = request.FILES.getlist('product_images')
         product = Product(supplier=supplier, product_name=product_name,
                           product_description=product_description, product_category=product_category, stock_gudang=stock_gudang, product_price=product_price,
-                           product_thumbnail=product_images[0] )
+                          product_thumbnail=product_images[0])
         product.save(using='supplier_db')
-            
+
         for product_image in product_images:
             product_image = ProductImage(product=product, image=product_image)
             product_image.save(using='supplier_db')
-        
+
         return redirect('supplier:dashboard')
     return render(request, 'home/create_product.html')
 
@@ -138,11 +138,9 @@ def update_product(request, product_id):
         for product_image in product_images:
             product_image = ProductImage(product=product, image=product_image)
             product_image.save(using='supplier_db')
-        
-    
+
         products = Product.objects.using(
             'supplier_db').filter(supplier=supplier,)
-            
 
         paginator = Paginator(products, 10)  # 10 products per page
         page_number = request.POST.get("page")
@@ -177,43 +175,57 @@ def show_dashboard(request):
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         return render(request, 'home/tables.html', {'page_obj': page_obj, 'search': search})
- 
+
     else:
         products = Product.objects.using(
             'supplier_db').filter(supplier=supplier,)
-        
+
         paginator = Paginator(products, 10)  # 10 products per page
 
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
-       
-          
         return render(request, 'home/tables.html', {'page_obj': page_obj})
+
 
 def make_seller_request(request):
     product_id = request.POST.get('product_id')
     request_stock = request.POST.get('request_stock')
     product = Product.objects.get(id=product_id)
-    seller_request = SellerBuyRequest(request_stock=request_stock, product=product)
+    seller_request = SellerBuyRequest(
+        request_stock=request_stock, product=product)
     seller_request.save(using='supplier_db')
-    return  
+    return
 
 
+@login_required(login_url="/supplier/login")
 def accept_seller_request(request):
-    product_id = request.POST.get('product_id')
-    request_stock = request.POST.get('request_stock')
-    product = Product.objects.using('supplier_db').filter(id=product_id)
-    if int(request_stock) > int(product.stock_gudang):
-        return JsonResponse(data={'message':'kebanyakan barangnya'})
-    product.stock_gudang = product.stock_gudang - request_stock
-    return redirect('seller:dashboard') 
+    user = User.objects.using('supplier_db').get(id=request.user.id)
+    supplier = Supplier.objects.using('supplier_db').get(user=user)
+    product = Product.objects.using(
+        'supplier_db').filter(supplier=supplier).all()
+    seller_request = SellerBuyRequest.objects.using(
+        'supplier_db').filter(product=product, status='waiting').all()
+
+    if request.method == "POST":
+        seller_request_id = request.POST.get('seller_request_id')
+        request_stock = request.POST.get('request_stock')
+        product_id = request.POST.get('product_id')
+        product = Product.objects.using('supplier_db').filter(
+            id=product_id).all()
+        seller_request = SellerBuyRequest.objects.using(
+            'supplier_db').filter(id=seller_request_id).all()
+        if int(request_stock) > int(product.stock_gudang):
+            return JsonResponse(data={'message': 'kebanyakan barangnya'})
+        product.stock_gudang = product.stock_gudang - request_stock
+        seller_request.status = 'accepted'
+        return redirect('supplier:seller_request')
+    return render(request, 'home/seller_request_tables.html', {'seller_requests': seller_request})
 #  supplier = Supplier.objects.using('supplier_db').get(user_id=user.id)
 #     products = Product.objects.using('supplier_db').filter(supplier=supplier)
 #     paginator = Paginator(products, 10)  # 10 products per page
 #     page_number = request.GET.get('page')
 #     page_obj = paginator.get_page(page_number)
-
 
 
 def logout_supplier(request):
