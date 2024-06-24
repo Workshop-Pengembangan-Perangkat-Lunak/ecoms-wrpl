@@ -4,207 +4,211 @@
 
 {% block content %}
 
-  <div class="header bg-primary pb-6">
-    <div class="container-fluid">
-      <div class="header-body">
-        <div class="row align-items-center py-4">
-          <div class="col-lg-6 col-7">
-            <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
-            <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
-              <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
-                <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Bank</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-              </ol>
-            </nav>
-          </div>
+<div class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Dashboard</h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+              <li class="breadcrumb-item"><a href="#">Bank</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+          </nav>
         </div>
       </div>
     </div>
   </div>
-  
-  <!-- Page content -->
-  <div class="container-fluid mt--6">
-    <div class="row">
-      <div class="col">
-        <div class="card">
-          <!-- Card header -->
-          <div class="card-header border-0">
-            <h3 class="mb-0">Applications Data</h3>
-          </div>
-          <!-- Light table -->
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class="thead-light">
-                <tr>
-                  <th scope="col" class="sort" data-sort="name">Nama</th>
-                  <th scope="col" class="sort" data-sort="photo">Foto KTP</th>
-                  <th scope="col" class="sort" data-sort="status">Status</th>
-                  <th scope="col" class="sort" data-sort="completion">Action Status</th>
-                  <th scope="col" class="sort" data-sort="completion">Applied At</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody class="list">
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <!-- Card header -->
+        <div class="card-header border-0">
+          <h3 class="mb-0">Applications Data</h3>
+        </div>
+        <!-- Light table -->
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="sort" data-sort="name">Nama</th>
+                {% comment %}
+                <!-- <th scope="col" class="sort" data-sort="photo">Foto KTP</th> -->
+                {% endcomment %}
+                <th scope="col" class="sort" data-sort="status">Status</th>
+                <th scope="col" class="sort" data-sort="completion">Action Status</th>
+                <th scope="col" class="sort" data-sort="completion">Applied At</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody class="list">
               {% for application in applications %}
-                <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">{{application.name}}</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    <a class="" href="{{application.ktp_photo.url}}">{{application.ktp_photo|truncatechars:20}}</a>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                    {% if application.status == 'P' %}
-                      <i class="bg-warning"></i>
-                      <span class="status">Pending</span>
-                    {% elif application.status == 'A' %}
-                      <i class="bg-success"></i>
-                      <span class="status">Accepted</span>
-                    {% elif application.status == 'D' %}
-                      <i class="bg-danger"></i>
-                      <span class="status">Declined</span>
-                    {% endif %}
-                    </span>
-                  </td>
-                  <td> 
-                    <div class=" d-flex">
-                      <form method="POST" action="{% url 'bank:home' %}" class="mr-2">
-                        {% csrf_token %}
-                        <input type="hidden" name="application_id" value="{{application.id}}">
-                        <input type="hidden" name="status" value="D">
-                        <input type="submit" class="btn btn-sm btn-neutral" value="Decline">
-                      </form>
-                      <form method="POST" action="{% url 'bank:home' %}" class="">
-                        {% csrf_token %}
-                        <input type="hidden" name="application_id" value="{{application.id}}">
-                        <input type="hidden" name="status" value="A">
-                        <input type="submit" class="btn btn-sm btn-neutral" value="Accept">
-                      </form>
-                      {% comment %} <a href="#" class="btn btn-sm btn-neutral">Reject</a>
-                      <a href="#" class="btn btn-sm btn-neutral">Accept</a> {% endcomment %}
-                  </td>
-                  <td class="">
+              <tr>
+                <th scope="row">
                   <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">{{application.applied_at}}</span>
-                      </div>
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{application.name}}</span>
                     </div>
-                  </td>
-                </tr>
+                  </div>
+                </th>
+                {% comment %}
+                <!-- <td class="photo">
+                    <a class="" href="{{application.ktp_photo.url}}">{{application.ktp_photo|truncatechars:20}}</a>
+                  </td> -->
+                {% endcomment %}
+                <td>
+                  <span class="badge badge-dot mr-4">
+                    {% if application.status == 'P' %}
+                    <i class="bg-warning"></i>
+                    <span class="status">Pending</span>
+                    {% elif application.status == 'A' %}
+                    <i class="bg-success"></i>
+                    <span class="status">Accepted</span>
+                    {% elif application.status == 'D' %}
+                    <i class="bg-danger"></i>
+                    <span class="status">Declined</span>
+                    {% endif %}
+                  </span>
+                </td>
+                <td>
+                  <div class=" d-flex">
+                    <form method="POST" action="{% url 'bank:home' %}" class="mr-2">
+                      {% csrf_token %}
+                      <input type="hidden" name="application_id" value="{{application.id}}">
+                      <input type="hidden" name="status" value="D">
+                      <input type="submit" class="btn btn-sm btn-neutral" value="Decline">
+                    </form>
+                    <form method="POST" action="{% url 'bank:home' %}" class="">
+                      {% csrf_token %}
+                      <input type="hidden" name="application_id" value="{{application.id}}">
+                      <input type="hidden" name="status" value="A">
+                      <input type="submit" class="btn btn-sm btn-neutral" value="Accept">
+                    </form>
+                    {% comment %} <a href="#" class="btn btn-sm btn-neutral">Reject</a>
+                    <a href="#" class="btn btn-sm btn-neutral">Accept</a> {% endcomment %}
+                </td>
+                <td class="">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{application.applied_at}}</span>
+                    </div>
+                  </div>
+                </td>
+              </tr>
               {% endfor %}
-              </tbody>
-            </table>
-          </div>
+            </tbody>
+          </table>
+        </div>
+        <!-- Card footer -->
+        <div class="card-footer py-4">
+          <nav aria-label="...">
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Dark table -->
+  <div class="row">
+    <div class="col">
+      <div class="card bg-default shadow">
+        <div class="card-header bg-0">
+          <h3 class="mb-0">Payment Data</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-white table-flush">
+            <thead class="thead-white">
+              <tr>
+                <th scope="col" class="sort" data-sort="name">Pengirim</th>
+                <th scope="col" class="sort" data-sort="photo">Penerima</th>
+                <th scope="col" class="sort" data-sort="jumlah">Jumlah</th>
+                <th scope="col" class="sort" data-sort="status">Tipe</th>
+                <th scope="col" class="sort" data-sort="status">Tanggal</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              {% for transaction in transactions %}
+              <tr>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{transaction.source_account|truncatechars:20}}</span>
+                    </div>
+                  </div>
+                </th>
+                <th scope="row">
+                  <div class="media align-items-center">
+                    <div class="media-body">
+                      <span class="name mb-0 text-sm">{{transaction.destination_account|truncatechars:20}}</span>
+                    </div>
+                  </div>
+                </th>
+                <td class="photo">
+                  {{transaction.amount}}
+                </td>
+                <td>
+                  <span class="badge badge-dot mr-4">
+                    {% if transaction.transaction_type == 'D' %}
+                    <span class="status">Deposit</span>
+                    {% elif transaction.transaction_type == 'W' %}
+                    <span class="status">Withdraw</span>
+                    {% elif transaction.transaction_type == 'T'%}
+                    <span class="status">Transfer</span>
+                    {% endif %}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge badge-dot mr-4">
+                    <span class="status">{{transaction.transaction_date}}</span>
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+
+            </tbody>
+          </table>
           <!-- Card footer -->
           <div class="card-footer py-4">
             <nav aria-label="...">
+              {% comment %} <ul class="pagination justify-content-end mb-0">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">
+                    <i class="fas fa-angle-left"></i>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <li class="page-item active">
+                  <a class="page-link" href="#">1</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">
+                    <i class="fas fa-angle-right"></i>
+                    <span class="sr-only">Next</span>
+                  </a> {% endcomment %}
+                </li>
+              </ul>
             </nav>
           </div>
         </div>
       </div>
     </div>
-    <!-- Dark table -->
-    <div class="row">
-      <div class="col">
-        <div class="card bg-default shadow">
-          <div class="card-header bg-0">
-            <h3 class="mb-0">Payment Data</h3>
-          </div>
-          <div class="table-responsive">
-            <table class="table align-items-center table-white table-flush">
-              <thead class="thead-white">
-                <tr>
-                  <th scope="col" class="sort" data-sort="name">Pengirim</th>
-                  <th scope="col" class="sort" data-sort="photo">Penerima</th>
-                  <th scope="col" class="sort" data-sort="jumlah">Jumlah</th>
-                  <th scope="col" class="sort" data-sort="status">Tipe</th>
-                  <th scope="col" class="sort" data-sort="status">Tanggal</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody class="list">
-              {% for transaction in transactions %}
-              <tr>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">{{transaction.source_account|truncatechars:20}}</span>
-                      </div>
-                    </div>
-                  </th>
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="name mb-0 text-sm">{{transaction.destination_account|truncatechars:20}}</span>
-                      </div>
-                    </div>
-                  </th>
-                  <td class="photo">
-                    {{transaction.amount}}
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                    {% if transaction.transaction_type == 'D' %}
-                      <span class="status">Deposit</span>
-                    {% elif transaction.transaction_type == 'W' %}
-                      <span class="status">Withdraw</span>
-                    {% elif transaction.transaction_type == 'T'%}
-                      <span class="status">Transfer</span>
-                    {% endif %}
-                    </span>
-                  </td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                      <span class="status">{{transaction.transaction_date}}</span>
-                    </span>
-                  </td>
-                </tr>
-              {% endfor %}
-                
-              </tbody>
-            </table>
-         <!-- Card footer -->
-         <div class="card-footer py-4">
-          <nav aria-label="...">
-            {% comment %} <ul class="pagination justify-content-end mb-0">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1">
-                  <i class="fas fa-angle-left"></i>
-                  <span class="sr-only">Previous</span>
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">
-                  <i class="fas fa-angle-right"></i>
-                  <span class="sr-only">Next</span>
-                </a> {% endcomment %}
-              </li>
-            </ul>
-          </nav>
-        </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    {% include "include/footer.html" %}
-
   </div>
+
+  {% include "include/footer.html" %}
+
+</div>
 
 {% endblock content %}
 
-<!-- Specific JS goes HERE --> 
+<!-- Specific JS goes HERE -->
 {% block javascripts %}{% endblock javascripts %}

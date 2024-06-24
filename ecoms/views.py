@@ -48,6 +48,9 @@ def register_user(request):
             wallet = BankAccount(
                 user_id=user.id, name=username, balance=1000000000, is_active=True)
             wallet.save(using='bank')
+            application = Application(
+                name=username, status='A', user_id=user.id, bank_account=wallet)
+            application.save(using='bank')
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:

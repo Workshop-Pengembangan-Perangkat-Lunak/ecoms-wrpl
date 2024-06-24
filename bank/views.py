@@ -1,3 +1,9 @@
+import json
+from .models import TransactionHistory
+from django.views.decorators.http import require_POST
+from midtransclient import Snap
+from .models import Application
+from django.shortcuts import render, redirect
 from decimal import Decimal
 from pyexpat.errors import messages
 import uuid
@@ -12,6 +18,8 @@ from django.views.decorators.csrf import csrf_exempt  # Add this line
 from .models import Application, BankAccount, BankAdmin, TransactionHistory
 
 # handle login register for bank admin
+
+
 @csrf_exempt
 def register_user(request):
     if request.method == "POST":
@@ -25,12 +33,14 @@ def register_user(request):
             bank_admin.save()
             return redirect('bank:login')
         except IntegrityError:
-            messages.error(request, 'Username already exists. Please choose a different username.')
+            messages.error(
+                request, 'Username already exists. Please choose a different username.')
             return redirect('bank:register')
         except Exception as e:
             # Log the error for debugging purposes
             print(f"Error creating user: {e}")
-            messages.error(request, 'An unexpected error occurred. Please try again.')
+            messages.error(
+                request, 'An unexpected error occurred. Please try again.')
             return redirect('bank:register')
     return render(request, 'homes/register.html', {})
 
@@ -47,53 +57,53 @@ def login_bank_admin(request):
     return render(request, 'homes/login.html')
 
 
-from django.shortcuts import render, redirect
-from .models import Application
-
 # Handle user application
+
 def show_applications(request, user_id):
     if request.method == 'POST':
         name = request.POST.get('name')
         ktp = request.FILES.get('ktp')
-        if name:  
-                application = Application(name=name, ktp_photo=ktp, user_id=user_id)
-                bank_account = BankAccount(name=name, ktp_photo=ktp, user_id=user_id)
-                bank_account.save()
-                application.bank_account = bank_account
-                application.save()
-                return redirect('bank:apply', user_id=user_id)
-    application = Application.objects.all()
-    return render(request, 'application.html', {'application':application, 'user_id':user_id})
-import json
+        if name:
+            application = Application(
+                name=name, ktp_photo=ktp, user_id=user_id)
+            bank_account = BankAccount(
+                name=name, ktp_photo=ktp, user_id=user_id)
+            bank_account.save()
+            application.bank_account = bank_account
+            application.save()
+            return redirect('bank:apply', user_id=user_id)
+    application = Application.objects.using('bank').all()
+    return render(request, 'application.html', {'application': application, 'user_id': user_id})
 
-from midtransclient import Snap
 
 def topup(request, user_id):
-    return render(request, 'topup.html', {'user_id':user_id})
-#Handle user transaction with bank
+    return render(request, 'topup.html', {'user_id': user_id})
+# Handle user transaction with bank
 # @require_POST
+
+
 def create_transaction(request, user_id):
     gross_amount = request.POST.get('gross_amount')
     snap = Snap(
         is_production=False,
-        server_key='SB-Mid-server-OUOnIHlPonXlJ3zt7M8mQkGX',  
+        server_key='SB-Mid-server-OUOnIHlPonXlJ3zt7M8mQkGX',
         client_key='SB-Mid-client-zF1Nl-didCEzFYUM'
     )
-    order_id = str(uuid.uuid4()) 
+    order_id = str(uuid.uuid4())
 
     param = {
         "transaction_details": {
             "order_id": order_id,
             "gross_amount": gross_amount,
         },
-        "credit_card":{
-            "secure" : True
+        "credit_card": {
+            "secure": True
         }
     }
 
     transaction = snap.create_transaction(param)
     print(transaction)
-    bank_account = BankAccount.objects.get(user_id=user_id) 
+    bank_account = BankAccount.objects.get(user_id=user_id)
     bank_account.balance += Decimal(gross_amount)
     bank_account.save()
     TransactionHistory.objects.create(
@@ -104,9 +114,9 @@ def create_transaction(request, user_id):
     )
     return redirect(transaction['redirect_url'])
 
+
 # handle transaction between users
-from django.views.decorators.http import require_POST
-from .models import TransactionHistory
+
 
 def index_views(request):
     if request.method == 'POST':
@@ -119,11 +129,13 @@ def index_views(request):
             bank_account.is_active = True
             bank_account.save()
         application.save()
-        return redirect('bank:home')    
-    applications = Application.objects.all().order_by('-status')
-    transactions = TransactionHistory.objects.all().order_by('-transaction_date')
-    
+        return redirect('bank:home')
+    applications = Application.objects.using('bank').all().order_by('-status')
+    transactions = TransactionHistory.objects.using(
+        'bank').all().order_by('-transaction_date')
+
     return render(request, 'tables.html', {'applications': applications, 'transactions': transactions})
+
 
 @require_POST
 def handle_transaction(request):
@@ -136,7 +148,8 @@ def handle_transaction(request):
 
     # Get the source and destination accounts from the database
     source_account = get_object_or_404(BankAccount, user_id=source_account_id)
-    destination_account = get_object_or_404(BankAccount, user_id=destination_account_id)
+    destination_account = get_object_or_404(
+        BankAccount, user_id=destination_account_id)
 
     # Check if the source account has enough balance for the transaction
     if source_account.balance < amount:
