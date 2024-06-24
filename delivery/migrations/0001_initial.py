@@ -3,11 +3,9 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -38,6 +36,8 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
+                ("user_id", models.IntegerField(null=True)),
+                ("transaction_id", models.IntegerField(null=True)),
                 ("delivery_address", models.CharField(max_length=255)),
                 ("delivery_date", models.DateTimeField()),
                 (
