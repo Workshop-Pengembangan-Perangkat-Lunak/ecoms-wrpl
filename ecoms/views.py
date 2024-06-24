@@ -314,7 +314,7 @@ def checkout(request):
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
     products = SellerProduct.objects.using('seller_db').all()
-    wallet = BankAccount.objects.using('bank').filter(id=request.user.id)
+    wallet = BankAccount.objects.using('bank').filter(user_id=request.user.id)
     total_price = sum(
         [products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
 
