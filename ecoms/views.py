@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from datetime import datetime
 import uuid
-from bank.models import BankAccount
+from bank.models import Application
 from django.http.response import JsonResponse
 # Create yoimpour views here.
 
