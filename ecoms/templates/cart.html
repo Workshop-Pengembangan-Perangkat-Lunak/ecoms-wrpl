@@ -1,34 +1,16 @@
 {% extends "base.html" %} {%load static%} {% block content %}
 <!-- Modal Search Start -->
-<div
-  class="modal fade"
-  id="searchModal"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content rounded-0">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body d-flex align-items-center">
         <div class="input-group w-75 mx-auto d-flex">
-          <input
-            type="search"
-            class="form-control p-3"
-            placeholder="keywords"
-            aria-describedby="search-icon-1"
-          />
-          <span id="search-icon-1" class="input-group-text p-3"
-            ><i class="fa fa-search"></i
-          ></span>
+          <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1" />
+          <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
         </div>
       </div>
     </div>
@@ -69,43 +51,29 @@
             <tr class="cart-item">
               <th scope="row">
                 <div class="d-flex align-items-center">
-                  <img
-                    src="{{cart.product.product_image.url }}"
-                    class="img-fluid me-5 rounded-circle"
-                    style="width: 80px; height: 80px"
-                    alt=""
-                  />
+                  <img src="{{cart.product.product_image.url }}" class="img-fluid me-5 rounded-circle"
+                    style="width: 80px; height: 80px" alt="" />
                 </div>
               </th>
-              <td><p class="mb-0 mt-4">{{cart.product.product_name}}</p></td>
+              <td>
+                <p class="mb-0 mt-4">{{cart.product.product_name}}</p>
+              </td>
               <td>
                 <p class="mb-0 mt-4">
-                  Rp<span class="item-price"
-                    >{{cart.product.product_price}}</span
-                  >
+                  Rp<span class="item-price">{{cart.product.product_price}}</span>
                 </p>
               </td>
               <td>
                 <div class="input-group quantity mt-4" style="width: 100px">
                   <div class="input-group-btn">
-                    <button
-                      type="submit"
-                      class="btn btn-sm btn-minus rounded-circle bg-light border"
-                    >
+                    <button type="submit" class="btn btn-sm btn-minus rounded-circle bg-light border">
                       <i class="fa fa-minus"></i>
                     </button>
                   </div>
-                  <input
-                    type="text"
-                    class="form-control form-control-sm text-center border-0 item-quantity"
-                    value="{{cart.cart.qty}}"
-                    name="qty"
-                  />
+                  <input type="text" class="form-control form-control-sm text-center border-0 item-quantity"
+                    value="{{cart.cart.qty}}" name="qty" />
                   <div class="input-group-btn">
-                    <button
-                      type="submit"
-                      class="btn btn-sm btn-plus rounded-circle bg-light border"
-                    >
+                    <button type="submit" class="btn btn-sm btn-plus rounded-circle bg-light border">
                       <i class="fa fa-plus"></i>
                     </button>
                   </div>
@@ -115,17 +83,15 @@
                 <p class="mb-0 mt-4">Rp<span class="item-total"></span></p>
               </td>
               <td>
-                <a
-                  href="{% url 'buyer:remove_from_cart' cart.cart.id %}"
-                  class="btn btn-md rounded-circle bg-light border mt-3"
-                >
+                <a href="{% url 'buyer:remove_from_cart' cart.cart.id %}"
+                  class="btn btn-md rounded-circle bg-light border mt-3">
                   <i class="fa fa-times text-danger"></i>
                 </a>
               </td>
             </tr>
             <input style="display: none" value="{{cart.cart.id}}" name="cart_id" />
           </form>
-          
+
           {% endfor %}
         </tbody>
       </table>
@@ -137,15 +103,12 @@
             <h1 class="display-6 mb-4">Address</h1>
             <div class="d-flex justify-content-between mb-4">
               <h5 class="mb-0 me-4">
-                <span>{{ "City " }}{{customer.city }}</span
-                ><span>{{ " Subdistrict " }}{{customer.subdistrict}}</span
-                ><span>{{ ", " }} {{customer.postal_code }}</span>
+                <span>{{ "City " }}{{customer.city }}</span><span>{{ " Subdistrict "
+                  }}{{customer.subdistrict}}</span><span>{{ ", " }} {{customer.postal_code }}</span>
               </h5>
             </div>
             <p>{{customer.address}}</p>
-            <a href="{% url 'buyer:update_profile' customer.user.id %}"
-              >Update address</a
-            >
+            <a href="{% url 'buyer:update_profile' customer.user.id %}">Update address</a>
           </div>
         </div>
       </div>
@@ -170,17 +133,12 @@
               </div>
             </div>
           </div>
-          <div
-            class="py-4 mb-4 border-top border-bottom d-flex justify-content-between"
-          >
+          <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
             <h5 class="mb-0 ps-4 me-4">Total</h5>
             <p class="mb-0 pe-4">Rp<span class="subtotal">0</span></p>
           </div>
-          <button
-            onclick="location.href='{% url 'buyer:checkout' %}';"
-            class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-            type="button"
-          >
+          <button onclick="location.href='{% url 'buyer:checkout' %}';"
+            class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4" type="button">
             Proceed Checkout
           </button>
         </div>

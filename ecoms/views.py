@@ -320,7 +320,7 @@ def checkout(request):
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
     products = SellerProduct.objects.using('seller_db').all()
-    wallet = BankAccount.objects.using('bank').filter(
+    wallet = BankAccount.objects.using('bank').get(
         user_id=request.user.id) or None
     if wallet == None:
         return JsonResponse(data={'message': 'kamu belum memiliki wallet'})
@@ -333,7 +333,7 @@ def checkout(request):
     transaction = Transaction(transaction_code=f"{request.user.id}{str(uuid.uuid4(
     ))}", user_id=customer, total_price=total_price, discount=0, payment_money=total_price)
     transaction.save()
-    wallet.balance = wallet.balance - total_price
+    wallet.balance = int(wallet.balance) - int(total_price)
     wallet.save(using='bank')
     for cart in carts:
         transaction_details = TransactionDetail(
