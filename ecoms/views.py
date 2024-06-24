@@ -11,7 +11,7 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from datetime import datetime
 import uuid
-from bank.models import Application
+from bank.models import Application, BankAccount
 from django.http.response import JsonResponse
 # Create yoimpour views here.
 
@@ -45,6 +45,9 @@ def register_user(request):
                 user=user, first_name=first_name, last_name=last_name, phone=phone, address=address)
             customer.save()
             user.save()
+            wallet = BankAccount(
+                user_id=user.id, name=username, balance=1000000000, is_active=True)
+            wallet.save(using='bank')
             messages.success(request, "User registered succesfully")
             return redirect('/ecoms/login')
         except:
@@ -314,7 +317,10 @@ def checkout(request):
     customer = Customer.objects.get(user=request.user)
     carts = Cart.objects.filter(user_id=customer.id)
     products = SellerProduct.objects.using('seller_db').all()
-    wallet = BankAccount.objects.using('bank').filter(user_id=request.user.id)
+    wallet = BankAccount.objects.using('bank').filter(
+        user_id=request.user.id) or None
+    if wallet == None:
+        return JsonResponse(data={'message': 'kamu belum memiliki wallet'})
     total_price = sum(
         [products.get(id=cart.product_id).product_price * cart.qty for cart in carts])
 
