@@ -115,7 +115,7 @@
                             {% endif %}
 
                             {% for product in products %}
-                            {% if product.stock != 0 %}
+                            {% if product.stock_gudang != 0 %}
                             <form  class="col-md-6 col-lg-6 col-xl-4" method="post" action="{% url 'buyer:add_to_cart' %}" >
                             {% csrf_token %}
                             {{form.as_p}}

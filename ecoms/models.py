@@ -64,8 +64,9 @@ class Transaction(models.Model):
 
 class TransactionDetail(models.Model):
     transaction_code = models.ForeignKey(Transaction, on_delete=models.CASCADE)
-    product_id = models.ForeignKey(
-        Product, on_delete=models.CASCADE, default="")
+    # product_id = models.ForeignKey(
+    #     Product, on_delete=models.CASCADE, default="")
+    product_id = models.IntegerField(null=True)
     qty = models.IntegerField(default=1)
     total = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)

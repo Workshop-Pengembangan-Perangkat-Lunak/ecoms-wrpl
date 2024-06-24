@@ -22,11 +22,11 @@ class DeliveryForm(forms.ModelForm):
             description=self.cleaned_data['product_description'],
         )
         if commit:
-            product.save()
+            product.save(using='delivery_db')
         delivery = super().save(commit=False)
         delivery.product = product
         if user:
             delivery.user = user
         if commit:
-            delivery.save()
+            delivery.save(using='delivery_db')
         return delivery

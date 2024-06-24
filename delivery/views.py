@@ -17,7 +17,12 @@ def product_detail(request, product_id):
 
 @login_required(login_url='delivery_login')
 def user_deliveries(request):
-    deliveries = Delivery.objects.filter(user=request.user)
+    deliveries = Delivery.objects.using('delivery_db').all()
+    if request.method == 'POST':
+        delivery = Delivery.objects.using('delivery_db').get(id=request.POST['delivery_id'])
+        delivery.status = request.POST['status']
+        delivery.save(using='delivery_db')
+        
     return render(request, 'deliverydashboard.html', {'deliveries': deliveries})
 
 def add_delivery(request):
@@ -25,6 +30,7 @@ def add_delivery(request):
         form = DeliveryForm(request.POST)
         if form.is_valid():
             form.save(user=request.user)
+           
             return redirect('user_deliveries')
     else:
         form = DeliveryForm()
